@@ -56,16 +56,15 @@ This tells you which teams are taking part in a given league. The data is public
 ##### Url: /api/v1/league/:key/teams
 
 ```
-{
-  "teams": [
-    {
-      "key": "chelsea",
-      "name": "Chelsea",
-      "code": "CHE"
-    }
-    ...
-  ]
-}  
+[
+  {
+    "key": "chelsea",
+    "name": "Chelsea",
+    "code": "CHE"
+  }
+  ...
+]
+
 ```
 
 #### 3. Fixtures

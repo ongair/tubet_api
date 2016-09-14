@@ -24,16 +24,14 @@ var leagues = {
           console.log("League ", league);
           league.teams()
             .then(function(teams) {
-              res.json({
-                teams: teams.map(function(team) {
-                  return {
-                    id: team.id,
-                    key: team.key,
-                    code: team.code,
-                    name: team.name
-                  }
-                })
-              });
+              res.json(teams.map(function(team) {
+                return {
+                  id: team.id,
+                  key: team.key,
+                  code: team.code,
+                  name: team.name
+                }
+              }))
             })
         } else {
           res.status(422);
