@@ -4,6 +4,7 @@ var router = express.Router();
 var auth = require('./auth.js');
 var sources = require('./sources.js');
 var admin = require('./admin.js');
+var leagues = require('./leagues.js');
 // var user = require('./users.js');
 
 /*
@@ -15,7 +16,7 @@ var admin = require('./admin.js');
  * Routes that can be accessed only by autheticated users
  */
 router.get('/api/v1/sources', sources.getAll);
-// router.get('/api/v1/product/:id', products.getOne);
+router.get('/api/v1/leagues', leagues.getAll);
 // router.post('/api/v1/product/', products.create);
 // router.put('/api/v1/product/:id', products.update);
 // router.delete('/api/v1/product/:id', products.delete);

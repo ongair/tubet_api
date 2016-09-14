@@ -1,3 +1,3 @@
 module.exports = function() {
-  return 'super.super.secret.shhh';
+  return process.env.TOKEN_SECRET;
 }
