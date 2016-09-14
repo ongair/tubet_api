@@ -1,7 +1,9 @@
 var express = require('express');
 var path = require('path');
+var bodyParser = require('body-parser');
 
 var app = express();
+app.use(bodyParser.json());
 
 app.all('/*', function(req, res, next) {
   // CORS headers
@@ -17,6 +19,7 @@ app.all('/*', function(req, res, next) {
 });
 
 app.all('/api/v1/*', [require('./middlewares/validateRequest')]);
+app.all('/api/v1/admin/*', [require('./middlewares/authorizeRequest')]);
 app.use('/', require('./routes'));
 
 
