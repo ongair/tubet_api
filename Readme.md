@@ -40,7 +40,9 @@ Results:
 ```
 [
   {
-    "id": 1,
+    "id": 57d9a426b419f73d5072eb62,
+    "key": "1",
+    "code": "epl",
     "name": "English Premier League"
   }
 ]
@@ -51,7 +53,7 @@ Results:
 This tells you which teams are taking part in a given league. The data is public domain but drawn from
 [here](https://github.com/openfootball/football.json)
 
-##### Url: /api/v1/league/:id/teams
+##### Url: /api/v1/league/:key/teams
 
 ```
 {

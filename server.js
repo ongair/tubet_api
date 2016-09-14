@@ -1,9 +1,11 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
-
+var dataProvider = require('./data/provider.js');
 var app = express();
 app.use(bodyParser.json());
+
+
 
 app.all('/*', function(req, res, next) {
   // CORS headers
@@ -22,6 +24,7 @@ app.all('/api/v1/*', [require('./middlewares/validateRequest')]);
 app.all('/api/v1/admin/*', [require('./middlewares/authorizeRequest')]);
 app.use('/', require('./routes'));
 
+dataProvider.init();
 
 // If no route is matched by now, it must be a 404
 app.use(function(req, res, next) {

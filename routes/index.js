@@ -6,6 +6,8 @@ var sources = require('./sources.js');
 var admin = require('./admin.js');
 var leagues = require('./leagues.js');
 var setup = require('./setup.js');
+var provider = require('../data/provider.js');
+
 
 /*
  * Routes that can be accessed by any one
@@ -29,7 +31,7 @@ router.get('/api/v1/league/:id/fixtures', leagues.getFixtures);
 // router.get('/api/v1/admin/users', user.getAll);
 // router.get('/api/v1/admin/user/:id', user.getOne);
 router.post('/api/v1/admin/user/', admin.createUser);
-router.post('/api/v1/admin/setup/teams', setup.loadTeams);
+router.post('/api/v1/admin/setup/base', provider.setupData);
 // router.delete('/api/v1/admin/user/:id', user.delete);
 
 
