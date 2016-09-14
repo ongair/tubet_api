@@ -47,13 +47,7 @@ var loadTeams = function(league) {
             });
           }
         })
-      // console.log("In team ", team);
-      // Team.findByCodeOrCreate(team.code, team)
-      //   .then(function(savedTeam) {
-      //     console.log("Team found for code: ", savedTeam);
-      //   });
     });
-    // console.log("Teams: ", teams);
     resolve(true);
   });
 
