@@ -101,24 +101,24 @@ This endpoint tells you the games being played round by round. Some historical d
   }
   ```
 
-  #### 4. Search
-  This endpoint provides a basic fuzzy search for team names. Useful for where someone does not provide a full team name.
+#### 4. Search
+This endpoint provides a basic fuzzy search for team names. Useful for where someone does not provide a full team name.
 
-  ##### URI: /api/v1/search/teams?term=west
+##### URI: /api/v1/search/teams?term=west
 
-  ```
-  [
-    {
-      "id": "57d9ae1783295e42bdc4a414",
-      "key": "westham",
-      "name": "West Ham United",
-      "code": "WHU"
-    },
-    {
-      "id": "57d9ae1783295e42bdc4a41a",
-      "key": "westbrom",
-      "name": "West Bromwich Albion",
-      "code": "WBA"
-    }
-  ]  
-  ```
+```
+[
+  {
+    "id": "57d9ae1783295e42bdc4a414",
+    "key": "westham",
+    "name": "West Ham United",
+    "code": "WHU"
+  },
+  {
+    "id": "57d9ae1783295e42bdc4a41a",
+    "key": "westbrom",
+    "name": "West Bromwich Albion",
+    "code": "WBA"
+  }
+]  
+```
