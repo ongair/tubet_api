@@ -9,13 +9,33 @@ var leagues = {
   },
 
   getTeams: function(req, res) {
-    var teams = require('../data/en.clubs.json');
-    res.json({ teams: teams.clubs });
+    var leagueID = req.params.id;
+    if (leagueID == '1') {
+      var teams = require('../data/en.clubs.json');
+      res.json({ teams: teams.clubs });
+    }
+    else {
+      res.status(422);
+      res.json({
+        "status": 422,
+        "message": "Invalid league id"
+      });
+    }
   },
 
   getFixtures: function(req, res) {
-    var fixtures = require('../data/en.fixtures.json');
-    res.json({ rounds: fixtures.rounds });
+    var leagueID = req.params.id;
+    if (leagueID == '1') {
+      var fixtures = require('../data/en.fixtures.json');
+      res.json({ rounds: fixtures.rounds });
+    }
+    else {
+      res.status(422);
+      res.json({
+        "status": 422,
+        "message": "Invalid league id"
+      });
+    }
   }
 
 }
