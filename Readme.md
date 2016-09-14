@@ -27,6 +27,7 @@ Results:
 [{
   "id": 1,
   "name": "Sportpesa",
+  "key": "sportpesa",
   "url": "https://www.sportpesa.com"
 }]
 ```
