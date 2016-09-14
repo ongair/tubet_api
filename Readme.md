@@ -28,7 +28,7 @@ Results:
   "id": 1,
   "name": "Sportpesa",
   "url": "https://www.sportpesa.com"
-}}
+}]
 ```
 
 #### 2. Leagues
