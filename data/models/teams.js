@@ -52,6 +52,8 @@ function flatten(teams, term) {
   // console.log("Fields available are:", applicableFields);
 
   var results = fuzzy.filter(term, applicableFields);
+  console.log("Results ", results);
+
   // remove all the uppercase stuff
   results = results.filter(function(item) {
     return item.original[0] !== item.original[0].toUpperCase()

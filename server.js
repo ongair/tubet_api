@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var dataProvider = require('./data/provider.js');
 var app = express();
 app.use(bodyParser.json());
-
+app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.all('/*', function(req, res, next) {

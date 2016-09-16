@@ -9,12 +9,7 @@ var setup = require('./setup.js');
 var odds = require('./odds.js');
 var search = require('./search.js');
 var provider = require('../data/provider.js');
-
-
-/*
- * Routes that can be accessed by any one
- */
-// router.post('/login', auth.login);
+var bot = require('./bot.js');
 
 /*
  * Routes that can be accessed only by autheticated users
@@ -24,19 +19,12 @@ router.get('/api/v1/leagues', leagues.getAll);
 router.get('/api/v1/league/:id/teams', leagues.getTeams);
 router.get('/api/v1/league/:id/fixtures', leagues.getFixtures);
 router.get('/api/v1/search/teams', search.disambiguateTeams);
-// router.put('/api/v1/product/:id', products.update);
-// router.delete('/api/v1/product/:id', products.delete);
-//
 
-// /*
-//  * Routes that can be accessed only by authenticated & authorized users
-//  */
-// router.get('/api/v1/admin/users', user.getAll);
 router.post('/api/v1/admin/league/:id/odds/', odds.addOdds);
 router.post('/api/v1/admin/user/', admin.createUser);
 router.post('/api/v1/admin/setup/base', provider.setupData);
-// router.delete('/api/v1/admin/user/:id', user.delete);
 
-
+// TubetBot
+router.post('/api/bot/v1/respond', bot.respond);
 
 module.exports = router;
