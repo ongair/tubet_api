@@ -17,7 +17,7 @@ var bot = {
 }
 
 function progress(contactId, contactName, text) {
-
+  
 }
 
 module.exports = bot;
