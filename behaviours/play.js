@@ -1,5 +1,7 @@
 var Player = require('../data/models/player.js');
 var matchers = require('../util/matchers.js');
+var machina = require('machina');
+var Client = require('ongair').Client;
 
 var play = {
 
@@ -18,13 +20,43 @@ var play = {
 
   advance: function(player, text) {
     console.log("About to advance with ", player, text);
-    if (player.isNew()) {
-      
-    }
+    var client = new Client(process.env.ONGAIR_TOKEN);
+    machine = new machina.Fsm({
+
+      initialize: function(player) {
+        // useful for resolving states
+        if (!player.isNew()) {
+
+        }
+      },
+
+      namespace: 'tubet.registration',
+
+      initialState: 'start',
+
+      states : {
+
+        // The start of the process
+        start: {
+          // ok we need to say some salutations
+          // console.log("Starting");
+
+          "*": function() {
+            client.sendMessage(player.contactId, "Hi " + player.contactName)
+              .then(function(id) {
+                console.log("We said hi: ", id);
+              })
+              .catch(function(err) {
+                console.log("Ooops", err);
+              });
+          }
+        }
+      }
+    })
   },
 
   START_KEYWORDS: ['/start'],
-  STATE_NEW: 'new'
+  STATE_NEW: 'new',
 }
 
 module.exports = play;
