@@ -40,9 +40,8 @@ var play = {
         start: {
           // ok we need to say some salutations
           // console.log("Starting");
-
-          "*": function() {
-            client.sendMessage(player.contactId, "Hi " + player.contactName)
+          _onEnter: function() {
+            client.sendMessage(player.contactId, "Hi there. My name is Tubet. Can I call you " + player.contactName + "?")
               .then(function(id) {
                 console.log("We said hi: ", id);
               })
