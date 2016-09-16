@@ -19,7 +19,11 @@ playerSchema.statics.findOneById = function(id) {
       resolve(player);
     });
   });
-}
+};
+
+playerSchema.methods.isNew = function() {
+  return this.state = 'new';
+};
 
 
-module.exports = mongoose.model('Match', matchSchema);
+module.exports = mongoose.model('Match', playerSchema);

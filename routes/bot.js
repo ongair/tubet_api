@@ -1,3 +1,5 @@
+var behaviour = require('../behaviours/play.js');
+var Player = require('../data/models/player.js');
 var bot = {
 
   respond: function(req, res) {
@@ -17,7 +19,10 @@ var bot = {
 }
 
 function progress(contactId, contactName, text) {
-
+  behaviour.findOrCreatePlayer(contactId, contactName)
+    .then(function(player) {
+      behaviour.advance(player, text);
+    });
 }
 
 module.exports = bot;

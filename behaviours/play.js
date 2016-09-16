@@ -1,4 +1,5 @@
 var Player = require('../data/models/player.js');
+var matchers = require('../util/matchers.js');
 
 var play = {
 
@@ -13,7 +14,17 @@ var play = {
           resolve(player);
         });
     });
-  }
+  },
+
+  advance: function(player, text) {
+    console.log("About to advance with ", player, text);
+    if (player.isNew()) {
+      
+    }
+  },
+
+  START_KEYWORDS: ['/start'],
+  STATE_NEW: 'new'
 }
 
 module.exports = play;
