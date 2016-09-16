@@ -8,7 +8,7 @@ var bot = {
     console.log("Event: ", evt);
 
     if (evt == 'MessageReceived') {
-
+      progress(contactId, contactName, text)
     }
     res.json({ success: true });
   },
@@ -17,7 +17,7 @@ var bot = {
 }
 
 function progress(contactId, contactName, text) {
-  
+
 }
 
 module.exports = bot;
