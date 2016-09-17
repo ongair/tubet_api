@@ -27,10 +27,6 @@ function progress(contactId, contactName, accountType, text, messageId) {
     .then(function(player) {
       behaviour.analyze(player, { id: messageId, text: text })
         .then(behaviour.advance);
-        // .then(function(player, message) {
-        //     behaviour.advance(player, message);
-        // })
-
     });
 }
 

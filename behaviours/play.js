@@ -27,8 +27,10 @@ var play = {
 
   introduction: function(player) {
     return new Promise(function(resolve, reject) {
-      var hi = "Hi";
-
+      var hi = "Hi there. My name is Nick. I'll be your bookie.";
+      to = player.contactId;
+      send(to, hi)
+        .then(send(to, "First lets get to know each other."));
     });
   },
 
@@ -70,12 +72,12 @@ var play = {
   STATE_NEW: 'new',
 }
 
-function sendMessage(to, message, options) {
+function send(to, message, options) {
   return new Promise(function(resolve, reject) {
     var client = new ongair.Client(process.env.ONGAIR_TOKEN);
     client.sendMessage(to, message, options)
       .then(function(id) {
-
+        resolve(id);
       });
   });
 }
