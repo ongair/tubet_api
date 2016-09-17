@@ -27,6 +27,7 @@ var play = {
 
   introduction: function(player) {
     return new Promise(function(resolve, reject) {
+      console.log("About to introduce myself");
       var hi = "Hi there. My name is Nick. I'll be your bookie.";
       to = player.contactId;
       send(to, hi)
@@ -49,6 +50,7 @@ var play = {
     machine = new machina.Fsm({
 
       initialize: function(options) {
+        console.log('Initializing intoduction state machine');
       },
 
       namespace: 'tubet.registration',
