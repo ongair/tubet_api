@@ -1,5 +1,6 @@
 var Player = require('../data/models/player.js');
 var Message = require('../data/models/message.js');
+var provider = require('../data/provider.js');
 var matchers = require('../util/matchers.js');
 var machina = require('machina');
 var ongair = require('ongair');
@@ -33,7 +34,7 @@ var play = {
 
   analyze: function(player, msg) {
     return new Promise(function(resolve, reject) {
-      Message.findOrCreate(msg.id, player.id, 'IN', 'Text', msg.text, player.source)
+      provider.findOrCreateMessage(msg.id, player.id, 'IN', 'Text', msg.text, player.source)
         .then(function(message) {
           console.log("Saved the message", message);
           resolve(player, msg);

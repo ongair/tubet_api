@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 // var models = require('./models.js');
 var League = require('./models/leagues.js');
-var Team = require('./models/teams.js')
+var Team = require('./models/teams.js');
+var Message = require('./models/message.js');
 var provider = {
 
   init: function() {
@@ -18,6 +19,17 @@ var provider = {
           });
       })
   },
+
+  findOrCreateMessage: function(id, contactId, direction, messageType, text, source) {
+    return new Promise(function(resolve, reject) {
+      Message.findOne({ externalId: id }, function(err, message) {
+        if (!message) {
+          message = new Message({ contactId: contactId, externalId: id, messageType: messageType, direction: direction, text: text, source: source });
+        }
+        resolve(message);
+      });
+    });
+  }
 }
 
 var findOrCreateLeague = function(key, data) {
