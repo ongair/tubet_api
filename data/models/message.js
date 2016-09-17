@@ -8,6 +8,7 @@ var messageSchema = new Schema({
   messageType: String,
   text: String,
   source: String,
+  replyTo: String,
   sentiment: Number
 });
 

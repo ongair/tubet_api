@@ -25,7 +25,12 @@ var bot = {
 function progress(contactId, contactName, accountType, text, messageId) {
   behaviour.getPlayer(contactId, contactName, accountType)
     .then(function(player) {
-      behaviour.advance(player, { id: messageId, text: text });
+      behaviour.analyze(player, { id: messageId, text: text })
+        .then(behaviour.advance);
+        // .then(function(player, message) {
+        //     behaviour.advance(player, message);
+        // })
+
     });
 }
 
