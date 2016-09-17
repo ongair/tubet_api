@@ -26,10 +26,11 @@ var play = {
     console.log("Client created");
     machine = new machina.Fsm({
 
-      initialize: function(player) {
+      initialize: function(options) {
         // useful for resolving states
-        if (!player.isNew()) {
-        }
+        // if (!player.isNew()) {
+        // }
+        console.log("In initializer for player ", player);
       },
 
       namespace: 'tubet.registration',
@@ -44,6 +45,7 @@ var play = {
           // console.log("Starting");
           _onEnter: function() {
             var welcome = "Hi there. My name is Tubet. Can I call you " + player.contactName + "?";
+            console.log("Hello there");
             client.sendMessage(player.contactId, welcome)
               .then(function(id) {
                 console.log("We said hi: ", id);
