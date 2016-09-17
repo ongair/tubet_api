@@ -9,7 +9,7 @@ var bot = {
     var contactName = req.param('name');
     var messageId = req.param('id');
     var accountType = req.param('account_type');
-    var source = req.params('account');
+    var source = req.param('account');
     console.log("Event: ", evt);
 
     console.log("All params ", text, contactId, contactName, messageId, accountType, source);
