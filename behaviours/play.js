@@ -63,6 +63,7 @@ var play = {
         start: {
           // ok we need to say some salutations
           _onEnter: function() {
+            console.log("In start state ", player);
             self.introduction(player);
           }
         }
