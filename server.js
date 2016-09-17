@@ -3,6 +3,9 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var dataProvider = require('./data/provider.js');
 var app = express();
+var morgan = require('morgan');
+
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
