@@ -25,5 +25,7 @@ playerSchema.methods.isNew = function() {
   return this.state = 'new';
 };
 
+SOURCE_TELEGRAM = 'Telegram';
+SOURCE_MESSENGER = 'MessengerV2';
 
 module.exports = mongoose.model('Match', playerSchema);

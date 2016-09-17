@@ -6,12 +6,17 @@ var ongair = require('ongair');
 
 var play = {
 
-  findOrCreatePlayer: function(playerId, playerName) {
+  getPlayer: function(playerId, playerName, source) {
     return new Promise(function(resolve, reject) {
       Player.findOneById(playerId)
         .then(function (player) {
           if (!player) {
-            player = new Player({ contactId: playerId, contactName: playerName, state: 'new' })
+
+            name = playerName
+            if (source == 'Telegram')
+              name = name.replace(/ *\([^)]*\) */g, "");
+
+            player = new Player({ contactId: playerId, contactName: name, source: source, state: 'new' })
             player.save();
           }
           resolve(player);
@@ -26,10 +31,17 @@ var play = {
     });
   },
 
-  // reply:
+  analyze: function(player, msg) {
+    return new Promise(function(resolve, reject) {
+      Message.findOrCreate(msg.id, player.id, 'IN', 'Text', msg.text, player.source)
+        .then(function(message) {
+          console.log("Saved the message", message);
+        });
+    });
+  },
 
-  advance: function(player, text) {
-    console.log("About to advance with ", player, text);
+  advance: function(player, message) {
+    console.log("About to advance with ", player, message.text);
 
 
     // var client = new ongair.Client(process.env.ONGAIR_TOKEN);

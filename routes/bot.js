@@ -10,12 +10,11 @@ var bot = {
     var messageId = req.param('id');
     var accountType = req.param('account_type');
     var source = req.param('account');
-    console.log("Event: ", evt);
 
-    console.log("All params ", text, contactId, contactName, messageId, accountType, source);
+    console.log("All params ", evt, text, contactId, contactName, messageId, accountType, source);
 
     if (evt == 'MessageReceived') {
-      // progress(contactId, contactName, text)
+      progress(contactId, contactName, accountType, text, messageId);
     }
     res.json({ success: true });
   },
@@ -23,10 +22,10 @@ var bot = {
   START_KEYWORD: 'start'
 }
 
-function progress(contactId, contactName, text) {
-  behaviour.findOrCreatePlayer(contactId, contactName)
+function progress(contactId, contactName, accountType, text, messageId) {
+  behaviour.getPlayer(contactId, contactName, accountType)
     .then(function(player) {
-      behaviour.advance(player, text);
+      behaviour.advance(player, { id: messageId, text: text });
     });
 }
 
