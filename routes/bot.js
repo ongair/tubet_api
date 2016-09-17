@@ -7,10 +7,15 @@ var bot = {
     var text = req.param('text');
     var contactId = req.param('external_contact_id');
     var contactName = req.param('name');
+    var messageId = req.param('id');
+    var accountType = req.param('account_type');
+    var source = req.params('account');
     console.log("Event: ", evt);
 
+    console.log("All params ", text, contactId, contactName, messageId, accountType, source);
+
     if (evt == 'MessageReceived') {
-      progress(contactId, contactName, text)
+      // progress(contactId, contactName, text)
     }
     res.json({ success: true });
   },
