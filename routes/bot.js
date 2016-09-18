@@ -25,7 +25,7 @@ var bot = {
 
 function reset(id, text) {
   return new Promise(function(resolve, reject) {
-    if (text.toLowerCase() == "/start") {
+    if (text.toLowerCase() == "/restart") {
       Player.findOneAndRemove({contactId: id}, function(err) {
         console.log(err);
       });
