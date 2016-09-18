@@ -27,8 +27,10 @@ var Rules = machina.Fsm.extend({
       _onEnter: function() {
         checkTermsAndConditions(player, message.text)
           .then(function(accepted) {
+
             if (accepted)
               player.state = 'personalize';
+
             player.termsAccepted = accepted;
             player.save();
           });
@@ -36,31 +38,11 @@ var Rules = machina.Fsm.extend({
     },
     'personalize' : {
       _onEnter: function() {
-        console.log('In personalization step', message);
-        ai.getTeam(message.text)
-          .then(function(team) {
-            if (team) {
-              tutorial(player)
-                .then(function() {
-                  player.state = 'tutorial';
-                  player.teamId = team.id;
-                  player.save();
-                });
-            }
-            else {
-              console.log('We were not able to find a team');
-              send(player.to(), replies.teamNotFound + message.text)
-                .then(function() {
-                  send(player.to(), replies.teamTryAgain);
-                })
-            }
-          });
+        checkPersonalization(player, message.text)
       }
     },
     'tutorial': {
       _onEnter: function() {
-        console.log("Start of the tutorial", message.text);
-
         checkTutorialAnswer(player, message.text)
           .then(function() {
             player.state = 'credits';
@@ -70,8 +52,6 @@ var Rules = machina.Fsm.extend({
     },
     'credits': {
       _onEnter: function() {
-        console.log("Start of the credits check");
-
         checkCreditsAnswer(player, message.text)
           .then(function() {
             player.state = 'waiting';
@@ -82,9 +62,8 @@ var Rules = machina.Fsm.extend({
     },
     'waiting': {
       _onEnter: function() {
-        console.log('Ready for betting');
-
-        send(player.to(), replies.waiting);
+        // send(player.to(), replies.waiting);
+        waiting(player, replies.waiting);
       }
     }
   },
@@ -101,6 +80,15 @@ var Rules = machina.Fsm.extend({
     }
   }
 });
+
+function waiting(player, text) {
+  return new Promise(function(resolve, reject) {
+    send(player.to(), replies.waiting)
+      .then(function() {
+        resolve(true);
+      });
+  })
+}
 
 function tutorial(player) {
   return new Promise(function(resolve, reject) {
@@ -135,6 +123,28 @@ function sendTermsAndConditions(player) {
                 resolve(true);
               })
           })
+      })
+  });
+}
+
+function checkPersonalization(player, answer) {
+  to = player.to();
+  return new Promise(function(resolve, reject) {
+    ai.getTeam(answer)
+      .then(function(team) {
+        if (team)
+          tutorial(player)
+            .then(function() {
+              player.state = 'tutorial';
+              player.teamId = team.id;
+              player.save();
+            })
+        else {
+          send(to, replies.teamNotFound + answer)
+            .then(function() {
+              send(to, replies.teamTryAgain);
+            })
+        }
       })
   });
 }
@@ -180,35 +190,30 @@ function checkTutorialAnswer(player, answer) {
 }
 
 function checkCreditsAnswer(player, answer) {
+  to = player.to();
   return new Promise(function(resolve, reject) {
     resp = answer == '225' ? replies.exampleResultsCorrect : replies.exampleResultsWrong;
-    messages = [{ text: resp }, { text: replies.exampleResultsExplainer }, { text: replies.startingCredits }, { text: replies.goodLuck }]
-    chain(player.to(), messages)
+
+    send(to, resp)
       .then(function() {
-        resolve(true);
-      });
-  });
-}
-
-function chain(to, messages) {
-  return new Promise(function(resolve, reject) {
-    var idx = 0;
-
-    for(var idx=0;idx<messages.length;idx++) {
-      msg = messages[idx];
-      send(to, msg.text, msg.options)
-        .then(function() {
-          if(idx == messages.length - 1)
-            resolve(true);
-        })
-    }
+        send(to, replies.exampleResultsExplainer)
+          .then(function() {
+            send(to, replies.startingCredits)
+              .then(function() {
+                send(to, replies.goodLuck)
+                  .then(function() {
+                    resolve(true);
+                  })
+              })
+          })
+      })
   });
 }
 
 function send(to, message, options) {
   return new Promise(function(resolve, reject) {
     var client = new ongair.Client(process.env.ONGAIR_TOKEN);
-    console.log("Sending", message);
+    // console.log("Sending", message);
     client.sendMessage(to, message, options)
       .then(function(id) {
         resolve(id);
