@@ -3,8 +3,8 @@ var Schema = mongoose.Schema;
 
 var matchSchema = new Schema({
   key: String,
-  homeTeam: String,
-  awayTeam: String,
+  homeTeamId: String,
+  awayTeamId: String,
   date: String
 });
 
