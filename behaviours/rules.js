@@ -25,23 +25,11 @@ var Rules = machina.Fsm.extend({
     },
     'terms' : {
       _onEnter: function() {
-        console.log('In the terms and conditions step. Response is ', message);
-        ai.agrees(message.text)
-          .then(function(yes) {
-            player.termsAccepted = yes;
-            if (yes) {
+        checkTermsAndConditions(player, message.text)
+          .then(function(accepted) {
+            if (accepted)
               player.state = 'personalize';
-              send(player.to(), replies.termsAccepted)
-                .then(function(id) {
-                  send(player.to(), replies.personalization)
-                    .then(function() {
-                      player.save();
-                    });
-                });
-            }
-            else {
-              send(player.to(), replies.termsRejected);
-            }
+            player.termsAccepted = accepted;
             player.save();
           });
       }
@@ -137,16 +125,41 @@ function tutorial(player) {
 
 function sendTermsAndConditions(player) {
   return new Promise(function(resolve, reject) {
-    messages = [
-      { text: replies.hi },
-      { text: replies.diclaimer },
-      { text: replies.prompt, options: 'Yes,No' }
-    ];
-
-    chain(player.to(), messages)
+    to = player.to()
+    send(to, replies.hi)
       .then(function() {
-        resolve(true)
-      });
+        send(to, replies.disclaimer)
+          .then(function() {
+            send(to, replies.prompt, 'Yes,No')
+              .then(function() {
+                resolve(true);
+              })
+          })
+      })
+  });
+}
+
+function checkTermsAndConditions(player, answer) {
+  to = player.to()
+  return new Promise(function(resolve, reject) {
+    ai.agrees(answer)
+      .then(function(yes) {
+        if (yes) {
+          send(to, replies.termsAccepted)
+            .then(function() {
+              send(to, replies.personalization)
+                .then(function() {
+                  resolve(true);
+                })
+            })
+        }
+        else {
+          send(to, replies.termsRejected)
+            .then(function() {
+              resolve(false);
+            })
+        }
+      })
   });
 }
 
