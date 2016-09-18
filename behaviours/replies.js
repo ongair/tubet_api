@@ -7,7 +7,7 @@ var replies = {
   personalization: 'Lets get to know each other a bit. First, what team currently playing the Premier League do you support?',
   teamSelected: "Nice, now we can get started.",
   teamNotFound: "Sorry, I wasn't able to find the team ",
-  teamTryAgain: ".\r\nPlease check and make sure they are playing in the League this season, or try the full name of the team. For example, I'm a fan of the Reds so I would reply with Liverpool.",
+  teamTryAgain: "Please check and make sure they are playing in the League this season, or try the full name of the team. For example, I'm a fan of the Reds so I would reply with Liverpool.",
   bettingIntro: "Let me explain a little about how betting works, by explaining some of the terms.",
   explainerBet: "Sports betting works by you predicting how a match between two teams will end and placing some money. If you predict the right result, you will win the amount you bet multiplied by the Odds. What is the odds you say?",
   explainerOdds: "Odds tell you how much money you will make if you predict the correct result. They can be expressed as a ratio e.g. 8:1 or 8 to 1, or a single number like 2.33.",

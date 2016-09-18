@@ -13,22 +13,14 @@ var Rules = machina.Fsm.extend({
     },
     'new' : {
       _onEnter: function() {
-        to = player.contactId;
-        send(to, replies.hi)
-          .then(function(id) {
-            send(to, replies.diclaimer)
-              .then(function(id) {
-                send(to, replies.prompt, 'Yes,No')
-                  .then(function() {
-                    // save the fact that we have prompted for terms and Conditions
-                    player.state = 'terms';
-                    player.termsAccepted = false;
-                    player.save();
 
-                    console.log('Updated the player status', player);
-                  })
-              })
-          })
+        sendTermsAndConditions(player)
+          .then(function() {
+            player.state = 'terms';
+            player.termsAccepted = false;
+            player.save();
+          });
+
       }
     },
     'terms' : {
@@ -143,6 +135,21 @@ function tutorial(player) {
   });
 }
 
+function sendTermsAndConditions(player) {
+  return new Promise(function(resolve, reject) {
+    messages = [
+      { text: replies.hi },
+      { text: replies.diclaimer },
+      { text: replies.prompt, options: 'Yes,No' }
+    ];
+
+    chain(player.to(), messages)
+      .then(function() {
+        resolve(true)
+      });
+  });
+}
+
 function checkTutorialAnswer(player, answer) {
   return new Promise(function(resolve, reject) {
     resp = answer.toLowerCase() == "Liverpool Win".toLowerCase() ? replies.exampleCorrect : replies.exampleWrong;
@@ -172,20 +179,23 @@ function checkCreditsAnswer(player, answer) {
 
 function chain(to, messages) {
   return new Promise(function(resolve, reject) {
+    var idx = 0;
+
     for(var idx=0;idx<messages.length;idx++) {
-      mesage = message[idx];
-      send(to, message.text, message.options)
+      msg = messages[idx];
+      send(to, msg.text, msg.options)
         .then(function() {
-          if(index == messages.length - 1)
+          if(idx == messages.length - 1)
             resolve(true);
         })
-    }    
+    }
   });
 }
 
 function send(to, message, options) {
   return new Promise(function(resolve, reject) {
     var client = new ongair.Client(process.env.ONGAIR_TOKEN);
+    console.log("Sending", message);
     client.sendMessage(to, message, options)
       .then(function(id) {
         resolve(id);
