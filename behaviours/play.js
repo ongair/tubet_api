@@ -25,16 +25,6 @@ var play = {
     });
   },
 
-  introduction: function(player) {
-    return new Promise(function(resolve, reject) {
-      console.log("About to introduce myself");
-      var hi = "Hi there. My name is Nick. I'll be your bookie.";
-      to = player.contactId;
-      send(to, hi)
-        .then(send(to, "First lets get to know each other."));
-    });
-  },
-
   analyze: function(player, msg) {
     return new Promise(function(resolve, reject) {
       provider.findOrCreateMessage(msg.id, player.id, 'IN', 'Text', msg.text, player.source)
@@ -64,8 +54,18 @@ var play = {
           // ok we need to say some salutations
           _onEnter: function() {
             console.log("In start state ", player);
-            self.introduction(player);
-          }
+            this.introduction(player);
+          },
+
+          introduction: function(player) {
+            return new Promise(function(resolve, reject) {
+              console.log("About to introduce myself");
+              var hi = "Hi there. My name is Nick. I'll be your bookie.";
+              to = player.contactId;
+              send(to, hi)
+                .then(send(to, "First lets get to know each other."));
+            });
+          },
         }
       }
     });
