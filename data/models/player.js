@@ -7,6 +7,7 @@ var playerSchema = new Schema({
   state: String,
   handle: String,
   dateRegistered: Date,
+  termsAccepted: Boolean,
   refererId: String,
   source: String
 });

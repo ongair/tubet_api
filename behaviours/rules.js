@@ -1,29 +1,7 @@
 var machina = require('machina');
 var ongair = require('ongair');
-// var Rules = function(player, message) {
-//   this.player = player,
-//   this.message = message,
-//   this.engine = machina.Fsm.extend({
-//     // initialState: 'new',
-//     initialize: function() {
-//       // console.log("State", player.state);
-//       console.log("This", this);
-//       // state = player.state;
-//       this.transition(player.state);
-//     },
-//     states: {
-//       'new': {
-//         _onEnter: function() {
-//           console.log("We are in the " + player.state + " state");
-//         }
-//       }
-//     }
-//   }),
-//
-//   this.getState = function() {
-//     return this.engine.state;
-//   }
-// }
+var replies = require('./replies.js');
+
 var player, message;
 var Rules = machina.Fsm.extend({
   initialState: 'unknown',
@@ -36,10 +14,13 @@ var Rules = machina.Fsm.extend({
     'new' : {
       _onEnter: function() {
         to = player.contactId;
-        send(to, "Hi there. My name is Lyne. I'll be your bookie. Right now I'm only taking bets in the English Premier League but I'll add some more soon.")
-          .then(function() {
-            send(to, "Lets get to know each other " + player.contactName + ". I'll go first. I'm a Liverpool fan. Which team do you support?");
-          });
+        send(to, replies.hi)
+          .then(function(id) {
+            send(to, replies.diclaimer)
+              .then(function(id) {
+                send(to, replies.prompt, 'Yes,No')
+              })
+          })
       }
     }
   },
