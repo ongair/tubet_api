@@ -1,7 +1,7 @@
 'use strict';
 const Wit = require('node-wit').Wit;
 var _ = require('underscore');
-var Team = requre('../data/models/teams.js');
+var Team = require('../data/models/teams.js');
 var ai = {
 
   process: function(text, context) {
@@ -26,7 +26,7 @@ var ai = {
           }
         });
     });
-  }
+  },
 
   agrees: function(text) {
     return new Promise(function(resolve, reject) {
