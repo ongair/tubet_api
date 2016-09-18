@@ -19,7 +19,7 @@
     "mongoose": "^4.6.0",
     "morgan": "^1.7.0",
     "node-wit": "^4.1.0",
-    "ongair": "^1.0.3",
+    "ongair": "^1.0.5",
     "underscore": "^1.8.3"
   },
   "engines": {
