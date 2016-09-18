@@ -26,6 +26,10 @@ playerSchema.methods.isNew = function() {
   return this.state = 'new';
 };
 
+playerSchema.methods.to = function() {
+  return this.contactId;
+}
+
 SOURCE_TELEGRAM = 'Telegram';
 SOURCE_MESSENGER = 'MessengerV2';
 
