@@ -21,5 +21,8 @@
     "node-wit": "^4.1.0",
     "ongair": "^1.0.3",
     "underscore": "^1.8.3"
+  },
+  "engines": {
+    "node": "6.6.0"
   }
 }
