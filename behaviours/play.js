@@ -12,7 +12,6 @@ var play = {
       Player.findOneById(playerId)
         .then(function (player) {
           if (!player) {
-
             name = playerName
             if (source == 'Telegram')
               name = name.replace(/ *\([^)]*\) */g, "");

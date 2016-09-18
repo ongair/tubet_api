@@ -60,8 +60,10 @@ var Rules = machina.Fsm.extend({
         ai.getTeam(message.text)
           .then(function(team) {
             if (team) {
-              send(player.to(), replies.teamSelected)
+              tutorial(player)
                 .then(function() {
+                  player.state = 'tutorial';
+                  player.teamId = team.id;
                   player.save();
                 });
             }
@@ -74,6 +76,36 @@ var Rules = machina.Fsm.extend({
             }
           });
       }
+    },
+    'tutorial': {
+      _onEnter: function() {
+        console.log("Start of the tutorial", message.text);
+
+        checkTutorialAnswer(player, message.text)
+          .then(function() {
+            player.state = 'credits';
+            player.save();
+          });
+      }
+    },
+    'credits': {
+      _onEnter: function() {
+        console.log("Start of the credits check");
+
+        checkCreditsAnswer(player, message.text)
+          .then(function() {
+            player.state = 'waiting';
+            player.credits = 100;
+            player.save();
+          })
+      }
+    },
+    'waiting': {
+      _onEnter: function() {
+        console.log('Ready for betting');
+
+        send(player.to(), replies.waiting);
+      }
     }
   },
   load: function(p, m) {
@@ -82,9 +114,6 @@ var Rules = machina.Fsm.extend({
       state = p.state;
       player = p;
       message = m;
-
-      console.log("About to transition to ", state);
-
       this.transition(state);
     }
     catch(ex) {
@@ -92,6 +121,67 @@ var Rules = machina.Fsm.extend({
     }
   }
 });
+
+function tutorial(player) {
+  return new Promise(function(resolve, reject) {
+    send(player.to(), replies.teamSelected)
+      .then(function() {
+        send(player.to(), replies.bettingIntro)
+          .then(function() {
+            send(player.to(), replies.explainerBet)
+              .then(function() {
+                send(player.to(), replies.explainerOdds)
+                  .then(function() {
+                    send(player.to(), replies.explainerOddsExample, 'Liverpool Win,Everton Win,Draw')
+                      .then(function() {
+                        resolve(true);
+                      })
+                  })
+              });
+          })
+      })
+  });
+}
+
+function checkTutorialAnswer(player, answer) {
+  return new Promise(function(resolve, reject) {
+    resp = answer.toLowerCase() == "Liverpool Win".toLowerCase() ? replies.exampleCorrect : replies.exampleWrong;
+    send(player.to(), resp)
+      .then(function() {
+        send(player.to(), replies.exampleExplainer)
+          .then(function() {
+            send(player.to(), replies.creditsExplainer, '325,225,325')
+              .then(function() {
+                resolve(true);
+              })
+          })
+      })
+  })
+}
+
+function checkCreditsAnswer(player, answer) {
+  return new Promise(function(resolve, reject) {
+    resp = answer == '225' ? replies.exampleResultsCorrect : replies.exampleResultsWrong;
+    messages = [{ text: resp }, { text: replies.exampleResultsExplainer }, { text: replies.startingCredits }, { text: replies.goodLuck }]
+    chain(player.to(), messages)
+      .then(function() {
+        resolve(true);
+      });
+  });
+}
+
+function chain(to, messages) {
+  return new Promise(function(resolve, reject) {
+    for(var idx=0;idx<messages.length;idx++) {
+      mesage = message[idx];
+      send(to, message.text, message.options)
+        .then(function() {
+          if(index == messages.length - 1)
+            resolve(true);
+        })
+    }    
+  });
+}
 
 function send(to, message, options) {
   return new Promise(function(resolve, reject) {

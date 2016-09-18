@@ -9,7 +9,9 @@ var playerSchema = new Schema({
   dateRegistered: Date,
   termsAccepted: Boolean,
   refererId: String,
-  source: String
+  teamId: String,
+  source: String,
+  credits: Number
 });
 
 

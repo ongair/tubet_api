@@ -14,12 +14,28 @@ var bot = {
     console.log("All params ", evt, text, contactId, contactName, messageId, accountType, source);
 
     if (evt == 'MessageReceived') {
-      progress(contactId, contactName, accountType, text, messageId);
+      reset(contactId, text)
+        .then(function() {
+          progress(contactId, contactName, accountType, text, messageId);
+        });
     }
     res.json({ success: true });
-  },
+  }
+}
 
-  START_KEYWORD: 'start'
+function reset(id, text) {
+  return new Promise(function(resolve, reject) {
+    if (text.toLowerCase() == "/start") {
+      Player.findOneAndRemove({contactId: id}, function(err) {
+        console.log(err);
+      });
+      console.log("Removed:", id);
+      resolve(true);
+    }
+    else {
+      resolve(true);
+    }
+  });
 }
 
 function progress(contactId, contactName, accountType, text, messageId) {

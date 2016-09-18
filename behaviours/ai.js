@@ -19,7 +19,7 @@ var ai = {
         .then(function(results) {
           if (results.length == 0) {
             // check wit ai
-            resolve(null)
+            resolve(null);
           }
           else if (results.length == 1) {
             resolve(results[0])
