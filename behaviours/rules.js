@@ -57,7 +57,7 @@ var Rules = machina.Fsm.extend({
     'personalize' : {
       _onEnter: function() {
         console.log('In personalization step', message);
-        ai.findTeam(message.text)
+        ai.getTeam(message.text)
           .then(function(team) {
             if (team) {
               send(player.to(), replies.teamSelected)

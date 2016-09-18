@@ -5,9 +5,9 @@ var replies = {
   termsRejected: "Sorry, I can't continue until you accept the terms and conditions.",
   termsAccepted: 'Cool. Lets get started.',
   personalization: 'Lets get to know each other a bit. First, what team currently playing the Premier League do you support?',
-  teamSelected: "Nice. I'm a Liverpool fan",
+  teamSelected: "Nice. I'm happen to be a Liverpool fan, so lets try and get along.",
   teamNotFound: "Sorry, I wasn't able to find the team ",
-  teamTryAgain: ".\r\nPlease try again"  
+  teamTryAgain: ".\r\nPlease check and make sure they are playing in the League this season, or try the full name of the team. For example, I'm a kopite so I would reply with Liverpool."
 }
 
 module.exports = replies
