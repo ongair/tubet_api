@@ -98,7 +98,10 @@ function waiting(player, text) {
   return new Promise(function(resolve, reject) {
     send(player.to(), replies.texts.waiting)
       .then(function() {
-        resolve(true);
+        sendImage(player.to(), replies.gifs.mou, 'image/gif')
+          .then(function() {
+            resolve(true);
+          })
       });
   })
 }

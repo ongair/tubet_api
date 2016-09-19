@@ -26,9 +26,9 @@ module.exports = {
     exampleResultsCorrect: "👍, 225💰.",
     exampleResultsWrong: "👎, you should have said 225.",
     exampleResultsExplainer: "If you pick the right result, your winnings are calculated by multiplying your bet by the odds, so 100 x 2.25 = 225",
-    startingCredits: "🎓 I think you are now ready to start playing. We'll start you off with 100 free credits 💰.",
+    startingCredits: "🎓 I think you are now ready to start playing. I'll start you off with 100 free credits 💰.",
     goodLuck: "Last weeks games are all done, so I'll let you know as soon as the odds are ready for this week",
-    waiting: "Mmh, I'm still preparing the odds for this week. You'll be the first to know soon as they are ready",
+    waiting: "Mmh, I'm still preparing the odds for this week. Let me holla when I'm ready",
     share: "Having fun? Its even better if you invite your Friends"
   },
 
@@ -48,6 +48,7 @@ module.exports = {
     sou: "http://i.giphy.com/XpDYwAwJs2R0s.gif",
     lei: "http://i.giphy.com/l4Ho5sWX51Mn8JAE8.gif",
     bou: "http://i.giphy.com/a8siLqtWyqzSg.gif",
-    wat: "http://i.giphy.com/HQLu5sAaoDIKA.gif"
+    wat: "http://i.giphy.com/HQLu5sAaoDIKA.gif",
+    mou: "http://media3.giphy.com/media/6eKCAGtepHvjO/200.gif"
   }
 }
