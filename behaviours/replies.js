@@ -28,7 +28,8 @@ module.exports = {
     exampleResultsExplainer: "If you pick the right result, your winnings are calculated by multiplying your bet by the odds, so 100 x 2.25 = 225",
     startingCredits: "🎓 I think you are now ready to start playing. We'll start you off with 100 free credits 💰.",
     goodLuck: "Last weeks games are all done, so I'll let you know as soon as the odds are ready for this week",
-    waiting: "Mmh, I'm still preparing the odds for this week. You'll be the first to know soon as they are ready"
+    waiting: "Mmh, I'm still preparing the odds for this week. You'll be the first to know soon as they are ready",
+    share: "Having fun? Its even better if you invite your Friends"
   },
 
   gifs: {
