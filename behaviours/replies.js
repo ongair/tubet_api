@@ -28,7 +28,7 @@ module.exports = {
   },
 
   gifs: {
-    liv: "http://i.giphy.com/wXsCbEJPNZGSY.gif",
+    liv: "http://media3.giphy.com/media/wXsCbEJPNZGSY/200.gif",
     mun: "http://i.giphy.com/42mVGkLhOW0kU.gif",
     ars: "http://i.giphy.com/lXiRyi9qA8Xh9sYYU.gif",
     che: "http://i.giphy.com/y62tQV0Zr08OQ.gif",
