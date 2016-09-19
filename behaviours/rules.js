@@ -220,7 +220,9 @@ function sendImage(to, url, type) {
     if (url)
       client.sendImage(to, url, type)
         .then(function(id) {
-          resolve(id);
+          setTimeout(function() {
+            resolve(id);
+          },1000);          
         })
         .catch(function(ex) {
           reject(ex);
