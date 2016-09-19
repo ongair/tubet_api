@@ -220,7 +220,7 @@ function checkTutorialAnswer(player, answer) {
       .then(function() {
         send(player.to(), replies.texts.exampleExplainer)
           .then(function() {
-            send(player.to(), replies.texts.creditsExplainer, '325,225,325')
+            send(player.to(), replies.texts.creditsExplainer, '325,225,410')
               .then(function() {
                 resolve(true);
               })
