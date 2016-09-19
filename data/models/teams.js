@@ -19,6 +19,16 @@ teamSchema.statics.findOneByKey = function(key) {
   });
 }
 
+teamSchema.statics.teamNames = function() {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    self.find(function(err, teams) {
+      var names = _.map(teams, function(team) { return team.name });
+      resolve(names);
+    });
+  })
+}
+
 teamSchema.statics.resolveByName = function(name) {
   var self = this;
   return new Promise(function(resolve, reject) {

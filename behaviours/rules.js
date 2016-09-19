@@ -2,6 +2,7 @@ var machina = require('machina');
 var ongair = require('ongair');
 var replies = require('./replies.js');
 var ai = require('./ai.js');
+var Team = require('../data/models/teams.js');
 
 var player, message;
 var Rules = machina.Fsm.extend({
@@ -162,9 +163,13 @@ function checkPersonalization(player, answer) {
               player.save();
             })
         } else {
-          send(to, replies.texts.teamNotFound + answer)
+          send(to, replies.texts.teamNotFound + answer + "?")
             .then(function() {
-              send(to, replies.texts.teamTryAgain);
+              // time to pick some of the teams
+              Team.teamNames()
+                .then(function(names) {
+                  send(to, replies.texts.teamTryAgain, names.join(','));
+                });
             })
         }
       })
