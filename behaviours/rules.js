@@ -43,6 +43,18 @@ var Rules = machina.Fsm.extend({
     },
     'tutorial': {
       _onEnter: function() {
+        checkSkipTutorial(player, message.text)
+          .then(function() {
+            quiz(player)
+              .then(function() {
+                player.state = 'quiz';
+                player.save();
+              })
+          })
+      }
+    },
+    'quiz': {
+      _onEnter: function() {
         checkTutorialAnswer(player, message.text)
           .then(function() {
             player.state = 'credits';
@@ -99,17 +111,23 @@ function tutorial(player, team) {
           .then(function() {
             send(player.to(), replies.texts.bettingIntro)
               .then(function() {
-                send(player.to(), replies.texts.explainerBet)
+                send(player.to(), replies.texts.explainerBet, replies.texts.explainerQuestionOdds + "," + replies.texts.explainerTest)
                   .then(function() {
-                    send(player.to(), replies.texts.explainerOdds)
-                      .then(function() {
-                        send(player.to(), replies.texts.explainerOddsExample, 'Liverpool Win,Everton Win,Draw')
-                          .then(function() {
-                            resolve(true);
-                          })
-                      })
+                    resolve(true);
                   });
               })
+          })
+      })
+  });
+}
+
+function quiz(player) {
+  return new Promise(function(resolve, reject) {
+    send(player.to(), replies.texts.explainerOddsExample)
+      .then(function() {
+        send(player.to(), replies.texts.explainerOddsQuiz, replies.texts.explainerOddsQuizOptions)
+          .then(function() {
+            resolve(true);
           })
       })
   });
@@ -177,9 +195,27 @@ function checkTermsAndConditions(player, answer) {
   });
 }
 
+function checkSkipTutorial(player, answer) {
+  return new Promise(function(resolve, reject) {
+    resp = answer.toLowerCase() == replies.texts.explainerTest.toLowerCase();
+    if (resp) {
+      // skip the tutorial bit go straight to the question
+      console.log('Skipping the explainer');
+      resolve(true);
+    }
+    else {
+      console.log('Sending the explainer text');
+      send(player.to(), replies.texts.explainerOdds)
+        .then(function() {
+          resolve(true);
+        })
+    }
+  });
+}
+
 function checkTutorialAnswer(player, answer) {
   return new Promise(function(resolve, reject) {
-    resp = answer.toLowerCase() == "Liverpool Win".toLowerCase() ? replies.texts.exampleCorrect : replies.texts.exampleWrong;
+    resp = answer.toLowerCase() == "Liverpool".toLowerCase() ? replies.texts.exampleCorrect : replies.texts.exampleWrong;
     send(player.to(), resp)
       .then(function() {
         send(player.to(), replies.texts.exampleExplainer)
@@ -222,7 +258,7 @@ function sendImage(to, url, type) {
         .then(function(id) {
           setTimeout(function() {
             resolve(id);
-          },1000);          
+          },3000);
         })
         .catch(function(ex) {
           reject(ex);
