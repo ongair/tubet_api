@@ -83,29 +83,33 @@ var Rules = machina.Fsm.extend({
 
 function waiting(player, text) {
   return new Promise(function(resolve, reject) {
-    send(player.to(), replies.waiting)
+    send(player.to(), replies.texts.waiting)
       .then(function() {
         resolve(true);
       });
   })
 }
 
-function tutorial(player) {
+function tutorial(player, team) {
   return new Promise(function(resolve, reject) {
-    send(player.to(), replies.teamSelected)
+    send(player.to(), replies.texts.teamSelected)
       .then(function() {
-        send(player.to(), replies.bettingIntro)
+        image = replies.gifs[team.code.toLowerCase()];
+        sendImage(to, image, 'image/gif')
           .then(function() {
-            send(player.to(), replies.explainerBet)
+            send(player.to(), replies.texts.bettingIntro)
               .then(function() {
-                send(player.to(), replies.explainerOdds)
+                send(player.to(), replies.texts.explainerBet)
                   .then(function() {
-                    send(player.to(), replies.explainerOddsExample, 'Liverpool Win,Everton Win,Draw')
+                    send(player.to(), replies.texts.explainerOdds)
                       .then(function() {
-                        resolve(true);
+                        send(player.to(), replies.texts.explainerOddsExample, 'Liverpool Win,Everton Win,Draw')
+                          .then(function() {
+                            resolve(true);
+                          })
                       })
-                  })
-              });
+                  });
+              })
           })
       })
   });
@@ -114,11 +118,11 @@ function tutorial(player) {
 function sendTermsAndConditions(player) {
   return new Promise(function(resolve, reject) {
     to = player.to()
-    send(to, replies.hi)
+    send(to, personalize(replies.texts.hi, player.contactName))
       .then(function() {
-        send(to, replies.disclaimer)
+        send(to, replies.texts.disclaimer)
           .then(function() {
-            send(to, replies.prompt, 'Yes,No')
+            send(to, replies.texts.prompt, 'Yes,No')
               .then(function() {
                 resolve(true);
               })
@@ -132,17 +136,17 @@ function checkPersonalization(player, answer) {
   return new Promise(function(resolve, reject) {
     ai.getTeam(answer)
       .then(function(team) {
-        if (team)
-          tutorial(player)
+        if (team) {
+          tutorial(player, team)
             .then(function() {
               player.state = 'tutorial';
               player.teamId = team.id;
               player.save();
             })
-        else {
-          send(to, replies.teamNotFound + answer)
+        } else {
+          send(to, replies.texts.teamNotFound + answer)
             .then(function() {
-              send(to, replies.teamTryAgain);
+              send(to, replies.texts.teamTryAgain);
             })
         }
       })
@@ -155,16 +159,16 @@ function checkTermsAndConditions(player, answer) {
     ai.agrees(answer)
       .then(function(yes) {
         if (yes) {
-          send(to, replies.termsAccepted)
+          send(to, replies.texts.termsAccepted)
             .then(function() {
-              send(to, replies.personalization)
+              send(to, replies.texts.personalization)
                 .then(function() {
                   resolve(true);
                 })
             })
         }
         else {
-          send(to, replies.termsRejected)
+          send(to, replies.texts.termsRejected, 'Yes,No')
             .then(function() {
               resolve(false);
             })
@@ -175,12 +179,12 @@ function checkTermsAndConditions(player, answer) {
 
 function checkTutorialAnswer(player, answer) {
   return new Promise(function(resolve, reject) {
-    resp = answer.toLowerCase() == "Liverpool Win".toLowerCase() ? replies.exampleCorrect : replies.exampleWrong;
+    resp = answer.toLowerCase() == "Liverpool Win".toLowerCase() ? replies.texts.exampleCorrect : replies.texts.exampleWrong;
     send(player.to(), resp)
       .then(function() {
-        send(player.to(), replies.exampleExplainer)
+        send(player.to(), replies.texts.exampleExplainer)
           .then(function() {
-            send(player.to(), replies.creditsExplainer, '325,225,325')
+            send(player.to(), replies.texts.creditsExplainer, '325,225,325')
               .then(function() {
                 resolve(true);
               })
@@ -192,21 +196,38 @@ function checkTutorialAnswer(player, answer) {
 function checkCreditsAnswer(player, answer) {
   to = player.to();
   return new Promise(function(resolve, reject) {
-    resp = answer == '225' ? replies.exampleResultsCorrect : replies.exampleResultsWrong;
+    resp = answer == '225' ? replies.texts.exampleResultsCorrect : replies.texts.exampleResultsWrong;
 
     send(to, resp)
       .then(function() {
-        send(to, replies.exampleResultsExplainer)
+        send(to, replies.texts.exampleResultsExplainer)
           .then(function() {
-            send(to, replies.startingCredits)
+            send(to, replies.texts.startingCredits)
               .then(function() {
-                send(to, replies.goodLuck)
+                send(to, replies.texts.goodLuck)
                   .then(function() {
                     resolve(true);
                   })
               })
           })
       })
+  });
+}
+
+function sendImage(to, url, type) {
+  return new Promise(function(resolve, reject) {
+    var client = new ongair.Client(process.env.ONGAIR_TOKEN);
+    if (url)
+      client.sendImage(to, url, type)
+        .then(function(id) {
+          resolve(id);
+        })
+        .catch(function(ex) {
+          reject(ex);
+        })
+    else {
+      resolve(false);
+    }
   });
 }
 
@@ -222,6 +243,10 @@ function send(to, message, options) {
         reject(ex);
       });
   });
+}
+
+function personalize(text, name) {
+  return text.replace(/{{name}}/i, name);
 }
 
 module.exports = Rules;
