@@ -75,8 +75,12 @@ var Rules = machina.Fsm.extend({
     },
     'waiting': {
       _onEnter: function() {
-        // send(player.to(), replies.waiting);
         waiting(player, replies.waiting);
+      }
+    },
+    'practice': {
+      _onEnter: function() {
+
       }
     }
   },
@@ -104,6 +108,10 @@ function waiting(player, text) {
           })
       });
   })
+}
+
+function practice(player) {
+  
 }
 
 function tutorial(player, team) {
@@ -293,6 +301,10 @@ function send(to, message, options) {
 
 function personalize(text, name) {
   return text.replace(/{{name}}/i, name);
+}
+
+function _sendAnalysis(message) {
+  ai.process(message);
 }
 
 module.exports = Rules;

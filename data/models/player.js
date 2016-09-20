@@ -11,7 +11,8 @@ var playerSchema = new Schema({
   refererId: String,
   teamId: String,
   source: String,
-  credits: Number
+  credits: Number,
+  beta: Boolean
 });
 
 
