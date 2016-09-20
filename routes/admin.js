@@ -1,5 +1,6 @@
 var auth = require('./auth.js');
 var Player = require('../data/models/player.js');
+var ongair = require('ongair');
 var admin = {
 
   createUser: function(req, res) {
@@ -35,24 +36,37 @@ var admin = {
     });
   },
 
+  broadcast: function(req, res) {
+    state = req.body.state;
+    beta = req.body.beta;
+    message = req.body.message;
+    options = req.body.options;
+    args = { state: state };
+
+    if (beta)
+      args.beta = beta
+
+    Player.find(args, function(err, players) {
+      if (players) {
+        var client = new ongair.Client(process.env.ONGAIR_TOKEN);
+        players.forEach(function(player) {
+          client.sendMessage(player.to(), message, options)
+        })
+        res.json({ success: true, sent: players.length });
+      }
+    })
+  },
+
   updatePlayer: function(req, res) {
-    // id =
     var id = req.params.id;
-
-    console.log("Player id", id);
-
     Player.findOne({ contactId: id }, function(err, player) {
       if (player) {
-        console.log("Player", player);
-
         beta = req.body.beta;
         state = req.body.state;
 
         player.beta = beta;
         player.state = state;
         player.save();
-
-        // homeTeam = req.body.homeTeam;
 
         res.json({ success: true })
       }

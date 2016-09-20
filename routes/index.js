@@ -25,6 +25,7 @@ router.post('/api/v1/admin/user/', admin.createUser);
 router.post('/api/v1/admin/setup/base', provider.setupData);
 router.get('/api/v1/admin/users', admin.getPlayers)
 router.put('/api/v1/admin/users/:id', admin.updatePlayer);
+router.post('/ap1/v1/admin/broadcast', admin.broadcast)
 
 // TubetBot
 router.post('/api/bot/v1/respond', bot.respond);
