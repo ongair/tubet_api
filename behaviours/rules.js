@@ -89,9 +89,9 @@ var Rules = machina.Fsm.extend({
             .then(function(accepted, betAmount) {
               if (accepted) {
                 player.state = "live";
-                player.credits -= betAmount;
+                player.credits = player.credits - betAmount;
                 player.save();
-                creditUpdate(player);
+                creditUpdate(player, player.credits);
               }
             });
         }
@@ -160,7 +160,7 @@ function waiting(player, text) {
             player.state = 'practice';
             player.credits += 100;
             player.save();
-            creditUpdate(player);
+            creditUpdate(player, player.credits);
           }
           resolve(true);
         })
@@ -176,8 +176,8 @@ function waiting(player, text) {
   })
 }
 
-function creditUpdate(player) {
-  send(player.to(), "You have " + player.credits + "💰. Don't spend it all at once...");
+function creditUpdate(player, credits) {
+  send(player.to(), "You have " + credits + "💰. Don't spend it all at once...");
 }
 
 function checkPractice(player, text) {
