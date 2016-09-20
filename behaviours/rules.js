@@ -3,6 +3,7 @@ var ongair = require('ongair');
 var replies = require('./replies.js');
 var ai = require('./ai.js');
 var Team = require('../data/models/teams.js');
+var Match = require('../data/models/match.js');
 
 var player, message;
 var Rules = machina.Fsm.extend({
@@ -75,12 +76,31 @@ var Rules = machina.Fsm.extend({
     },
     'waiting': {
       _onEnter: function() {
-        waiting(player, replies.waiting);
+        _sendAnalysis(message.text);
+        waiting(player, message.text);
       }
     },
     'practice': {
       _onEnter: function() {
+        _sendAnalysis(message.text);
 
+        if (Match.isAMatchAvailable()) {
+          acceptWager(player, message.text)
+            .then(function(accepted, betAmount) {
+              if (accepted) {
+                player.state = "live";
+                player.credits -= betAmount;
+                player.save();
+                creditUpdate(player);
+              }
+            });
+        }
+
+      }
+    },
+    'live' : {
+      _onEnter: function() {
+        _sendAnalysis(message.text);
       }
     }
   },
@@ -98,20 +118,106 @@ var Rules = machina.Fsm.extend({
   }
 });
 
+function acceptWager(player, text) {
+  return new Promise(function(resolve, reject) {
+    wager = Match.validateWager(text);
+    console.log("Reviewing wager", text, wager);
+    if (wager && Match.isValidGameId(wager.betId)) {
+      availableCredit = player.credits;
+      if (wager.amount <= availableCredit) {
+        outcome = Match.getOutcome(wager);
+
+        send(player.to(), outcome)
+          .then(function(){
+            resolve(true, wager.amount);
+          })
+      }
+      else {
+        msg = replies.texts.betTooHigh.replace(/{{amount}}/i, player.credits);
+        send(player.to(), msg)
+          .then(function() {
+            resolve(false);
+          });
+      }
+    }
+    else {
+      send(player.to(), replies.texts.wrongBetId)
+        .then(function() {
+          resolve(false);
+        })
+    }
+  });
+}
+
 function waiting(player, text) {
   return new Promise(function(resolve, reject) {
-    send(player.to(), replies.texts.waiting)
-      .then(function() {
-        sendImage(player.to(), replies.gifs.mou, 'image/gif')
-          .then(function() {
-            resolve(true);
-          })
-      });
+    availableMatch = Match.isAMatchAvailable();
+    console.log("Matches available", availableMatch);
+    if (availableMatch) {
+      checkPractice(player, text)
+        .then(function(practice){
+          if (practice) {
+            player.state = 'practice';
+            player.credits += 100;
+            player.save();
+            creditUpdate(player);
+          }
+          resolve(true);
+        })
+    }
+    else
+      send(player.to(), replies.texts.waiting)
+        .then(function() {
+          sendImage(player.to(), replies.gifs.mou, 'image/gif')
+            .then(function() {
+              resolve(true);
+            })
+        });
   })
 }
 
-function practice(player) {
-  
+function creditUpdate(player) {
+  send(player.to(), "You have " + player.credits + "💰. Don't spend it all at once...");
+}
+
+function checkPractice(player, text) {
+  return new Promise(function(resolve, reject) {
+    ai.agrees(text)
+      .then(function(yes) {
+        if(yes) {
+          send(player.to(), replies.texts.practiceBegin)
+            .then(function() {
+              send(player.to(), replies.texts.practiceRule)
+                .then(function() {
+                  send(player.to(), replies.texts.practiceExample)
+                    .then(function() {
+                      send(player.to(), replies.texts.practiceInstruction)
+                        .then(function() {
+                          send(player.to(), replies.texts.practiceLetsGo)
+                            .then(function() {
+                              match = Match.practiceMatch();
+                              oddString = Match.getOddsString(match);
+                              send(player.to(), oddString)
+                                .then(function() {
+                                  resolve(true);
+                                })
+                            })
+                        })
+                    })
+                })
+            })
+        }
+        else {
+          send(player.to(),replies.texts.practiceNo)
+            .then(function() {
+              send(player.to(), replies.texts.practivePrompt, 'Yes,No')
+                .then(function() {
+                  resolve(false);
+                });
+            })
+        }
+      })
+  });
 }
 
 function tutorial(player, team) {
@@ -167,6 +273,7 @@ function checkPersonalization(player, answer) {
     ai.getTeam(answer)
       .then(function(team) {
         if (team) {
+          console.log("Team", team);
           tutorial(player, team)
             .then(function() {
               player.state = 'tutorial';
@@ -256,10 +363,19 @@ function checkCreditsAnswer(player, answer) {
           .then(function() {
             send(to, replies.texts.startingCredits)
               .then(function() {
-                send(to, replies.texts.goodLuck)
-                  .then(function() {
-                    resolve(true);
-                  })
+                availableMatch = Match.isAMatchAvailable();
+
+                if (availableMatch)
+                  send(to, replies.texts.practice, "Yes,No")
+                    .then(function() {
+                      resolve(true);
+                    })
+                else {
+                  send(to, replies.text.waiting)
+                    .then(function() {
+                      resolve(true);
+                    })
+                }
               })
           })
       })
@@ -269,6 +385,7 @@ function checkCreditsAnswer(player, answer) {
 function sendImage(to, url, type) {
   return new Promise(function(resolve, reject) {
     var client = new ongair.Client(process.env.ONGAIR_TOKEN);
+    url = null;
     if (url)
       client.sendImage(to, url, type)
         .then(function(id) {
@@ -288,7 +405,6 @@ function sendImage(to, url, type) {
 function send(to, message, options) {
   return new Promise(function(resolve, reject) {
     var client = new ongair.Client(process.env.ONGAIR_TOKEN);
-    // console.log("Sending", message);
     client.sendMessage(to, message, options)
       .then(function(id) {
         resolve(id);

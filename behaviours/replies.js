@@ -2,8 +2,8 @@
 module.exports = {
 
   texts: {
-    hi: "Hi {{name}}. Welcome to Tubet, Kenya’s 1st Fantasy betting game for the Premier League with real world odds.",
-    disclaimer: "Before we continue, you need to accept our Terms and conditions. \r\n\r\n 1. You are +18. \r\n 2. This is not a betting service. \r\n 3. Any odds or suggested winnings are not guaranteed.",
+    hi: "Hi {{name}}. My name is Lyne\r\nIts my first day of work at Tubet, Kenya’s 1st Fantasy betting game for the Premier League with real world odds.",
+    disclaimer: "Don't want to get fired on day one, so before we continue, you need to accept our Terms and conditions. \r\n\r\n 1. You are +18. \r\n 2. This is not a betting service. \r\n 3. Any odds or suggested winnings are not guaranteed.",
     prompt: "Do you agree? 👀",
     termsRejected: "😡. Sorry, but I can't continue until you accept the terms and conditions.",
     termsAccepted: '👊',
@@ -16,7 +16,7 @@ module.exports = {
     explainerQuestionOdds: "Odds! What are those?",
     explainerTest: "Test me!",
     explainerOdds: "As Odd is a number that tells you how likely something is to happen (which in our case really means how much money you will make if you predict the correct result).\r\nAn odd of 2 means you'll make 2 times your money if you are right.",
-    explainerOddsExample: "Ok, let's see if you're with me.\r\n\r\n*Liverpool (H) v Everton (H):* \r\n_H - 2.25 A - 3.25 Draw - 4.10_",
+    explainerOddsExample: "Ok, let's see if you're with me.\r\n\r\n*Liverpool (H) v Everton (H):*\r\n_H - 2.25 A - 3.25 Draw - 4.10_\r\n*BET ID: #000*",
     explainerOddsQuiz: "Which result is more likely to happen?",
     explainerOddsQuizOptions: "Liverpool Win,Everton Win,Draw",
     exampleCorrect: "👍",
@@ -29,7 +29,18 @@ module.exports = {
     startingCredits: "🎓 I think you are now ready to start playing. I'll start you off with 100 free credits 💰.",
     goodLuck: "Last weeks games are all done, so I'll let you know as soon as the odds are ready for this week",
     waiting: "Mmh, I'm still preparing the odds for this week. Let me holla when I'm ready",
-    share: "Having fun? Its even better if you invite your Friends"
+    share: "Having fun? Its even better if you invite your Friends",
+    practice: "I'm still getting my act together, but I've got one practice ⚽ available for today. Would you like to try it out? - I'll add another 100 free credits 💰",
+    practiceNo: "Don't be a 🐤",
+    practivePrompt: "I'm not usually this generous, but there's 100💰 extra free credits...\r\n😊",
+    practiceBegin: "Ok, here we go\r\n",
+    practiceRule: "Today I'll be taking only a single bet. I'm sending you the odds, right now. To place a bet, reply with the _BET ID_ a space and the amount in credits you want to wager.",
+    practiceExample: "Lets look at the previous example. \r\n\r\n*Liverpool (H) v Everton (H):*\r\n_H - 2.25 A - 3.25 Draw - 4.10_\r\n👉*BET ID: #000*👈",
+    practiceInstruction: "If I wanted to bet 100💰 for Liverpool to win, I would reply with *#000 H 100*",
+    practiceLetsGo: "Easy. Lets go...",
+    wrongBetId: "Oops, I can't quite understand your bet. Please try again with the format *#ID OUTCOME AMOUNT*",
+    wagerAccepted: "You have bet {{amount}}💰  for a {{outcome}}. If you are right you could win {{winnings}}💰",
+    betTooHigh: "🙊\r\nOops, you only have {{amount}}💰 available so you need to make a smaller bet."
   },
 
   gifs: {

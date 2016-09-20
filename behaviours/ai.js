@@ -18,7 +18,6 @@ var ai = {
       Team.resolveByName(text)
         .then(function(results) {
           if (results.length == 0) {
-            // check wit ai
             resolve(null);
           }
           else if (results.length == 1) {
