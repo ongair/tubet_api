@@ -223,7 +223,7 @@ function checkSkipTutorial(player, answer) {
 
 function checkTutorialAnswer(player, answer) {
   return new Promise(function(resolve, reject) {
-    resp = answer.toLowerCase() == "Liverpool".toLowerCase() ? replies.texts.exampleCorrect : replies.texts.exampleWrong;
+    resp = answer.toLowerCase() == "Liverpool Win".toLowerCase() ? replies.texts.exampleCorrect : replies.texts.exampleWrong;
     send(player.to(), resp)
       .then(function() {
         send(player.to(), replies.texts.exampleExplainer)
