@@ -33,10 +33,8 @@ teamSchema.statics.resolveByName = function(name) {
   var self = this;
   return new Promise(function(resolve, reject) {
     self.find(function(err, teams){
-      matches = flatten(teams, name);
-      self.find({ key: { $in: matches } }, function(err, results) {
-        resolve(results);
-      });
+      matches = _fuzzySearch(teams, name);
+      resolve(matches);
     });
   });
 }
@@ -56,24 +54,40 @@ teamSchema.statics.findByCodeOrCreate = function(code, data) {
   })
 }
 
-function flatten(teams, term) {
-  applicableFields = teams.map(function(t) { return [t.code, t.key, t.name]});
+function _fuzzySearch(teams, term) {
+  applicableFields = teams.map(function(t) { return [t.key, t.name]});
   applicableFields = _.flatten(applicableFields);
-  // console.log("Fields available are:", applicableFields);
 
   var results = fuzzy.filter(term, applicableFields);
-  console.log("Results ", results);
-
-  // remove all the uppercase stuff
-  results = results.filter(function(item) {
-    return item.original[0] !== item.original[0].toUpperCase()
-  });
 
   results = results.map(function(item) {
-    return item.original
+    idx = item.index;
+    original = item.original;
+    isKey = _isKey(idx);
+    team = null;
+
+    for(x=0;x<teams.length;x++) {
+      t = teams[x];
+      if (isKey) {
+        if (t.key == original) {
+          team = t;
+          break;
+        }
+      } else {
+        if (t.name == original) {
+          team = t;
+          break;
+        }
+      }
+    }
+    return team;
   });
-  // console.log("Results ", results);
-  return results;
+  uniq = _.uniq(results, function(r) { return r.key });
+  return uniq;
+}
+
+function _isKey(idx) {
+  return idx % 2 == 0;
 }
 
 module.exports = mongoose.model('Team', teamSchema);
