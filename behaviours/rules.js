@@ -192,15 +192,12 @@ function checkPractice(player, text) {
                   send(player.to(), replies.texts.practiceExample)
                     .then(function() {
                       send(player.to(), replies.texts.practiceInstruction)
-                        .then(function() {
-                          send(player.to(), replies.texts.practiceLetsGo)
+                        .then(function() {                          
+                          match = Match.practiceMatch();
+                          oddString = Match.getOddsString(match);
+                          send(player.to(), oddString)
                             .then(function() {
-                              match = Match.practiceMatch();
-                              oddString = Match.getOddsString(match);
-                              send(player.to(), oddString)
-                                .then(function() {
-                                  resolve(true);
-                                })
+                              resolve(true);
                             })
                         })
                     })
