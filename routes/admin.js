@@ -96,6 +96,8 @@ var admin = {
             });
           }
         });
+
+        res.json({ success: true });
       }
     })
   },

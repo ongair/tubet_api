@@ -91,6 +91,12 @@ Match.update = function(player, game, type, score, agent, team, time) {
   });
 }
 
+// Match.predictResult = function(player, game, score) {
+//   return new Promise(function(resolve, reject) {
+//     Bet.findOne({ playerId: player.contactId, gameId:  }).
+//   });
+// }
+
 Match.announce = function(matchCode, player) {
   return new Promise(function(resolve, reject) {
     Game.findOne({ matchCode: matchCode }, function(err, game) {
