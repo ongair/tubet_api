@@ -22,6 +22,7 @@
     "morgan": "^1.7.0",
     "node-wit": "^4.1.0",
     "ongair": "^1.0.6",
+    "request": "^2.75.0",
     "slack-node": "^0.1.8",
     "underscore": "^1.8.3"
   },

@@ -6,6 +6,7 @@ var Game = require('../data/models/game.js');
 var ongair = require('ongair');
 var leftPad = require('left-pad');
 var moment = require('moment');
+var notify = require('../util/notification.js');
 var admin = {
 
   createUser: function(req, res) {
@@ -121,7 +122,7 @@ var admin = {
 
           game = new Game({ matchCode: matchCode, gameId: gameId, homeTeam: homeTeamKey,
             awayTeam: awayTeamKey, date: moment(date), homeOdds: homeOdds, awayOdds: awayOdds, drawOdds: drawOdds });
-            
+
           game.save();
 
           res.json({ success: true, id: game.id });
@@ -129,6 +130,27 @@ var admin = {
       }
     });
 
+  },
+
+  messagePlayer: function(req, res) {
+    var id = req.params.id;
+
+    var message = req.body.message;
+    var state = req.body.state;
+    var options = req.body.options;
+
+    Player.findOne({ contactId: id }, function(err, player) {
+
+      if (state) {
+        player.state = state;
+        player.save();
+      }
+
+      notify.send(player, message, options)
+        .then(function(id) {
+          res.json({ success: true, id: id });
+        })
+    });
   },
 
   addLeague: function(req, res) {
