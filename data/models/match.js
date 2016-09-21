@@ -98,14 +98,16 @@ Match.update = function(player, game, type, score, agent, team, time) {
           resolve(id);
         });
     }
-    else {
+    if (predict)
       Match.predictResult(player, game, score)
         .then(function(text) {
-          // console.log("Prediction:", player.name, text);
-          // notify.send(player, text);
-          resolve(true);
+          console.log("Prediction:", player.contactName, text);
+          // notify.send(player, text)
+          //   .then(function(id) {
+          //     resolve(true);
+          //   })
         });
-    }
+
 
   });
 }
@@ -114,15 +116,14 @@ Match.predictResult = function(player, game, score) {
   return new Promise(function(resolve, reject) {
     Bet.findOne({ playerId: player.contactId }, function(err, bet) {
       correct = _getRealtimeOutcome(score, bet.betType);
-      console.log("Outcome:", player.contactName, bet.betType, correct, bet.amount, game);
       amount = bet.amount;
       var text;
 
       if (correct) {
-        text = "👍 ! You're on track to win " + _getWinnings(game, bet.betType.toLowerCase(), amount) + "💰";
+        text = "👍 ! Congratulations! You've won " + _getWinnings(game, bet.betType.toLowerCase(), amount) + "💰";
       }
       else {
-        text = "👎 Looks like you're losing this one so far...";
+        text = "👎 Sorry, better luck next time.";
       }
 
       resolve(text);
@@ -183,8 +184,6 @@ function _getWinnings(game,outcome,amount) {
   else
     odds = game.drawOdds;
 
-  console.log("Winnings:", amount, odds);
-
   return odds*amount;
 }
 
@@ -200,7 +199,7 @@ function _getRealtimeOutcome(score,bet) {
   else
     correctOutcome = "x";
 
-  return bet.toLowerCase() == correctOutcome;
+  return Math.ceil(bet.toLowerCase() == correctOutcome);
 }
 
 function _getOutcomeEvent(outcome,match) {
