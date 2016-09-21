@@ -119,7 +119,7 @@ Match.predictResult = function(player, game, score) {
       var text;
 
       if (correct) {
-        text = "👍 ! You're on track to win " + _getWinnings(game, bet.betType.toLowerCase() + "💰");
+        text = "👍 ! You're on track to win " + _getWinnings(game, bet.betType.toLowerCase(), amount) + "💰";
       }
       else {
         text = "👎 Looks like you're losing this one so far...";
