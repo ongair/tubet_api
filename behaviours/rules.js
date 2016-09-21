@@ -86,12 +86,13 @@ var Rules = machina.Fsm.extend({
 
         if (Match.isAMatchAvailable()) {
           acceptWager(player, message.text)
-            .then(function(accepted, betAmount) {
-              if (accepted) {
+            .then(function(wager) {
+              if (wager.accepted) {
                 player.state = "live";
-                player.credits = player.credits - betAmount;
+                balance = player.credits -  wager.amount;
+                player.credits = balance;
                 player.save();
-                creditUpdate(player, player.credits);
+                creditUpdate(player, balance);
               }
             });
         }
@@ -121,7 +122,6 @@ var Rules = machina.Fsm.extend({
 function acceptWager(player, text) {
   return new Promise(function(resolve, reject) {
     wager = Match.validateWager(text);
-    console.log("Reviewing wager", text, wager);
     if (wager && Match.isValidGameId(wager.betId)) {
       availableCredit = player.credits;
       if (wager.amount <= availableCredit) {
@@ -129,21 +129,21 @@ function acceptWager(player, text) {
 
         send(player.to(), outcome)
           .then(function(){
-            resolve(true, wager.amount);
+            resolve({ accepted: true, amount: wager.amount });
           })
       }
       else {
         msg = replies.texts.betTooHigh.replace(/{{amount}}/i, player.credits);
         send(player.to(), msg)
           .then(function() {
-            resolve(false);
+            resolve({ accepted: false, amount: 0 });
           });
       }
     }
     else {
       send(player.to(), replies.texts.wrongBetId)
         .then(function() {
-          resolve(false);
+          resolve({ accepted: false, amount: 0 });
         })
     }
   });
@@ -192,7 +192,7 @@ function checkPractice(player, text) {
                   send(player.to(), replies.texts.practiceExample)
                     .then(function() {
                       send(player.to(), replies.texts.practiceInstruction)
-                        .then(function() {                          
+                        .then(function() {
                           match = Match.practiceMatch();
                           oddString = Match.getOddsString(match);
                           send(player.to(), oddString)
@@ -320,11 +320,9 @@ function checkSkipTutorial(player, answer) {
     resp = answer.toLowerCase() == replies.texts.explainerTest.toLowerCase();
     if (resp) {
       // skip the tutorial bit go straight to the question
-      console.log('Skipping the explainer');
       resolve(true);
     }
     else {
-      console.log('Sending the explainer text');
       send(player.to(), replies.texts.explainerOdds)
         .then(function() {
           resolve(true);
