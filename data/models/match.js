@@ -114,7 +114,7 @@ Match.predictResult = function(player, game, score) {
   return new Promise(function(resolve, reject) {
     Bet.findOne({ playerId: player.contactId }, function(err, bet) {
       correct = _getRealtimeOutcome(score, bet.betType);
-      console.log("Outcome:", player.playerName, bet.betType, correct);
+      console.log("Outcome:", player.contactName, bet.betType, correct, bet.amount);
       amount = bet.amount;
       var text;
 
