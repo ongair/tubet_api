@@ -183,9 +183,9 @@ function _getWinnings(game,outcome,amount) {
   else
     odds = game.drawOdds;
 
-  console.logs("Winnings:", amount, odds);
+  console.log("Winnings:", amount, odds);
 
-  return Math.ceil(odds*amount);
+  return odds*amount;
 }
 
 function _getRealtimeOutcome(score,bet) {
