@@ -79,6 +79,8 @@ Match.update = function(player, game, type, score, agent, team, time) {
       case "goal":
         text = "⚽ - " + agent + " (" + time + "'). " + score;
         break;
+      case "halftime":
+        text = "🕘 - Half time. Scores: " + score;
       default:
     }
 
