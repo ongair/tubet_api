@@ -11,7 +11,10 @@ var notifications = {
       icon_emoji: ":soccer:",
       text: message
     }, function(err, response) {
-      console.log(response);
+      if(err)
+        console.log(err);
     });
   }
 }
+
+module.exports = notifications;

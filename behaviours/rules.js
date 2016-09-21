@@ -2,6 +2,7 @@ var machina = require('machina');
 var ongair = require('ongair');
 var replies = require('./replies.js');
 var ai = require('./ai.js');
+var notify = require('../util/notification.js');
 var Team = require('../data/models/teams.js');
 var Match = require('../data/models/match.js');
 
@@ -129,8 +130,9 @@ function acceptWager(player, text) {
 
         send(player.to(), outcome)
           .then(function(){
+            notify.slack("A bet of " + wager.amount + "💰 has been placed by " + player.contactName);
             resolve({ accepted: true, amount: wager.amount });
-          })
+          });
       }
       else {
         msg = replies.texts.betTooHigh.replace(/{{amount}}/i, player.credits);

@@ -2,9 +2,10 @@ var Player = require('../data/models/player.js');
 var Message = require('../data/models/message.js');
 var provider = require('../data/provider.js');
 var matchers = require('../util/matchers.js');
+var notify = require('../util/notification.js');
 var machina = require('machina');
 var Rules = require('./rules.js');
-var notify = require('../util/notification.js');
+
 
 var play = {
 
@@ -17,7 +18,7 @@ var play = {
             if (source == 'Telegram')
               name = name.replace(/ *\([^)]*\) */g, "");
 
-            player = new Player({ contactId: playerId, contactName: name, source: source, state: 'new' })''
+            player = new Player({ contactId: playerId, contactName: name, source: source, state: 'new' });
             player.save();
             notify.slack("A new player (" + name + ") from " + source + " has signed up");
           }
