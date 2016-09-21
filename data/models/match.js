@@ -101,7 +101,7 @@ Match.update = function(player, game, type, score, agent, team, time) {
     else {
       Match.predictResult(player, game, score)
         .then(function(text) {
-          console.log("Prediction:", player.name, text);
+          // console.log("Prediction:", player.name, text);
           // notify.send(player, text);
           resolve(true);
         });
@@ -114,7 +114,7 @@ Match.predictResult = function(player, game, score) {
   return new Promise(function(resolve, reject) {
     Bet.findOne({ playerId: player.contactId }, function(err, bet) {
       correct = _getRealtimeOutcome(score, bet.betType);
-      console.log("Player, Bet", player, bet);
+      console.log("Outcome:", player.playerName, bet.betType, correct);
       amount = bet.amount;
       var text;
 
