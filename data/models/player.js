@@ -12,7 +12,8 @@ var playerSchema = new Schema({
   teamId: String,
   source: String,
   credits: Number,
-  beta: Boolean
+  beta: Boolean,
+  betUpdates: Boolean
 });
 
 

@@ -74,7 +74,7 @@ Match.getOutcome = function(wager) {
     Match.practiceMatch()
       .then(function(match) {
         odds = match.odds[wager.outcome.toLowerCase()];
-        winnings = odds * wager.amount;
+        winnings = Math.ceil(odds * wager.amount);
         template = replies.texts.wagerAccepted;
 
         message = template.replace(/{{amount}}/i, wager.amount);
