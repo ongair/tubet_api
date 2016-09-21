@@ -73,18 +73,20 @@ Match.validateWager = function(text) {
 
 Match.update = function(player, game, type, score, agent, team, time) {
   return new Promise(function(resolve, reject) {
-    var text;
+    var text, options;
 
     switch (type) {
       case "goal":
         text = "⚽ - " + agent + " (" + time + "'). " + score;
         break;
       case "halftime":
-        text = "🕘 - Half time. Scores: " + score;
+        text = "🕘 - Half time. Scores: " + score + ". What will you be having?";
+        options = "🍺,☕️"
+        break;
       default:
     }
 
-    notify.send(player, text)
+    notify.send(player, text, options)
       .then(function(id) {
         resolve(id);
       })
