@@ -28,7 +28,7 @@ function Match() {
 
 Match.practiceMatch = function() {
   return {
-    title: 'La Liga - 3rd Round',
+    title: 'Spanish Primera Division',
     home: 'Barcelona',
     id: '#002',
     away: 'Atletico Madrid',
