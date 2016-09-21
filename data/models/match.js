@@ -114,7 +114,7 @@ Match.predictResult = function(player, game, score) {
   return new Promise(function(resolve, reject) {
     Bet.findOne({ playerId: player.contactId }, function(err, bet) {
       correct = _getRealtimeOutcome(score, bet.betType);
-      console.log("Outcome:", player.contactName, bet.betType, correct, bet.amount);
+      console.log("Outcome:", player.contactName, bet.betType, correct, bet.amount, game);
       amount = bet.amount;
       var text;
 
@@ -182,6 +182,8 @@ function _getWinnings(game,outcome,amount) {
     odds = game.awayOdds;
   else
     odds = game.drawOdds;
+
+  console.logs("Winnings:", amount, odds);
 
   return Math.ceil(odds*amount);
 }
