@@ -28,7 +28,7 @@ function Match() {
 
 Match.practiceMatch = function() {
   return {
-    title: 'Spanish Primera Division',
+    title: "🇪🇸 La Liga",
     home: 'Barcelona',
     id: '#002',
     away: 'Atletico Madrid',

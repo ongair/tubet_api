@@ -5,7 +5,8 @@ var Team = require('./teams.js');
 var leagueSchema = new Schema({
   key: String,
   code: String,
-  name: String
+  name: String,
+  externalId: String
 });
 
 leagueSchema.methods.teams = function() {
