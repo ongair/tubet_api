@@ -28,12 +28,12 @@ function Match() {
 
 Match.practiceMatch = function() {
   return {
-    title: 'League Cup - 3rd Round',
-    home: 'Leicester',
-    id: '#001',
-    away: 'Chelsea',
-    date: new Date(2016, 09, 20, 21, 45),
-    odds: { h: 4.03, a: 1.88, x: 3.71 }
+    title: 'La Liga - 3rd Round',
+    home: 'Barcelona',
+    id: '#002',
+    away: 'Atletico Madrid',
+    date: new Date(2016, 09, 21, 23, 00),
+    odds: { h: 1.69, a: 3.92, x: 5.09 }
   }
 }
 
