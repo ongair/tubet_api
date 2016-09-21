@@ -31,6 +31,7 @@ router.post('/api/v1/admin/leagues/', admin.addLeague);
 router.post('/api/v1/admin/teams/', admin.addTeam);
 router.post('/ap1/v1/admin/broadcast', admin.broadcast);
 router.post('/ap1/v1/admin/announce', admin.announce);
+router.post('/ap1/v1/admin/matchUpdate', admin.matchUpdate);
 
 // TubetBot
 router.post('/api/bot/v1/respond', bot.respond);

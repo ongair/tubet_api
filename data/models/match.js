@@ -71,13 +71,13 @@ Match.validateWager = function(text) {
     return null;
 }
 
-Match.update = function(player, game, type, score, agent, team) {
+Match.update = function(player, game, type, score, agent, team, time) {
   return new Promise(function(resolve, reject) {
     var text;
 
     switch (type) {
       case "goal":
-        text = "⚽ - " + agent + "(" + time + "')"
+        text = "⚽ - " + agent + " (" + time + "'). " + score;
         break;
       default:
     }
