@@ -6,6 +6,7 @@ var betSchema = new Schema({
   gameId: String,
   betType: String,
   text: String,
+  state: String,
   amount: Number
 });
 

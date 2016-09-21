@@ -107,7 +107,7 @@ var Rules = machina.Fsm.extend({
     },
     'live' : {
       _onEnter: function() {
-        _sendAnalysis(message.text);      
+        _sendAnalysis(message.text);
       }
     }
   },
@@ -143,7 +143,7 @@ function acceptWager(player, text) {
               Match.getOutcome(wager)
                 .then(function(outcome) {
                   // place bet
-                  var bet = new Bet({ playerId: player.to(), gameId: wager.id, amount: wager.bet, betType: wager.outcome, text: text })
+                  var bet = new Bet({ playerId: player.to(), gameId: wager.id, amount: wager.bet, status: 'new', betType: wager.outcome, text: text })
                   bet.save();
 
                   send(player.to(), outcome)
