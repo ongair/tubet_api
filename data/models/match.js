@@ -74,7 +74,7 @@ Match.validateWager = function(text) {
 Match.update = function(player, game, type, score, agent, team, time) {
   return new Promise(function(resolve, reject) {
     var text, options;
-
+    var predict = false;
     switch (type) {
       case "goal":
         text = "⚽ - " + agent + " (" + time + "'). " + score;
@@ -86,22 +86,44 @@ Match.update = function(player, game, type, score, agent, team, time) {
       case "secondhalf":
         text = "🕙 - Second half underway. Its 1-0  so far to FC Barcelona.";
         break;
+      case "prediction":
+        predict = true;
+        break;
       default:
     }
 
-    notify.send(player, text, options)
-      .then(function(id) {
-        resolve(id);
-      })
+    if (text) {
+      notify.send(player, text, options)
+        .then(function(id) {
+          resolve(id);
+        });
+    }
+    else {
+      Match.predictResult(player, game, score)
+        .then(function(text) {
+          notify.send(player, text);
+        });
+    }
+
   });
 }
 
 Match.predictResult = function(player, game, score) {
   return new Promise(function(resolve, reject) {
-    Bet.findOne({ playerId: player.contactId })
-      .then(function() {
+    Bet.findOne({ playerId: player.contactId }, function(err, bet) {
+      correct = _getRealtimeOutcome(score, bet.betType);
+      amount = bet.amount;
+      var text;
 
-      });
+      if (correct) {
+        text = "👍 ! You're on track to win " + _getWinnings(game, bet.betType.toLowerCase() + "💰");
+      }
+      else {
+        text = "👎 Looks like you're losing this one so far...";
+      }
+
+      resolve(text);
+    });
   });
 }
 
@@ -149,8 +171,31 @@ Match.getOddsString = function(match) {
   return description;
 }
 
+function _getWinnings(game,outcome,amount) {
+  var odds;
+  if (outcome == "h")
+    odds = game.homeOdds;
+  else if (outcome == "a")
+    odds = game.awayOdds;
+  else
+    odds = game.drawOdds;
+
+  return Math.ceil(odds*amount);
+}
+
 function _getRealtimeOutcome(score,bet) {
-  scores = score.split(",");
+  scores = score.split("-");
+  homeScore = scores[0];
+  awayScore = scores[1];
+  var correctOutcome;
+  if (homeScore > awayScore)
+    correctOutcome = "h";
+  else if (awayScore > homeScore)
+    correctOutcome = "a";
+  else
+    correctOutcome = "x";
+
+  return bet.toLowerCase() == correctOutcome;
 }
 
 function _getOutcomeEvent(outcome,match) {
