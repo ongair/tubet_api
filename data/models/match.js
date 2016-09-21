@@ -84,7 +84,7 @@ Match.update = function(player, game, type, score, agent, team, time) {
         options = "🍺,☕️"
         break;
       case "secondhalf":
-        text = "🕙 - Second half kick-off. Its 1-0  so far to FC Barcelona.";
+        text = "🕙 - Second half underway. Its 1-0  so far to FC Barcelona.";
         break;
       default:
     }
@@ -147,6 +147,10 @@ Match.getOddsString = function(match) {
   description += "\r\n_(H)-" + match.odds.h + " (A)-" + match.odds.a + " (Draw)-" + match.odds.x + "_";
   description += "\r\n*BET ID: " + match.id + "*";
   return description;
+}
+
+function _getRealtimeOutcome(score,bet) {
+  scores = score.split(",");
 }
 
 function _getOutcomeEvent(outcome,match) {
