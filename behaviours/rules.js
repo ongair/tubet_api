@@ -177,7 +177,7 @@ function waiting(player, text) {
 }
 
 function creditUpdate(player, credits) {
-  send(player.to(), "You have " + credits + "💰. Don't spend it all at once...");
+  send(player.to(), "You have " + credits + "💰 remaining.");
 }
 
 function checkPractice(player, text) {

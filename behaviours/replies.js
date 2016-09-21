@@ -2,8 +2,8 @@
 module.exports = {
 
   texts: {
-    hi: "Hi {{name}}. My name is Lyne\r\nIts my first day of work at Tubet, Kenya’s 1st Fantasy betting game for the Premier League with real world odds.",
-    disclaimer: "Don't want to get fired on day one, so before we continue, you need to accept our Terms and conditions. \r\n\r\n 1. You are +18. \r\n 2. This is not a betting service. \r\n 3. Any odds or suggested winnings are not guaranteed.",
+    hi: "Hi {{name}}. My name is Fred\r\nWelcome to Tubet, Kenya’s 1st Fantasy betting game for the Premier League with real world odds.",
+    disclaimer: "Before we continue, you need to accept our Terms and conditions. \r\n\r\n 1. You are +18. \r\n 2. This is not a betting service. \r\n 3. Any odds or suggested winnings are not guaranteed.",
     prompt: "Do you agree? 👀",
     termsRejected: "😡. Sorry, but I can't continue until you accept the terms and conditions.",
     termsAccepted: '👊',
@@ -39,7 +39,7 @@ module.exports = {
     practiceInstruction: "If I wanted to bet 100💰 for Liverpool to win, I would reply with *#000 H 100*",
     practiceLetsGo: "Easy. Lets go...",
     wrongBetId: "Oops, I can't quite understand your bet. Please try again with the format *#ID OUTCOME AMOUNT*",
-    wagerAccepted: "You have bet {{amount}}💰  for a {{outcome}}. If you are right you could win {{winnings}}💰",
+    wagerAccepted: "You have bet {{amount}}💰  for a {{outcome}}. If you are right you could win {{winnings}}💰. Good luck.",
     betTooHigh: "🙊\r\nOops, you only have {{amount}}💰 available so you need to make a smaller bet."
   },
 
