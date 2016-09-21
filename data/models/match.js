@@ -89,6 +89,12 @@ Match.update = function(player, game, type, score, agent, team, time) {
       case "prediction":
         predict = true;
         break;
+      case "fulltime":
+        text = "🕛 - Game over. " + score + ".";
+        break;
+      case "result":
+        predict = true;
+        break;
       default:
     }
 
