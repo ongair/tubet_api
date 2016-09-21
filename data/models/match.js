@@ -83,6 +83,9 @@ Match.update = function(player, game, type, score, agent, team, time) {
         text = "🕘 - Half time. Scores: " + score + ". What will you be having?";
         options = "🍺,☕️"
         break;
+      case "secondhalf":
+        text = "🕙 - Second half kick-off. Its 1-0  so far to FC Barcelona.";
+        break;
       default:
     }
 
@@ -93,11 +96,14 @@ Match.update = function(player, game, type, score, agent, team, time) {
   });
 }
 
-// Match.predictResult = function(player, game, score) {
-//   return new Promise(function(resolve, reject) {
-//     Bet.findOne({ playerId: player.contactId, gameId:  }).
-//   });
-// }
+Match.predictResult = function(player, game, score) {
+  return new Promise(function(resolve, reject) {
+    Bet.findOne({ playerId: player.contactId })
+      .then(function() {
+
+      });
+  });
+}
 
 Match.announce = function(matchCode, player) {
   return new Promise(function(resolve, reject) {
