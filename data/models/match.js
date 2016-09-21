@@ -108,10 +108,10 @@ Match.update = function(player, game, type, score, agent, team, time) {
       Match.predictResult(player, game, score)
         .then(function(text) {
           console.log("Prediction:", player.contactName, text);
-          // notify.send(player, text)
-          //   .then(function(id) {
-          //     resolve(true);
-          //   })
+          notify.send(player, text)
+            .then(function(id) {
+              resolve(true);
+            })
         });
 
 
@@ -126,7 +126,7 @@ Match.predictResult = function(player, game, score) {
       var text;
 
       if (correct) {
-        text = "👍 ! Congratulations! You've won " + _getWinnings(game, bet.betType.toLowerCase(), amount) + "💰";
+        text = "👍 ! Congratulations! You've won " + _getWinnings(game, bet.betType.toLowerCase(), Math.ceil(amount)) + "💰";
       }
       else {
         text = "👎 Sorry, better luck next time.";
