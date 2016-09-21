@@ -105,6 +105,9 @@ var admin = {
     var gameId = req.body.gameId;
     var homeTeamKey = req.body.homeTeam;
     var awayTeamKey = req.body.awayTeam;
+    var homeOdds = req.body.homeOdds;
+    var awayOdds = req.body.awayOdds;
+    var drawOdds = req.body.drawOdds;
     var date = req.body.date;
 
     Game.findOne({ gameId: gameId }, function(err, game) {
@@ -116,7 +119,9 @@ var admin = {
         Game.count({}, function(err, count) {
           var matchCode = leftPad(count, 3, 0);
 
-          game = new Game({ matchCode: matchCode, gameId: gameId, homeTeam: homeTeamKey, awayTeam: awayTeamKey, date: moment(date) });
+          game = new Game({ matchCode: matchCode, gameId: gameId, homeTeam: homeTeamKey,
+            awayTeam: awayTeamKey, date: moment(date), homeOdds: homeOdds, awayOdds: awayOdds, drawOdds: drawOdds });
+            
           game.save();
 
           res.json({ success: true, id: game.id });

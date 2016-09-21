@@ -6,6 +6,9 @@ var gameSchema = new Schema({
   gameId: String,
   homeTeam: String,
   awayTeam: String,
+  homeOdds: Number,
+  awayOdds: Number,
+  drawOdds: Number,
   date: Date
 });
 
