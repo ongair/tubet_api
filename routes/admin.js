@@ -3,7 +3,7 @@ var Player = require('../data/models/player.js');
 var League = require('../data/models/leagues.js');
 var Team = require('../data/models/teams.js');
 var Game = require('../data/models/game.js');
-var Match = require('../data/models/match.js'); 
+var Match = require('../data/models/match.js');
 var ongair = require('ongair');
 var leftPad = require('left-pad');
 var moment = require('moment');
@@ -77,6 +77,27 @@ var admin = {
         res.json({ success: true });
       }
     });
+  },
+
+  matchUpdate: function(req, res) {
+    var code = req.body.code;
+    var type = req.body.type;
+    var score = req.body.score;
+    var agent = req.body.agent;
+    var team = req.body.team;
+    var time = req.body.time;
+
+    Game.findOne({ matchCode: code }, function(err, game) {
+      if (game) {
+        Player.find({ state: 'live' }, function(err, players) {
+          if (players) {
+            players.forEach(function(player) {
+              Match.update(player, game, type, score, agent, team, time);
+            });
+          }
+        });
+      }
+    })
   },
 
   updatePlayer: function(req, res) {

@@ -16,6 +16,7 @@ var livescores = {
       }
 
       request.get(options, function(error, response, body) {
+        // console.log(error,response.statusCode,body);
         if (!error) {
           if(response.statusCode == 200) {
             resolve(JSON.parse(body));

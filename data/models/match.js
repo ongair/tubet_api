@@ -71,6 +71,24 @@ Match.validateWager = function(text) {
     return null;
 }
 
+Match.update = function(player, game, type, score, agent, team) {
+  return new Promise(function(resolve, reject) {
+    var text;
+
+    switch (type) {
+      case "goal":
+        text = "⚽ - " + agent + "(" + time + "')"
+        break;
+      default:
+    }
+
+    notify.send(player, text)
+      .then(function(id) {
+        resolve(id);
+      })
+  });
+}
+
 Match.announce = function(matchCode, player) {
   return new Promise(function(resolve, reject) {
     Game.findOne({ matchCode: matchCode }, function(err, game) {
