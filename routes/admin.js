@@ -2,7 +2,10 @@ var auth = require('./auth.js');
 var Player = require('../data/models/player.js');
 var League = require('../data/models/leagues.js');
 var Team = require('../data/models/teams.js');
+var Game = require('../data/models/game.js');
 var ongair = require('ongair');
+var leftPad = require('left-pad');
+var moment = require('moment');
 var admin = {
 
   createUser: function(req, res) {
@@ -77,10 +80,6 @@ var admin = {
     })
   },
 
-  addGame: function(req, res) {
-    res.json({ success: true });
-  },
-
   addTeam: function(req, res) {
     var externalId = req.body.externalId;
     var key = req.body.key;
@@ -100,6 +99,31 @@ var admin = {
         res.json({ success: true, id: team.id });
       }
     })
+  },
+
+  addGame: function(req, res) {
+    var gameId = req.body.gameId;
+    var homeTeamKey = req.body.homeTeam;
+    var awayTeamKey = req.body.awayTeam;
+    var date = req.body.date;
+
+    Game.findOne({ gameId: gameId }, function(err, game) {
+      if (game) {
+        res.status(422);
+        res.json({ message: "Game with id " + gameId + " already exists"});
+      }
+      else {
+        Game.count({}, function(err, count) {
+          var matchCode = leftPad(count, 3, 0);
+
+          game = new Game({ matchCode: matchCode, gameId: gameId, homeTeam: homeTeamKey, awayTeam: awayTeamKey, date: moment(date) });
+          game.save();
+
+          res.json({ success: true, id: game.id });
+        });
+      }
+    });
+
   },
 
   addLeague: function(req, res) {
@@ -127,8 +151,6 @@ var admin = {
       }
     })
   }
-
-
 };
 
 module.exports = admin;

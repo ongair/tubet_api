@@ -2,8 +2,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var gameSchema = new Schema({
-  matchId: String,
-  gameId: String
+  matchCode: String,
+  gameId: String,
+  homeTeam: String,
+  awayTeam: String,
+  date: Date
 });
 
-module.exports = mongoose.model('Game', matchSchema);
+module.exports = mongoose.model('Game', gameSchema);

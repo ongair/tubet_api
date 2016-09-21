@@ -7,6 +7,7 @@ var teamSchema = new Schema({
   key: String,
   code: String,
   name: String,
+  externalId: String,
   league: String
 });
 
