@@ -5,6 +5,7 @@ var ai = require('./ai.js');
 var notify = require('../util/notification.js');
 var Team = require('../data/models/teams.js');
 var Match = require('../data/models/match.js');
+var Bet = require('../data/models/bet.js');
 
 var player, message;
 var Rules = machina.Fsm.extend({
@@ -83,32 +84,30 @@ var Rules = machina.Fsm.extend({
     },
     'practice': {
       _onEnter: function() {
+        console.log('In practice');
         _sendAnalysis(message.text);
 
-        if (Match.isAMatchAvailable()) {
-          acceptWager(player, message.text)
-            .then(function(wager) {
-              if (wager.accepted) {
-                player.state = "live";
-                balance = player.credits -  wager.amount;
-                player.credits = balance;
-                player.save();
-                creditUpdate(player, balance);
-              }
-            });
-        }
-
+        Match.isAMatchAvailable()
+          .then(function(available) {
+            console.log("Match available", available);
+            if(available) {
+              acceptWager(player, message.text)
+                .then(function(wager) {
+                  if (wager.accepted) {
+                    player.state = "live";
+                    balance = player.credits -  wager.amount;
+                    player.credits = balance;
+                    player.save();
+                    creditUpdate(player, balance);
+                  }
+              });
+            }
+          });
       }
     },
     'live' : {
       _onEnter: function() {
-        _sendAnalysis(message.text);
-
-        Match.availableMatches()
-          .then(function(matches) {
-            console.log("We have matches:", matches);
-          });
-
+        _sendAnalysis(message.text);      
       }
     }
   },
@@ -129,30 +128,46 @@ var Rules = machina.Fsm.extend({
 function acceptWager(player, text) {
   return new Promise(function(resolve, reject) {
     wager = Match.validateWager(text);
-    if (wager && Match.isValidGameId(wager.betId)) {
-      availableCredit = player.credits;
-      if (wager.amount <= availableCredit) {
-        outcome = Match.getOutcome(wager);
+    if (wager) {
+      console.log("Wager: ", wager);
+      Match.isValidGameId(wager.betId)
+        .then(function(valid) {
+          if(!valid) {
+            send(player.to(), replies.texts.wrongBetId)
+              .then(function() {
+                resolve({ accepted: false, amount: 0 });
+              });
+          } else {
+            availableCredit = player.credits;
+            if (wager.amount <= availableCredit) {
+              Match.getOutcome(wager)
+                .then(function(outcome) {
+                  // place bet
+                  var bet = new Bet({ playerId: player.to(), gameId: wager.id, amount: wager.bet, betType: wager.outcome, text: text })
+                  bet.save();
 
-        send(player.to(), outcome)
-          .then(function(){
-            notify.slack("A bet of " + wager.amount + "💰 has been placed by " + player.contactName);
-            resolve({ accepted: true, amount: wager.amount });
-          });
-      }
-      else {
-        msg = replies.texts.betTooHigh.replace(/{{amount}}/i, player.credits);
-        send(player.to(), msg)
-          .then(function() {
-            resolve({ accepted: false, amount: 0 });
-          });
-      }
+                  send(player.to(), outcome)
+                    .then(function(){
+                      notify.slack("A bet of " + wager.amount + "💰 has been placed by " + player.contactName);
+                      resolve({ accepted: true, amount: wager.amount });
+                    });
+                });
+            }
+            else {
+              msg = replies.texts.betTooHigh.replace(/{{amount}}/i, player.credits);
+              send(player.to(), msg)
+                .then(function() {
+                  resolve({ accepted: false, amount: 0 });
+                });
+            }
+          }
+        })
     }
     else {
       send(player.to(), replies.texts.wrongBetId)
         .then(function() {
           resolve({ accepted: false, amount: 0 });
-        })
+        });
     }
   });
 }
@@ -182,7 +197,7 @@ function waiting(player, text) {
                 })
             });
         }
-      })    
+      })
   })
 }
 

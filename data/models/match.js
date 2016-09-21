@@ -42,8 +42,6 @@ Match.practiceMatch = function() {
 }
 
 Match.isAMatchAvailable = function() {
-  // match = Match.practiceMatch();
-  // return match != null && new Date() < match.date;
   return new Promise(function(resolve, reject) {
     Match.availableMatches()
       .then(function(games) {
@@ -53,8 +51,13 @@ Match.isAMatchAvailable = function() {
 }
 
 Match.isValidGameId = function(gameId) {
-  console.log(gameId,Match.practiceMatch().id);
-  return gameId == Match.practiceMatch().id;
+  return new Promise(function(resolve, reject) {
+    Match.practiceMatch()
+      .then(function(match) {
+        resolve(gameId == "#" + match.id);
+      });
+  });
+
 }
 
 Match.validateWager = function(text) {
@@ -67,16 +70,20 @@ Match.validateWager = function(text) {
 }
 
 Match.getOutcome = function(wager) {
-  match = Match.practiceMatch();
-  odds = match.odds[wager.outcome.toLowerCase()];
-  winnings = odds * wager.amount;
-  template = replies.texts.wagerAccepted;
+  return new Promise(function(resolve, reject) {
+    Match.practiceMatch()
+      .then(function(match) {
+        odds = match.odds[wager.outcome.toLowerCase()];
+        winnings = odds * wager.amount;
+        template = replies.texts.wagerAccepted;
 
-  message = template.replace(/{{amount}}/i, wager.amount);
-  message = message.replace(/{{winnings}}/i, winnings);
-  message = message.replace(/{{outcome}}/i, _getOutcomeEvent(wager.outcome.toLowerCase(), match));
+        message = template.replace(/{{amount}}/i, wager.amount);
+        message = message.replace(/{{winnings}}/i, winnings);
+        message = message.replace(/{{outcome}}/i, _getOutcomeEvent(wager.outcome.toLowerCase(), match));
 
-  return message;
+        resolve(message);
+      });
+  });
 }
 
 Match.getOddsString = function(match) {
