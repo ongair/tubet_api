@@ -103,6 +103,12 @@ var Rules = machina.Fsm.extend({
     'live' : {
       _onEnter: function() {
         _sendAnalysis(message.text);
+
+        Match.availableMatches()
+          .then(function(matches) {
+            console.log("We have matches:", matches);
+          });
+
       }
     }
   },
@@ -153,28 +159,30 @@ function acceptWager(player, text) {
 
 function waiting(player, text) {
   return new Promise(function(resolve, reject) {
-    availableMatch = Match.isAMatchAvailable();
-    console.log("Matches available", availableMatch);
-    if (availableMatch) {
-      checkPractice(player, text)
-        .then(function(practice){
-          if (practice) {
-            player.state = 'practice';
-            player.credits += 100;
-            player.save();
-            creditUpdate(player, player.credits);
-          }
-          resolve(true);
-        })
-    }
-    else
-      send(player.to(), replies.texts.waiting)
-        .then(function() {
-          sendImage(player.to(), replies.gifs.mou, 'image/gif')
-            .then(function() {
+    Match.isAMatchAvailable()
+      .then(function(availableMatch) {
+        if (availableMatch) {
+          checkPractice(player, text)
+            .then(function(practice){
+              if (practice) {
+                player.state = 'practice';
+                player.credits += 100;
+                player.save();
+                creditUpdate(player, player.credits);
+              }
               resolve(true);
             })
-        });
+        }
+        else {
+          send(player.to(), replies.texts.waiting)
+            .then(function() {
+              sendImage(player.to(), replies.gifs.mou, 'image/gif')
+                .then(function() {
+                  resolve(true);
+                })
+            });
+        }
+      })    
   })
 }
 
@@ -195,11 +203,13 @@ function checkPractice(player, text) {
                     .then(function() {
                       send(player.to(), replies.texts.practiceInstruction)
                         .then(function() {
-                          match = Match.practiceMatch();
-                          oddString = Match.getOddsString(match);
-                          send(player.to(), oddString)
-                            .then(function() {
-                              resolve(true);
+                          Match.practiceMatch()
+                            .then(function(match) {
+                              oddString = Match.getOddsString(match);
+                              send(player.to(), oddString)
+                                .then(function() {
+                                  resolve(true);
+                                })
                             })
                         })
                     })

@@ -1,45 +1,55 @@
-// var mongoose = require('mongoose');
-// var Schema = mongoose.Schema;
-//
-// var matchSchema = new Schema({
-//   key: String,
-//   homeTeamId: String,
-//   awayTeamId: String,
-//   date: String
-// });
-
-// matchSchema.statics.practiceMatch = function() {
-//   return {
-//     title: 'League Cup - 3rd Round',
-//     home: 'Leicester',
-//     away: 'Chelsea',
-//     date: new Date(2016, 09, 20, 21, 45),
-//     odds: { h: 4.03, a: 1.88, x: 3.71 }
-//   }
-// }
-
-// module.exports = mongoose.model('Match', matchSchema);
-
 var moment = require('moment');
 var replies = require('../../behaviours/replies.js');
+var Game = require('./game.js');
+
 function Match() {
 
 };
 
+Match.availableMatches = function(count) {
+  return new Promise(function(resolve, reject) {
+    Game.find({ date: {  $gte : moment() }}, function(err, games) {
+      resolve(games);
+    });
+  });
+}
+
 Match.practiceMatch = function() {
-  return {
-    title: "🇪🇸 La Liga",
-    home: 'Barcelona',
-    id: '#002',
-    away: 'Atletico Madrid',
-    date: new Date(2016, 09, 21, 23, 00),
-    odds: { h: 1.69, a: 3.92, x: 5.09 }
-  }
+  // return {
+  //   title: "🇪🇸 La Liga",
+  //   home: 'Barcelona',
+  //   id: '#002',
+  //   away: 'Atletico Madrid',
+  //   date: new Date(2016, 09, 21, 23, 00),
+  //   odds: { h: 1.69, a: 3.92, x: 5.09 }
+  // }
+  return new Promise(function(resolve, reject) {
+    Match.availableMatches(1)
+      .then(function(matches) {
+        if (matches && matches.length > 0) {
+          match = matches[0];
+          resolve({
+            title: "🇪🇸 La Liga",
+            home: 'Barcelona',
+            away: "Atlético de Madrid",
+            id: match.matchCode,
+            date: match.date,
+            odds: { h: match.homeOdds, a: match.awayOdds, x: match.drawOdds }
+          });
+        }
+      })
+  });
 }
 
 Match.isAMatchAvailable = function() {
-  match = Match.practiceMatch();
-  return match != null && new Date() < match.date;
+  // match = Match.practiceMatch();
+  // return match != null && new Date() < match.date;
+  return new Promise(function(resolve, reject) {
+    Match.availableMatches()
+      .then(function(games) {
+        resolve(games.length);
+      });
+  })
 }
 
 Match.isValidGameId = function(gameId) {
