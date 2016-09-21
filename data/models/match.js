@@ -1,6 +1,8 @@
 var moment = require('moment');
 var replies = require('../../behaviours/replies.js');
 var Game = require('./game.js');
+var Bet = require('./bet.js');
+var notify = require('../../util/notification.js');
 
 function Match() {
 
@@ -67,6 +69,25 @@ Match.validateWager = function(text) {
   }
   else
     return null;
+}
+
+Match.announce = function(matchCode, player) {
+  return new Promise(function(resolve, reject) {
+    Game.findOne({ matchCode: matchCode }, function(err, game) {
+      console.log("Game", game, err);
+      if (game) {
+        Bet.findOne({ playerId: player.contactId }, function(err, bet) {
+          console.log("Found bet", bet, err);
+          if (bet) {
+            notify.send(player, "Your match Barcelona vs Atlético de Madrid has started. I'll send you goal updates. All the best!")
+              .then(function(id) {
+                resolve(id);
+              });
+          }
+        });
+      }
+    })
+  });
 }
 
 Match.getOutcome = function(wager) {

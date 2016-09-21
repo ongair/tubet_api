@@ -3,6 +3,7 @@ var Player = require('../data/models/player.js');
 var League = require('../data/models/leagues.js');
 var Team = require('../data/models/teams.js');
 var Game = require('../data/models/game.js');
+var Match = require('../data/models/match.js'); 
 var ongair = require('ongair');
 var leftPad = require('left-pad');
 var moment = require('moment');
@@ -61,6 +62,21 @@ var admin = {
         res.json({ success: true, sent: players.length });
       }
     })
+  },
+
+  announce: function(req, res) {
+    code = req.body.code;
+
+    Player.find({ state: 'live' }, function(err, players) {
+      if (players) {
+        players.forEach(function(player) {
+          console.log("Going to annouce to ", player);
+          Match.announce(code,player);
+        });
+
+        res.json({ success: true });
+      }
+    });
   },
 
   updatePlayer: function(req, res) {

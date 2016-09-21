@@ -30,6 +30,7 @@ router.post('/api/v1/admin/games/', admin.addGame);
 router.post('/api/v1/admin/leagues/', admin.addLeague);
 router.post('/api/v1/admin/teams/', admin.addTeam);
 router.post('/ap1/v1/admin/broadcast', admin.broadcast);
+router.post('/ap1/v1/admin/announce', admin.announce);
 
 // TubetBot
 router.post('/api/bot/v1/respond', bot.respond);
