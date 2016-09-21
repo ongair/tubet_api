@@ -101,7 +101,9 @@ Match.update = function(player, game, type, score, agent, team, time) {
     else {
       Match.predictResult(player, game, score)
         .then(function(text) {
-          notify.send(player, text);
+          console.log("Prediction:", player.name, text);
+          // notify.send(player, text);
+          resolve(true);
         });
     }
 
