@@ -143,7 +143,7 @@ function acceptWager(player, text) {
               Match.getOutcome(wager)
                 .then(function(outcome) {
                   // place bet
-                  var bet = new Bet({ playerId: player.to(), gameId: wager.id, amount: wager.amount, status: 'new', betType: wager.outcome, text: text })
+                  var bet = new Bet({ playerId: player.to(), gameId: wager.id, amount: wager.amount, state: 'new', betType: wager.outcome, text: text })
                   bet.save();
 
                   send(player.to(), outcome)
@@ -407,7 +407,7 @@ function checkCreditsAnswer(player, answer) {
 function sendImage(to, url, type) {
   return new Promise(function(resolve, reject) {
     var client = new ongair.Client(process.env.ONGAIR_TOKEN);
-    url = null;
+    // url = null;
     if (url)
       client.sendImage(to, url, type)
         .then(function(id) {

@@ -2,7 +2,7 @@
 module.exports = {
 
   texts: {
-    hi: "Hi {{name}}. My name is Fred\r\nWelcome to Tubet, Kenya’s 1st Fantasy betting game for the Premier League with real world odds.",
+    hi: "Hi {{name}}. My name is Lyne\r\nWelcome to Tubet, Kenya’s 1st Fantasy betting game for the Premier League with real world odds.",
     disclaimer: "Before we continue, you need to accept our Terms and conditions. \r\n\r\n 1. You are +18. \r\n 2. This is not a betting service. \r\n 3. Any odds or suggested winnings are not guaranteed.",
     prompt: "Do you agree? 👀",
     termsRejected: "😡. Sorry, but I can't continue until you accept the terms and conditions.",
@@ -44,7 +44,7 @@ module.exports = {
 
   gifs: {
     liv: "http://media3.giphy.com/media/wXsCbEJPNZGSY/200.gif",
-    mun: "http://i.giphy.com/42mVGkLhOW0kU.gif",
+    mun: "http://media3.giphy.com/media/42mVGkLhOW0kU/200.gif",
     ars: "http://i.giphy.com/lXiRyi9qA8Xh9sYYU.gif",
     che: "http://i.giphy.com/y62tQV0Zr08OQ.gif",
     whu: "http://i.giphy.com/26CYAyjsfaOVOIfUk.gif",
