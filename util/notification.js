@@ -1,5 +1,7 @@
 var Slack = require('slack-node');
 var ongair = require('ongair');
+var request = require('request');
+
 var notifications = {
 
   slack: function(message) {
@@ -14,6 +16,14 @@ var notifications = {
       if(err)
         console.log(err);
     });
+  },
+
+  broadcast: function(message) {
+    var client = new ongair.Client(process.env.ONGAIR_TOKEN);
+    client.sendMessage(process.env.BROADCAST_CHANNEL, message)
+      .then(function(id) {
+        console.log("Sent", message, id);
+      })
   },
 
   send: function(contact,message,options) {

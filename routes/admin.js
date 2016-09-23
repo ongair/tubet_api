@@ -149,6 +149,8 @@ var admin = {
     var awayOdds = req.body.awayOdds;
     var drawOdds = req.body.drawOdds;
     var date = req.body.date;
+    var tracker = req.body.tracker;
+    var status = req.body.status;
 
     Game.findOne({ gameId: gameId }, function(err, game) {
       if (game) {
@@ -159,7 +161,7 @@ var admin = {
         Game.count({}, function(err, count) {
           var matchCode = leftPad(count, 3, 0);
 
-          game = new Game({ matchCode: matchCode, gameId: gameId, homeTeam: homeTeamKey,
+          game = new Game({ matchCode: matchCode, gameId: gameId, homeTeam: homeTeamKey, tracker: tracker, status: status,
             awayTeam: awayTeamKey, date: moment(date), homeOdds: homeOdds, awayOdds: awayOdds, drawOdds: drawOdds });
 
           game.save();

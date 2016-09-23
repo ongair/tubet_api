@@ -11,7 +11,8 @@ var gameSchema = new Schema({
   drawOdds: Number,
   status: String,
   result: String,
-  date: Date
+  date: Date,
+  tracker: String
 });
 
 module.exports = mongoose.model('Game', gameSchema);

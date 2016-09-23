@@ -9,6 +9,7 @@ var setup = require('./setup.js');
 var odds = require('./odds.js');
 var search = require('./search.js');
 var provider = require('../data/provider.js');
+var matches = require('./matches.js');
 var bot = require('./bot.js');
 
 /*
@@ -32,6 +33,9 @@ router.post('/api/v1/admin/teams/', admin.addTeam);
 router.post('/ap1/v1/admin/broadcast', admin.broadcast);
 router.post('/ap1/v1/admin/announce', admin.announce);
 router.post('/ap1/v1/admin/matchUpdate', admin.matchUpdate);
+router.post('/api/v1/admin/matches/:id/update', matches.matchUpdate);
+router.put('/api/v1/admin/matches/:id', matches.update);
+router.get('/api/v1/admin/matches/live', matches.liveMatches);
 
 // TubetBot
 router.post('/api/bot/v1/respond', bot.respond);
