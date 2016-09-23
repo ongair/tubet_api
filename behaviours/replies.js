@@ -21,11 +21,12 @@ module.exports = {
     explainerOddsQuizOptions: "Liverpool Win,Everton Win,Draw",
     exampleCorrect: "👍",
     exampleWrong: "👎",
-    exampleExplainer: "High odds = Less likely to happen. \r\nLower odds = More likely to happen. In ⚽, the Favorite Team will have lower odds to win than the Underdog. \r\nOk, lets talk 💰💰💰",
-    creditsExplainer: "Instead of real money, we use TuBets 💰 in this game. Say for example if you had bet 100 TuBets on Liverpool to win at 2.25 and you were correct, how many TuBets will you win?",
-    exampleResultsCorrect: "👍, 225💰.",
-    exampleResultsWrong: "👎, you should have said 225.",
-    exampleResultsExplainer: "If you pick the right result, your winnings are calculated by multiplying your bet by the odds, so 100 x 2.25 = 225",
+    // exampleExplainer: "High odds = Less likely to happen. \r\nLower odds = More likely to happen. In ⚽, the Favorite Team will have lower odds to win than the Underdog. \r\nOk, lets talk 💰💰💰",
+    creditsExplainer: "Instead of real money, we use TuBets 💰 in this game. I've given you 100 TuBets 💰, how much do you want to place on a ",
+    // exampleResultsCorrect: "👍, 225💰.",
+    // exampleResultsWrong: "👎, you should have said 225.",
+    creditsSelection: "You have bet 225 on Liverpool to Win. Let me check the result...",
+    exampleResultsExplainer: "If you pick the right result, your winnings are calculated by multiplying your bet by the odds, so ",
     startingCredits: "🎓 I think you are now ready to start playing. I'll start you off with 100 TuBets💰.",
     goodLuck: "Last weeks games are all done, so I'll let you know as soon as the odds are ready for this week",
     waiting: "Mmh, I'm still preparing the odds for this week. Let me holla when I'm ready",
@@ -59,6 +60,7 @@ module.exports = {
     lei: "http://media3.giphy.com/media/l4Ho5sWX51Mn8JAE8/200.gif",
     bou: "http://media3.giphy.com/media/a8siLqtWyqzSg/200.gif",
     wat: "http://media3.giphy.com/media/HQLu5sAaoDIKA/200.gif",
-    mou: "http://media3.giphy.com/media/6eKCAGtepHvjO/200.gif"
+    mou: "http://media3.giphy.com/media/6eKCAGtepHvjO/200.gif",
+    win: "http://media3.giphy.com/media/kQg7fQMvVD5Ha/200.gif"
   }
 }

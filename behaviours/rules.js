@@ -60,8 +60,9 @@ var Rules = machina.Fsm.extend({
     'quiz': {
       _onEnter: function() {
         checkTutorialAnswer(player, message.text)
-          .then(function() {
+          .then(function(bet) {
             player.state = 'credits';
+            player.tutorialAnswer = bet;
             player.save();
           });
       }
@@ -246,8 +247,6 @@ function checkPractice(player, text) {
 
 function tutorial(player, team) {
   return new Promise(function(resolve, reject) {
-    // send(player.to(), replies.texts.teamSelected)
-      // .then(function() {
     image = replies.gifs[team.code.toLowerCase()];
     console.log(image);
     sendImage(to, image, 'image/gif')
@@ -361,16 +360,11 @@ function checkSkipTutorial(player, answer) {
 
 function checkTutorialAnswer(player, answer) {
   return new Promise(function(resolve, reject) {
-    resp = answer.toLowerCase() == "Liverpool Win".toLowerCase() ? replies.texts.exampleCorrect : replies.texts.exampleWrong;
-    send(player.to(), resp)
+    bet = _getTutorialBet(answer);
+    prompt = replies.texts.creditsExplainer + resp + "?";
+    send(player.to(), prompt)
       .then(function() {
-        send(player.to(), replies.texts.exampleExplainer)
-          .then(function() {
-            send(player.to(), replies.texts.creditsExplainer, '325,225,410')
-              .then(function() {
-                resolve(true);
-              })
-          })
+        resolve(bet);
       })
   })
 }
@@ -378,29 +372,31 @@ function checkTutorialAnswer(player, answer) {
 function checkCreditsAnswer(player, answer) {
   to = player.to();
   return new Promise(function(resolve, reject) {
-    resp = answer == '225' ? replies.texts.exampleResultsCorrect : replies.texts.exampleResultsWrong;
 
-    send(to, resp)
+    outcome = _getTutorialBetOutcome(answer);
+    creditsSelection = "You have bet " + answer + " on a " + outcome + ". Let me check the results...";
+    send(to, creditsSelection)
       .then(function() {
-        send(to, replies.texts.exampleResultsExplainer)
+        sendImage(to, replies.gifs.win, "image/gif")
           .then(function() {
-            send(to, replies.texts.startingCredits)
-              .then(function() {
-                availableMatch = Match.isAMatchAvailable();
 
-                if (availableMatch)
-                  send(to, replies.texts.practice, "Yes,No")
-                    .then(function() {
-                      resolve(true);
-                    })
-                else {
-                  send(to, replies.text.waiting)
-                    .then(function() {
-                      resolve(true);
-                    })
-                }
+            odds = _getTutorialBetOdds(player.bet);
+            winning = Math.ceil(odds * parseInt(answer));
+            send(to, "Congratulations, you were right. You have won " + winning + " TuBets!")
+              .then(function() {
+                text = replies.texts.exampleResultsExplainer + odds + " x " + answer;
+                send(to, text)
+                  .then(function() {
+                    send(to, replies.texts.startingCredits)
+                      .then(function() {
+                        send(to, replies.texts.waiting)
+                          .then(function() {
+                            resolve(true);
+                          })
+                      })
+                  })
               })
-          })
+          });
       })
   });
 }
@@ -414,7 +410,7 @@ function sendImage(to, url, type) {
         .then(function(id) {
           setTimeout(function() {
             resolve(id);
-          },3000);
+          },3500);
         })
         .catch(function(ex) {
           reject(ex);
@@ -444,6 +440,41 @@ function personalize(text, name) {
 
 function _sendAnalysis(message) {
   ai.process(message);
+}
+
+function _getTutorialBet(answer) {
+  if (answer.toLowerCase().startsWith() == "liverpool")
+    return 'h';
+  else if (answer.toLowerCase().startsWith() == "everton")
+    return 'a';
+  else
+    return 'x';
+}
+
+function _getTutorialBetOdds(bet) {
+  switch (bet) {
+    case 'h':
+      return 2.25;
+      break;
+    case 'a':
+      return 3.25;
+      break;
+    default:
+      return 4.1;
+  }
+}
+
+function _getTutorialBetOutcome(bet) {
+  switch (bet) {
+    case 'h':
+      return "Liverpool Win";
+      break;
+    case 'a':
+      return "Everton Win";
+      break;
+    default:
+      return "Draw";
+  }
 }
 
 module.exports = Rules;

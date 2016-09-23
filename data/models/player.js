@@ -6,6 +6,7 @@ var playerSchema = new Schema({
   contactName: String,
   state: String,
   handle: String,
+  tutorialAnswer: String,
   dateRegistered: Date,
   termsAccepted: Boolean,
   refererId: String,
