@@ -361,7 +361,7 @@ function checkSkipTutorial(player, answer) {
 function checkTutorialAnswer(player, answer) {
   return new Promise(function(resolve, reject) {
     bet = _getTutorialBet(answer);
-    prompt = replies.texts.creditsExplainer + resp + "?";
+    prompt = replies.texts.creditsExplainer + answer + "?";
     send(player.to(), prompt)
       .then(function() {
         resolve(bet);
