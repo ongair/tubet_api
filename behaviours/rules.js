@@ -246,20 +246,21 @@ function checkPractice(player, text) {
 
 function tutorial(player, team) {
   return new Promise(function(resolve, reject) {
-    send(player.to(), replies.texts.teamSelected)
+    // send(player.to(), replies.texts.teamSelected)
+      // .then(function() {
+    image = replies.gifs[team.code.toLowerCase()];
+    console.log(image);
+    sendImage(to, image, 'image/gif')
       .then(function() {
-        image = replies.gifs[team.code.toLowerCase()];
-        sendImage(to, image, 'image/gif')
+        send(player.to(), replies.texts.bettingIntro)
           .then(function() {
-            send(player.to(), replies.texts.bettingIntro)
+            send(player.to(), replies.texts.explainerBet, replies.texts.explainerQuestionOdds + "," + replies.texts.explainerTest)
               .then(function() {
-                send(player.to(), replies.texts.explainerBet, replies.texts.explainerQuestionOdds + "," + replies.texts.explainerTest)
-                  .then(function() {
-                    resolve(true);
-                  });
-              })
+                resolve(true);
+              });
           })
       })
+      // })
   });
 }
 
