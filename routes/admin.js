@@ -27,6 +27,42 @@ var admin = {
     }
   },
 
+  addPlayer: function(req, res) {
+
+    var contactId = req.body.playerId;
+    var name = req.body.name;
+    var source = req.body.source;
+    var state = req.body.state;
+    var credits = req.body.credits;
+
+    Player.findOneById(contactId)
+      .then(function (player) {
+        if (!player) {
+          if (source == 'Telegram')
+            name = name.replace(/ *\([^)]*\) */g, "");
+
+          player = new Player({ contactId: contactId, contactName: name, source: source, state: state,
+            credits: credits, termsAccepted: true, beta: true  });
+          console.log(player);
+          player.save();
+
+          res.status(200);
+          res.json({
+            id: player.id
+          });
+        }
+        else {
+          res.status(422);
+          res.json ({
+            reason: player.id + " already exists"
+          });
+        }
+      })
+      .catch(function(ex) {
+        console.log(ex);
+      });
+  },
+
   getPlayers: function(req, res) {
     Player.find(function(err, players) {
       all = players.map(function(player) {
