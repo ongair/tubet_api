@@ -27,8 +27,9 @@ var notifications = {
   },
 
   sendToMany: function(ids, message) {
+    var self = this;
     ids.forEach(function(id) {
-      send(id, message);
+      self.send(id, message);
     });
   },
 

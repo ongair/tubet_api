@@ -34,7 +34,7 @@ router.post('/api/v1/admin/teams/', admin.addTeam);
 router.post('/ap1/v1/admin/broadcast', admin.broadcast);
 router.post('/ap1/v1/admin/announce', admin.announce);
 router.post('/ap1/v1/admin/matchUpdate', admin.matchUpdate);
-router.post('/api/v1/admin/matches/:id/update', matches.matchUpdate);
+router.post('/api/v1/admin/matches/:id/settle', matches.settleMatch);
 router.put('/api/v1/admin/matches/:id', matches.update);
 router.get('/api/v1/admin/matches/live', matches.liveMatches);
 

@@ -2,9 +2,11 @@ var Game = require('../data/models/game.js');
 var notify = require('../util/notification.js');
 
 var matches = {
-  matchUpdate: function(req, res) {
+  settleMatch: function(req, res) {
 
     var id = req.params.id;
+    var score = req.body.score;
+
     Game.findOne({ gameId: id }, function(err, game) {
       if (!game)
       {
@@ -12,6 +14,11 @@ var matches = {
         res.json({ message: "No game with id ", id });
       }
       else {
+
+        Bet.find({ gameId: id }, function(err, bets) {
+          
+        });
+
         res.status(200);
         res.json({ success: true });
       }
@@ -34,7 +41,7 @@ var matches = {
         res.json({ message: "No game with id ", id });
       }
       else {
-            
+
         if (status)
           game.status = status;
 
