@@ -18,7 +18,7 @@ var gameSchema = new Schema({
 });
 
 gameSchema.methods.asOption = function() {
-  return replies.shortTeamNames[this.homeTeam].toUpperCase() + "-" + replies.shortTeamNames[this.awayTeam].toUpperCase();
+  return replies.teams[this.homeTeam].toUpperCase() + "-" + replies.teams[this.awayTeam].toUpperCase();
 }
 
 gameSchema.methods.getBetOption = function(text) {
