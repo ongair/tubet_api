@@ -12,7 +12,8 @@ var gameSchema = new Schema({
   status: String,
   result: String,
   date: Date,
-  tracker: String
+  tracker: String,
+  betable: Boolean
 });
 
 module.exports = mongoose.model('Game', gameSchema);

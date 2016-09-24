@@ -38,4 +38,4 @@ playerSchema.methods.to = function() {
 SOURCE_TELEGRAM = 'Telegram';
 SOURCE_MESSENGER = 'MessengerV2';
 
-module.exports = mongoose.model('Match', playerSchema);
+module.exports = mongoose.model('Player', playerSchema);
