@@ -1,5 +1,6 @@
 var Slack = require('slack-node');
 var ongair = require('ongair');
+var Player = require('../data/models/player.js');
 var request = require('request');
 
 var notifications = {
@@ -29,7 +30,9 @@ var notifications = {
   sendToMany: function(ids, message) {
     var self = this;
     ids.forEach(function(id) {
-      self.send(id, message);
+      Player.findOne({ contactId: id }, function(err, player) {
+        send(player, message);
+      });
     });
   },
 
