@@ -23,6 +23,9 @@ var matches = {
     var id = req.params.id;
     var tracker = req.body.tracker;
     var message = req.body.message;
+    var score = req.body.score;
+    var status = req.body.status;
+    var type = req.body.type;
 
     Game.findOne({ gameId: id }, function(err, game) {
       if (!game)
@@ -32,14 +35,17 @@ var matches = {
       }
       else {
 
-        game.status = req.body.status;
+        if (status)
+          game.status = status;
+
         if (req.body.tracker)
-          game.tracker = req.body.tracker;
+          game.tracker = tracker;
 
         if (message) {
-          // console.log("Should broadcast ", message);
           notify.broadcast(message);
         }
+
+        console.log("Match update", id, type, status, message);
 
         game.save()
 

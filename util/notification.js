@@ -26,6 +26,12 @@ var notifications = {
       })
   },
 
+  sendToMany: function(ids, message) {
+    ids.forEach(function(id) {
+      send(id, message);
+    });
+  },
+
   send: function(contact,message,options) {
     return new Promise(function(resolve, reject) {
       var client = new ongair.Client(process.env.ONGAIR_TOKEN);

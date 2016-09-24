@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var replies = require('../../behaviours/replies.js');
+var Bet = require('./bet.js');
+var notify = require('../../util/notification.js');
 var Schema = mongoose.Schema;
 
 var gameSchema = new Schema({
@@ -30,6 +32,15 @@ gameSchema.methods.getBetOption = function(text) {
     return 'x';
   else
     return null;
+}
+
+gameSchema.methods.notifyPunters = function() {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    Bet.find({ gameId: self.gameId, state: 'live' }, function(err, bets) {
+      playerIds = bets.map(function(bet) { return bet.playerId });
+    })
+  });
 }
 
 gameSchema.methods.getPossibleWinnings = function(betOption,amount) {

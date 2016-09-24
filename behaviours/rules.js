@@ -311,7 +311,7 @@ function confirmBet(player, text, data) {
                             send(player.to(), replies.texts.updateChannel)
                               .then(function() {
                                   resolve(true);
-                              })                            
+                              })
                           });
                       }
                     })
@@ -400,7 +400,7 @@ function selectBet(player, text) {
         if (game) {
           send(player.to(), replies.texts.gameSelected)
             .then(function() {
-              send(player.to(), game.asBet(), game.betOptions() + ",x")
+              send(player.to(), game.asBet(), game.betOptions())
                 .then(function() {
                   resolve(game.gameId);
                 });
