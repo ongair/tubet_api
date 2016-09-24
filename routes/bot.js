@@ -1,4 +1,4 @@
-var behaviour = require('../behaviours/play.js');
+var play = require('../behaviours/play.js');
 var Player = require('../data/models/player.js');
 var bot = {
 
@@ -38,10 +38,12 @@ function reset(id, text) {
 }
 
 function progress(contactId, contactName, accountType, text, messageId) {
-  behaviour.getPlayer(contactId, contactName, accountType)
+  play.getPlayer(contactId, contactName, accountType)
     .then(function(player) {
-      behaviour.analyze(player, { id: messageId, text: text })
-        .then(behaviour.advance);
+      play.analyze(player, { id: messageId, text: text })
+        .then(function(message) {
+          play.advance(player,message);
+        });
     });
 }
 
