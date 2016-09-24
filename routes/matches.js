@@ -9,6 +9,7 @@ var matches = {
 
     var id = req.params.id;
     var score = req.body.score;
+    var status = req.body.status;
 
     Game.findOne({ gameId: id }, function(err, game) {
       if (!game)
@@ -45,6 +46,11 @@ var matches = {
             })
           })
         });
+
+        if (status) {
+          game.status = status;
+          game.save();
+        }
 
         res.status(200);
         res.json({ success: true });
