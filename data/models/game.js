@@ -20,7 +20,7 @@ var gameSchema = new Schema({
 });
 
 gameSchema.methods.asOption = function() {
-  return replies.teams[this.homeTeam].toUpperCase() + "-" + replies.teams[this.awayTeam].toUpperCase();
+  return replies.teams[this.homeTeam] + "-" + replies.teams[this.awayTeam];
 }
 
 gameSchema.methods.getBetOption = function(text) {
@@ -42,7 +42,7 @@ gameSchema.methods.notifyPunters = function(type, score, message) {
   return new Promise(function(resolve, reject) {
     Bet.find({ gameId: self.gameId, state: 'live' }, function(err, bets) {
       playerIds = bets.map(function(bet) { return bet.playerId });
-      console.log("Notifying", playerIds);    
+      console.log("Notifying", playerIds);
       notify.sendToMany(playerIds, message);
     })
   });

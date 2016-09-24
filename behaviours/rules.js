@@ -394,7 +394,7 @@ function selectBet(player, text) {
       .then(function(matches) {
         // select a match
         game = matches.find(function(match) {
-          return text.toUpperCase() == match.asOption();
+          return text == match.asOption();
         });
 
         if (game) {
