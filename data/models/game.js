@@ -62,7 +62,7 @@ gameSchema.methods.asBet = function() {
   var str = "*" + replies.teams[this.homeTeam] + " vs " + replies.teams[this.awayTeam] + "*";
   str += "\r\n";
   str += replies.teams[this.homeTeam] + " Win - (" + this.homeOdds + ")\r\n";
-  str += replies.teams[this.awayTeam] + " Win - (" + this.homeOdds + ")\r\n";
+  str += replies.teams[this.awayTeam] + " Win - (" + this.awayOdds + ")\r\n";
   str += "Draw - (" + this.drawOdds + ")\r\n";
   return str;
 }
