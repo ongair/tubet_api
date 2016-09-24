@@ -79,6 +79,7 @@ var Rules = machina.Fsm.extend({
             }
             else {
               player.state = 'prompt';
+              player.credits = 100;
               player.save();
             }
           })
