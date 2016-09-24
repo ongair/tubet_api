@@ -30,7 +30,7 @@ module.exports = {
     exampleResultsExplainer: "If you pick the right result, your winnings are calculated by multiplying your bet by the odds, so ",
     startingCredits: "🎓 I think you are now ready to start playing. I'll start you off with 100 TuBets💰.",
     goodLuck: "Last weeks games are all done, so I'll let you know as soon as the odds are ready for this week",
-    waiting: "Mmh, I'm still preparing the odds for this week. Let me holla when I'm ready",
+    waiting: "Mmh, I'm still preparing more odds for this week. Let me holla when I'm ready",
     complete: "Wow, you've bet on all the games today. All the best!",
     share: "Having fun? Its even better if you invite your Friends",
     practice: "I'm still getting my act together, but I've got one practice ⚽ available for today. Would you like to try it out? - I'll add another 100 free credits 💰",
