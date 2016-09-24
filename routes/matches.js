@@ -45,9 +45,10 @@ var matches = {
           notify.broadcast(message);
         }
 
-        console.log("Match update", id, type, status, message);
+        console.log("Match update", id, type, status, message, score);
 
-        game.save()
+        game.save();
+        game.notifyPunters(type, score, message);
 
         res.status(200);
         res.json({ success: true, id: game.id });
