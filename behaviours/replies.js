@@ -25,6 +25,7 @@ module.exports = {
     creditsExplainer: "Instead of real money, we use TuBets 💰 in this game. I've given you 100 TuBets 💰, how much do you want to place on a ",
     // exampleResultsCorrect: "👍, 225💰.",
     // exampleResultsWrong: "👎, you should have said 225.",
+    nonNumericBet: "🙄 I don't want to confuse your bet so please tell me your amount as a number, for example 100.",
     creditsSelection: "You have bet 225 on Liverpool to Win. Let me check the result...",
     exampleResultsExplainer: "If you pick the right result, your winnings are calculated by multiplying your bet by the odds, so ",
     startingCredits: "🎓 I think you are now ready to start playing. I'll start you off with 100 TuBets💰.",
