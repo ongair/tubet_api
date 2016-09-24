@@ -307,8 +307,8 @@ function confirmBet(player, text, data) {
                       }
                       else {
                         send(player.to(), replies.texts.complete)
-                          .then(resolve(true) {
-
+                          .then(function() {
+                            resolve(true);
                           });
                       }
                     })
