@@ -8,6 +8,14 @@ function Match() {
 
 };
 
+Match.getGame = function(id) {
+  return new Promise(function(resolve, reject) {
+    Game.findOne({ gameId: id }, function(err, game) {
+      resolve(game);
+    })
+  });
+}
+
 Match.availableMatches = function(player) {
   return new Promise(function(resolve, reject) {
     Game.find({ $or: [{ status: 'live' }, { status: 'pending'}], betable: true }, function(err, games) {

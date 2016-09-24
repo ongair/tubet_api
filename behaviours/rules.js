@@ -110,7 +110,73 @@ var Rules = machina.Fsm.extend({
       _onEnter: function() {
         _sendAnalysis(message.text);
 
-        console.log("In betting status");
+        console.log("In betting status: ", message.text);
+        selectBet(player, message.text)
+          .then(function(selected) {
+            if (selected) {
+              data = JSON.stringify({ id: selected });
+
+              player.state = 'punt';
+              player.stateData = data;
+              player.save();
+            }
+          });
+      }
+    },
+    'punt': {
+      _onEnter: function() {
+        console.log("In punting mode", message.text);
+
+        data = JSON.parse(player.stateData);
+        id = data['id'];
+
+        selectPuntOption(player, message.text, id)
+          .then(function(option) {
+
+            if (option) {
+              data.option = option;
+
+              data = JSON.stringify(data);
+              player.state = 'wager';
+              player.stateData = data;
+              player.save();
+            }
+
+          });
+      }
+    },
+    'wager': {
+      _onEnter: function() {
+        console.log("In wager step", message.text);
+
+        data = JSON.parse(player.stateData);
+        wager(player, message.text, data)
+          .then(function(amount) {
+            if (amount) {
+              data.amount = amount;
+
+              data = JSON.stringify(data);
+              player.state = 'confirm';
+              player.stateData = data;
+              player.save();
+            }
+          });
+      }
+    },
+    'confirm': {
+      _onEnter: function() {
+        console.log("Confirm", message.text);
+        data = JSON.parse(player.stateData);
+        confirmBet(player, message.text, data)
+          .then(function(accepted) {
+            player.stateData = "";
+            player.state = 'prompt';
+
+            remaining = player.credits;
+            remaining -= data.amount;
+            player.credits = remaining
+            player.save();
+          });
       }
     },
     'practice': {
@@ -203,6 +269,132 @@ function acceptWager(player, text) {
   });
 }
 
+function confirmBet(player, text, data) {
+  return new Promise(function(resolve, reject) {
+    ai.agrees(text)
+      .then(function(yes) {
+        if (yes) {
+          id = data['id'];
+          amount = data['amount'];
+          option = data['option'];
+
+          // place the bet
+          var bet = new Bet({ playerId: player.to(), gameId: id, amount: amount, state: 'live', betType: option })
+          bet.save();
+
+          var remaining = player.credits - amount;
+          player.credits = remaining;
+
+          send(player.to(), replies.texts.betAccepted)
+            .then(function() {
+              send(player.to(), creditsRemaining(player))
+                .then(function() {
+                  Match.availableMatches(player)
+                    .then(function(matches) {
+                      if (matches.length > 0) {
+                        send(player.to(), availableMatches(matches.length) + "\r\n" + replies.texts.willYouBet, replies.texts.optionsYesNo)
+                          .then(function() {
+                            resolve(true);
+                          })
+                      }
+                    })
+                })
+            })
+        }
+      })
+  });
+}
+
+function wager(player, amount, data) {
+  return new Promise(function(resolve, reject) {
+    // first validate the bet
+    if (_isNumericBet(amount)) {
+      amount = parseInt(amount);
+      if (amount <= player.credits) {
+        confirm = replies.texts.betConfirmation;
+
+        gameId = data['id'];
+        option = data['option'];
+
+        Match.getGame(gameId)
+          .then(function(game) {
+            winnings = game.getPossibleWinnings(option, amount);
+            outcome = game.getBetOutcome(option);
+
+            confirm = confirm.replace(/{{amount}}/i, amount);
+            confirm = confirm.replace(/{{winnings}}/i, winnings);
+            confirm = confirm.replace(/{{outcome}}/i, outcome);
+
+            send(player.to(), confirm, replies.texts.optionsYesNo)
+              .then(function() {
+                resolve(amount);
+              })
+          })
+      }
+    }
+    else {
+      reject(null);
+    }
+  });
+}
+
+function selectPuntOption(player, text, id) {
+  return new Promise(function(resolve, reject) {
+    // get the game first
+
+    Match.getGame(id)
+      .then(function(game) {
+        if (game) {
+          option = game.getBetOption(text);
+
+          if (option) {
+            send(player.to(), creditsRemaining(player))
+              .then(function(){
+                send(player.to(), replies.texts.amountPrompt + " " + game.getBetOutcome(option) +  "?")
+                  .then(function() {
+                    resolve(option);
+                  })
+              })
+          }
+        }
+      })
+
+  });
+}
+
+function creditsRemaining(p) {
+  credits = p.credits;
+  return replies.texts.creditUpdate.replace(/{{amount}}/i, credits);
+}
+
+function availableMatches(count) {
+  return replies.texts.availableOtherMatches.replace(/{{amount}}/i, count);
+}
+
+function selectBet(player, text) {
+  return new Promise(function(resolve, reject) {
+    Match.availableMatches(player)
+      .then(function(matches) {
+        // select a match
+        game = matches.find(function(match) {
+          return text.toUpperCase() == match.asOption();
+        });
+
+        if (game) {
+          send(player.to(), replies.texts.gameSelected)
+            .then(function() {
+              send(player.to(), game.asBet(), game.betOptions() + ",x")
+                .then(function() {
+                  resolve(game.gameId);
+                });
+            });
+        } else {
+          resolve(null);
+        }
+      });
+  });
+}
+
 function bettingPrompt(player, text) {
   return new Promise(function(resolve, reject) {
     ai.agrees(text)
@@ -220,14 +412,10 @@ function bettingPrompt(player, text) {
               Match.availableMatches(player)
                 .then(function (matches) {
                   // need to check if matches exist
-
                   options = matches.map(function(match) {
                     return match.asOption();
                   });
-
                   games = options.join(",")
-
-                  console.log(games);
 
                   send(player.to(), replies.texts.pickGame, games)
                     .then(function() {
