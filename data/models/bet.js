@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var Game = require('./game.js');
 var Schema = mongoose.Schema;
 
 var betSchema = new Schema({
@@ -29,23 +28,18 @@ betSchema.methods.isWinningBet = function(score) {
   return outcome == this.betType;
 }
 
-betSchema.methods.winnings = function(outcome) {
-  var self = this;
-  return new Promise(function(resolve, reject) {
-    Game.findOne({ gameId: self.gameId }, function(err, game) {
-      amountPlaced = self.amount;
-      winnings = 0;
-      if (outcome == 'h')
-        winnings = amountPlaced * game.homeOdds;
-      else if (outcome == 'a')
-        winnings = amountPlaced * game.awayOdds;
-      else
-        winnings = amountPlaced * game.drawOdds;
+betSchema.methods.winnings = function(outcome, homeOdds, awayOdds, drawOdds) {
+  amountPlaced = this.amount;
+  winnings = 0;
+  if (outcome == 'h')
+    winnings = amountPlaced * homeOdds;
+  else if (outcome == 'a')
+    winnings = amountPlaced * awayOdds;
+  else
+    winnings = amountPlaced * drawOdds;
 
-      winnings = Math.ceil(winnings);
-      resolve(winnings);
-    });
-  });
+  winnings = Math.ceil(winnings);
+  return winnings;
 }
 
 module.exports = mongoose.model('Bet', betSchema);

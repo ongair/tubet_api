@@ -24,20 +24,19 @@ var matches = {
             Player.findOne({ contactId: bet.playerId }, function(err, punter) {
               outcome = bet.getOutcomeFromScore(score);
               if (bet.isWinningBet(score)) {
-                bet.winnings(outcome)
-                  .then(function(amount) {
-                    text = replies.texts.betWon;
-                    text = text.replace(/{{amount}}/i, amount);
-                    credits = punter.credits;
-                    credits += amount;
+                amount = bet.winnings(outcome, game.homeOdds, game.awayOdds, game.drawOdds)
+                text = replies.texts.betWon;
+                text = text.replace(/{{amount}}/i, amount);
+                credits = punter.credits;
+                credits += amount;
 
-                    punter.credits = credits;
-                    punter.save();
+                punter.credits = credits;
+                punter.save();
 
-                    text = text.replace(/{{credits}}/i, credits);
+                text = text.replace(/{{credits}}/i, credits);
 
-                    notify.send(punter, text);
-                  });
+                notify.send(punter, text);
+
               } else {
                 notify.send(punter, replies.texts.betLost);
               }
@@ -83,7 +82,7 @@ var matches = {
         console.log("Match update", id, type, status, message, score);
 
         game.save();
-
+        console.log("Game saved");
         if (type && score && message) {
           game.notifyPunters(type, score, message);
         }
