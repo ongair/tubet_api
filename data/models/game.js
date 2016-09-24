@@ -42,7 +42,8 @@ gameSchema.methods.notifyPunters = function(type, score, message) {
   return new Promise(function(resolve, reject) {
     Bet.find({ gameId: self.gameId, state: 'live' }, function(err, bets) {
       playerIds = bets.map(function(bet) { return bet.playerId });
-      console.log("Notifying", playerIds);
+      console.log("Notifying", playerIds);    
+      notify.sendToMany(playerIds, message);
     })
   });
 }
