@@ -53,7 +53,8 @@ module.exports = {
     creditUpdate: "You have {{amount}} 💰 Tubets remaining",
     amountPrompt: "Ok, how much will you put on a",
     betConfirmation: "You have placed {{amount}} 💰 on a {{outcome}}. If you are right you could win {{winnings}} 💰. Should I confirm?",
-    betAccepted: "Done. All the best."
+    betAccepted: "Done. All the best.",
+    updateChannel: "Want to get updates for all the matches today? Click [here](https://telegram.me/TubetUpdates) to check out our update channel"
   },
 
   gifs: {

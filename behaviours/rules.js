@@ -308,7 +308,10 @@ function confirmBet(player, text, data) {
                       else {
                         send(player.to(), replies.texts.complete)
                           .then(function() {
-                            resolve(true);
+                            send(player.to(), replies.texts.updateChannel)
+                              .then(function() {
+                                  resolve(true);
+                              })                            
                           });
                       }
                     })
