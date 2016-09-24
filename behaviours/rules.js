@@ -177,9 +177,10 @@ var Rules = machina.Fsm.extend({
             player.stateData = "";
             player.state = 'prompt';
 
-            remaining = player.credits;
-            remaining -= data.amount;
-            player.credits = remaining
+            // remaining = player.credits;
+            // remaining -= data.amount;
+            // player.credits = remaining
+            console.log("Remaining credits", player.credits);
             player.save();
           });
       }
@@ -290,6 +291,8 @@ function confirmBet(player, text, data) {
           var remaining = player.credits - amount;
           player.credits = remaining;
 
+          console.log("Remaining credits ", player.credits);
+
           send(player.to(), replies.texts.betAccepted)
             .then(function() {
               send(player.to(), creditsRemaining(player))
@@ -297,10 +300,16 @@ function confirmBet(player, text, data) {
                   Match.availableMatches(player)
                     .then(function(matches) {
                       if (matches.length > 0) {
-                        send(player.to(), availableMatches(matches.length) + "\r\n" + replies.texts.willYouBet, replies.texts.optionsYesNo)
+                        send(player.to(), availableMatches(matches.length) + "\r\n\r\n" + replies.texts.willYouBet, replies.texts.optionsYesNo)
                           .then(function() {
                             resolve(true);
                           })
+                      }
+                      else {
+                        send(player.to(), replies.texts.complete)
+                          .then(resolve(true) {
+
+                          });
                       }
                     })
                 })
@@ -636,7 +645,7 @@ function checkCreditsAnswer(player, answer) {
     outcome = _getTutorialBetOutcome(answer);
     if (_isNumericBet(answer))
     {
-      creditsSelection = "You have bet " + answer + " on a " + outcome + ". Let me check the results...";
+      creditsSelection = "You have bet " + answer + "💰 on a " + outcome + ". Let me check the results...";
       send(to, creditsSelection)
         .then(function() {
           sendImage(to, replies.gifs.win, "image/gif")
