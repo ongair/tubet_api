@@ -16,7 +16,12 @@ var matches = {
       else {
 
         Bet.find({ gameId: id }, function(err, bets) {
-          
+          bets.forEach(function(bet) {
+            // outcome = bet.getOutcomeFromScore(score);
+            if outcome.isWinningBet(score) {
+              
+            }
+          })
         });
 
         res.status(200);
