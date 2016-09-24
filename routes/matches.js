@@ -18,8 +18,8 @@ var matches = {
         Bet.find({ gameId: id }, function(err, bets) {
           bets.forEach(function(bet) {
             // outcome = bet.getOutcomeFromScore(score);
-            if outcome.isWinningBet(score) {
-              
+            if (outcome.isWinningBet(score)) {
+
             }
           })
         });
