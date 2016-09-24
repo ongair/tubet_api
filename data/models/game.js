@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var replies = require('../../behaviours/replies.js');
 var Schema = mongoose.Schema;
 
 var gameSchema = new Schema({
@@ -15,5 +16,11 @@ var gameSchema = new Schema({
   tracker: String,
   betable: Boolean
 });
+
+gameSchema.methods.asOption = function() {
+  return replies.shortTeamNames[this.homeTeam].toUpperCase() + "-" + replies.shortTeamNames[this.awayTeam].toUpperCase();
+}
+
+
 
 module.exports = mongoose.model('Game', gameSchema);

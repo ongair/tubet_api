@@ -41,7 +41,12 @@ module.exports = {
     practiceInstruction: "If I wanted to bet 100💰 for Liverpool to win, I would reply with *#000 H 100*\r\nEasy. Lets go...",
     wrongBetId: "Oops, I can't quite understand your bet. Please try again with the format *#ID OUTCOME AMOUNT*",
     wagerAccepted: "You have bet {{amount}}💰  for a {{outcome}}. If you are right you could win {{winnings}}💰. Good luck.",
-    betTooHigh: "🙊\r\nOops, you only have {{amount}}💰 available so you need to make a smaller bet."
+    betTooHigh: "🙊\r\nOops, you only have {{amount}}💰 available so you need to make a smaller bet.",
+    availableMatches: "💃 We have {{amount}} games available for betting today.",
+    willYouBet: "Would you like to place a bet?",
+    optionsYesNo: "Yes,No",
+    betOptionDeclined: "Don't be a 🐤. Anyway, if you change your mind let me know before the matches kick off",
+    pickGame: "Select the game would you like to place a bet on?"
   },
 
   gifs: {
@@ -63,5 +68,23 @@ module.exports = {
     wat: "http://media3.giphy.com/media/HQLu5sAaoDIKA/200.gif",
     mou: "http://media3.giphy.com/media/6eKCAGtepHvjO/200.gif",
     win: "http://media3.giphy.com/media/kQg7fQMvVD5Ha/200.gif"
+  },
+
+  teams: {
+    manutd: "Manchester United",
+    leicester: "Leicester City",
+    liverpool: "Liverpool",
+    hull: "Hull City",
+    arsenal: "Arsenal",
+    chelsea: "Chelsea"
+  },
+
+  shortTeamNames: {
+    manutd: 'Man U',
+    leicester: 'Leicester',
+    liverpool: "Liv",
+    hull: 'Hull',
+    arsenal: 'Ars',
+    chelsea: 'Che'
   }
 }

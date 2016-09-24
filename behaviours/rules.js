@@ -1,5 +1,6 @@
 var machina = require('machina');
 var ongair = require('ongair');
+var moment = require('moment');
 var replies = require('./replies.js');
 var ai = require('./ai.js');
 var notify = require('../util/notification.js');
@@ -82,7 +83,34 @@ var Rules = machina.Fsm.extend({
     'waiting': {
       _onEnter: function() {
         _sendAnalysis(message.text);
-        waiting(player, message.text);
+        waiting(player, message.text)
+          .then(function(hasMatches) {
+            if (hasMatches) {
+              player.state = 'prompt';
+              player.save();
+            }
+          });
+      }
+    },
+    'prompt' : {
+      _onEnter: function() {
+        _sendAnalysis(message.text);
+
+        bettingPrompt(player, message.text)
+          .then(function(yes) {
+            if (yes)
+              player.state = 'betting';
+            else
+              player.state = 'waiting';
+            player.save();
+          })
+      }
+    },
+    'betting': {
+      _onEnter: function() {
+        _sendAnalysis(message.text);
+
+        console.log("In betting status");
       }
     },
     'practice': {
@@ -175,20 +203,58 @@ function acceptWager(player, text) {
   });
 }
 
+function bettingPrompt(player, text) {
+  return new Promise(function(resolve, reject) {
+    ai.agrees(text)
+      .then(function(yes) {
+        if (!yes) {
+          send(player.to(), replies.texts.betOptionDeclined, "Bet")
+            .then(function() {
+              resolve(yes);
+            })
+        }
+        else {
+          send(player.to(), replies.texts.termsAccepted)
+            .then(function() {
+              // Need to find the games
+              Match.availableMatches(player)
+                .then(function (matches) {
+                  // need to check if matches exist
+
+                  options = matches.map(function(match) {
+                    return match.asOption();
+                  });
+
+                  games = options.join(",")
+
+                  console.log(games);
+
+                  send(player.to(), replies.texts.pickGame, games)
+                    .then(function() {
+                      resolve(yes);
+                    })
+                })
+            })
+        }
+      })
+  });
+}
+
 function waiting(player, text) {
   return new Promise(function(resolve, reject) {
-    Match.isAMatchAvailable()
-      .then(function(availableMatch) {
-        if (availableMatch) {
-          checkPractice(player, text)
-            .then(function(practice){
-              if (practice) {
-                player.state = 'practice';
-                player.credits += 100;
-                player.save();
-                creditUpdate(player, player.credits);
-              }
-              resolve(true);
+    Match.availableMatches(player)
+      .then(function(matches) {
+        if(matches.length > 0) {
+          availableText = replies.texts.availableMatches.replace(/{{amount}}/i, matches.length);
+          send(player.to(), availableText)
+            .then(function() {
+              send(player.to(), previewMatches(matches))
+                .then(function() {
+                  send(player.to(), replies.texts.willYouBet, replies.texts.optionsYesNo)
+                    .then(function() {
+                      resolve(true);
+                    })
+                })
             })
         }
         else {
@@ -196,11 +262,11 @@ function waiting(player, text) {
             .then(function() {
               sendImage(player.to(), replies.gifs.mou, 'image/gif')
                 .then(function() {
-                  resolve(true);
+                  resolve(false);
                 })
             });
         }
-      })
+      });
   })
 }
 
@@ -442,6 +508,19 @@ function send(to, message, options) {
         reject(ex);
       });
   });
+}
+
+function previewMatches(matches) {
+  strings = matches.map(function(match) {
+    homeTeam = replies.teams[match.homeTeam];
+    awayTeam = replies.teams[match.awayTeam];
+
+    title = "*" + homeTeam + " v " + awayTeam + "*";
+    title += "\r\n";
+    title += moment(match.date).format('llll');
+    return title;
+  });
+  return strings.join("\r\n\r\n");
 }
 
 function personalize(text, name) {

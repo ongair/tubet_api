@@ -8,10 +8,21 @@ function Match() {
 
 };
 
-Match.availableMatches = function(count) {
+Match.availableMatches = function(player) {
   return new Promise(function(resolve, reject) {
-    Game.find({ date: {  $gte : moment() }}, function(err, games) {
-      resolve(games);
+    Game.find({ $or: [{ status: 'live' }, { status: 'pending'}], betable: true }, function(err, games) {
+      // exclude the players matches
+      player.liveBets()
+        .then(function(bets) {
+          if(bets.length == 0)
+            resolve(games);
+          else {
+            betGameIds = bets.map(function(bet) { return bet.gameId });
+            console.log(betGameIds);
+            // check to see if any of the games are included in this list
+            resolve(games);
+          }
+        });
     });
   });
 }

@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Bet = require('./bet.js');
 var Schema = mongoose.Schema;
 
 var playerSchema = new Schema({
@@ -26,6 +27,16 @@ playerSchema.statics.findOneById = function(id) {
     });
   });
 };
+
+playerSchema.methods.liveBets = function() {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    Bet.find({ playerId: self.contactId, state: 'live' }, function(err, bets) {
+      console.log("Bets", bets);
+      resolve(bets);
+    })
+  });
+}
 
 playerSchema.methods.isNew = function() {
   return this.state = 'new';
