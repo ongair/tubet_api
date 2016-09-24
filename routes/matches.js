@@ -1,5 +1,6 @@
 var Game = require('../data/models/game.js');
 var notify = require('../util/notification.js');
+var Player = require('../data/models/player.js');
 
 var matches = {
   settleMatch: function(req, res) {
@@ -17,10 +18,28 @@ var matches = {
 
         Bet.find({ gameId: id }, function(err, bets) {
           bets.forEach(function(bet) {
-            // outcome = bet.getOutcomeFromScore(score);
-            if (outcome.isWinningBet(score)) {
 
-            }
+            Player.findOne({ contactId: bet.playerId }, function(err, punter) {
+              outcome = bet.getOutcomeFromScore(score);
+              if (bet.isWinningBet(score)) {
+                bet.winnings(outcome)
+                  .then(function(amount) {
+                    text = replies.texts.betWon;
+                    text = text.replace(/{{amount}}/i, amount);
+                    credits = player.credits;
+                    credits += amount;
+
+                    player.credits = credits;
+                    player.save();
+
+                    text = text.replace(/{{credits}}/i, credits);
+
+                    notify(punter, text);
+                  });
+              } else {
+                notify(punter, replies.texts.betLost);
+              }
+            })
           })
         });
 

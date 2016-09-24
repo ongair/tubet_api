@@ -32,13 +32,7 @@ var notifications = {
     ids.forEach(function(id) {
       Player.findOne({ contactId: id }, function(err, player) {
         var client = new ongair.Client(process.env.ONGAIR_TOKEN);
-        client.sendMessage(player.to(), _personalize(message, player.contactName))
-          .then(function(id) {
-            resolve(id);
-          })
-          .catch(function (ex) {
-            reject(ex);
-          });
+        client.sendMessage(player.to(), _personalize(message, player.contactName));          
       });
     });
   },

@@ -54,7 +54,9 @@ module.exports = {
     amountPrompt: "Ok, how much will you put on a",
     betConfirmation: "You have placed {{amount}} 💰 on a {{outcome}}. If you are right you could win {{winnings}} 💰. Should I confirm?",
     betAccepted: "Done. All the best.",
-    updateChannel: "Want to get updates for all the matches today? Click [here](https://telegram.me/TubetUpdates) to check out our update channel"
+    updateChannel: "Want to get updates for all the matches today? Click [here](https://telegram.me/TubetUpdates) to check out our update channel",
+    betLost: "😔. Sorry, looks like things didn't go according to plan. Better luck next time",
+    betWon: "🙌 . R.E.S.P.E.C.T. \r\nYou've won {{amount}} 💰 TuBets, like a Boss!. You now have {{credits}} 💰 to splash on the next games. I'll be coming to you for tips."
   },
 
   gifs: {
