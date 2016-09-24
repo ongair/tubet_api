@@ -173,13 +173,10 @@ var Rules = machina.Fsm.extend({
         console.log("Confirm", message.text);
         data = JSON.parse(player.stateData);
         confirmBet(player, message.text, data)
-          .then(function(accepted) {
+          .then(function(accepted) {            
             player.stateData = "";
             player.state = 'prompt';
 
-            // remaining = player.credits;
-            // remaining -= data.amount;
-            // player.credits = remaining
             console.log("Remaining credits", player.credits);
             player.save();
           });
