@@ -16,7 +16,7 @@ module.exports = {
     explainerQuestionOdds: "Odds! What are those?",
     explainerTest: "Test me!",
     explainerOdds: "An Odd is a number that tells you how likely something is to happen.\r\nHigh odds = Less likely to happen. \r\nLower odds = More likely to happen.",
-    explainerOddsExample: "Ok, let's see if you're with me.\r\n\r\n*Liverpool (Home) v Everton (Away)*\r\nLiverpool - (2.25)\r\nEverton - (3.25)\r\nDraw - (4.10)",
+    explainerOddsExample: "Ok, let's see if you're with me.\r\n\r\n*Liverpool (Home) v Everton (Away)*\r\nLiverpool - (2.25)\r\nDraw - (4.10)\r\nEverton - (3.25)",
     explainerOddsQuiz: "Place your bet.",
     explainerOddsQuizOptions: "Liverpool Win,Everton Win,Draw",
     exampleCorrect: "👍",

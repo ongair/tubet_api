@@ -28,6 +28,11 @@ Match.availableMatches = function(player) {
             betGameIds = bets.map(function(bet) { return bet.gameId });
             console.log(betGameIds);
             // check to see if any of the games are included in this list
+
+            games = games.filter(function(game) {
+              return betGameIds.indexOf(game.gameId) < 0;
+            });
+
             resolve(games);
           }
         });

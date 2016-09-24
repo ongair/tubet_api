@@ -72,9 +72,13 @@ var Rules = machina.Fsm.extend({
       _onEnter: function() {
         checkCreditsAnswer(player, message.text)
           .then(function(valid) {
-            if (valid) {
+            if (!valid) {
               player.state = 'waiting';
               player.credits = 100;
+              player.save();
+            }
+            else {
+              player.state = 'prompt';
               player.save();
             }
           })
@@ -639,17 +643,28 @@ function checkCreditsAnswer(player, answer) {
 
               odds = _getTutorialBetOdds(player.bet);
               winning = Math.ceil(odds * parseInt(answer));
-              send(to, "Congratulations, you were right. You have won " + winning + " TuBets!")
+              send(to, "Congratulations, you were right. You have won " + winning + " 💰 TuBets!")
                 .then(function() {
                   text = replies.texts.exampleResultsExplainer + odds + " x " + answer;
                   send(to, text)
                     .then(function() {
                       send(to, replies.texts.startingCredits)
                         .then(function() {
-                          send(to, replies.texts.waiting)
-                            .then(function() {
-                              resolve(true);
-                            })
+                          Match.availableMatches(player)
+                            .then(function(matches) {
+                              if (matches.length > 0) {
+                                waiting(player, "Yes")
+                                  .then(function() {
+                                    resolve(true);
+                                  })
+                              }
+                              else {
+                                send(to, replies.texts.waiting)
+                                  .then(function() {
+                                    resolve(false);
+                                  })
+                              }
+                            });
                         })
                     })
                 })

@@ -33,7 +33,6 @@ playerSchema.methods.liveBets = function() {
   var self = this;
   return new Promise(function(resolve, reject) {
     Bet.find({ playerId: self.contactId, state: 'live' }, function(err, bets) {
-      console.log("Bets", bets);
       resolve(bets);
     })
   });
