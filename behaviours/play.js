@@ -31,14 +31,14 @@ var play = {
     return new Promise(function(resolve, reject) {
       provider.findOrCreateMessage(msg.id, player.id, 'IN', 'Text', msg.text, player.source)
         .then(function(message) {
-          resolve({ message: message, player: player });
+          resolve(message);
         });
     });
   },
 
-  advance: function(payload) {
+  advance: function(player, message) {
     var rules = new Rules();
-    rules.load(payload.player, payload.message);
+    rules.load(player, message);
   },
 
   START_KEYWORDS: ['/start'],
