@@ -187,6 +187,7 @@ var admin = {
     var date = req.body.date;
     var tracker = req.body.tracker;
     var status = req.body.status;
+    var betable = req.body.betable;
 
     Game.findOne({ gameId: gameId }, function(err, game) {
       if (game) {
@@ -198,7 +199,7 @@ var admin = {
           var matchCode = leftPad(count, 3, 0);
 
           game = new Game({ matchCode: matchCode, gameId: gameId, homeTeam: homeTeamKey, tracker: tracker, status: status,
-            awayTeam: awayTeamKey, date: moment(date), homeOdds: homeOdds, awayOdds: awayOdds, drawOdds: drawOdds });
+            awayTeam: awayTeamKey, date: moment(date), homeOdds: homeOdds, awayOdds: awayOdds, drawOdds: drawOdds, betable: betable });
 
           game.save();
 
