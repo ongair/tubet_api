@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Game = require('./game.js');
 var Schema = mongoose.Schema;
 
 var betSchema = new Schema({
@@ -25,7 +26,7 @@ betSchema.methods.getOutcomeFromScore = function(score) {
 
 betSchema.methods.isWinningBet = function(score) {
   outcome = this.getOutcomeFromScore(score);
-  return outcome == betType;
+  return outcome == this.betType;
 }
 
 betSchema.methods.winnings = function(outcome) {
@@ -41,7 +42,7 @@ betSchema.methods.winnings = function(outcome) {
       else
         winnings = amountPlaced * game.drawOdds;
 
-      winnings = Match.ceil(winnings);
+      winnings = Math.ceil(winnings);
       resolve(winnings);
     });
   });

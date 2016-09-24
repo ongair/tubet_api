@@ -1,6 +1,8 @@
 var Game = require('../data/models/game.js');
+var Bet = require('../data/models/bet.js');
 var notify = require('../util/notification.js');
 var Player = require('../data/models/player.js');
+var replies = require('../behaviours/replies.js');
 
 var matches = {
   settleMatch: function(req, res) {
@@ -26,19 +28,21 @@ var matches = {
                   .then(function(amount) {
                     text = replies.texts.betWon;
                     text = text.replace(/{{amount}}/i, amount);
-                    credits = player.credits;
+                    credits = punter.credits;
                     credits += amount;
 
-                    player.credits = credits;
-                    player.save();
+                    punter.credits = credits;
+                    punter.save();
 
                     text = text.replace(/{{credits}}/i, credits);
 
-                    notify(punter, text);
+                    notify.send(punter, text);
                   });
               } else {
-                notify(punter, replies.texts.betLost);
+                notify.send(punter, replies.texts.betLost);
               }
+              bet.state = "settled";
+              bet.save();
             })
           })
         });
