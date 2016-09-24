@@ -34,7 +34,7 @@ var matches = {
         res.json({ message: "No game with id ", id });
       }
       else {
-
+            
         if (status)
           game.status = status;
 
@@ -48,7 +48,10 @@ var matches = {
         console.log("Match update", id, type, status, message, score);
 
         game.save();
-        game.notifyPunters(type, score, message);
+
+        if (type && score && message) {
+          game.notifyPunters(type, score, message);
+        }
 
         res.status(200);
         res.json({ success: true, id: game.id });

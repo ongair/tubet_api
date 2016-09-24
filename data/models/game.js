@@ -37,11 +37,12 @@ gameSchema.methods.getBetOption = function(text) {
 gameSchema.methods.notifyPunters = function(type, score, message) {
 
   console.log("About to notify punters", type, message);
-  
+
   var self = this;
   return new Promise(function(resolve, reject) {
     Bet.find({ gameId: self.gameId, state: 'live' }, function(err, bets) {
       playerIds = bets.map(function(bet) { return bet.playerId });
+      console.log("Notifying", playerIds);
     })
   });
 }
