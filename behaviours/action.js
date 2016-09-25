@@ -6,13 +6,15 @@ var actions = {
     return new Promise(function(resolve, reject) {
       switch (aiResponse.action) {
         case 'smalltalk.person':
-          _personalityResponse(player,aiResponse);
+          _simpleResponse(player,aiResponse);
           resolve(true);
           break;
         case 'balance':
           _balance(player, aiResponse);
           resolve(true);
+          break;
         default:
+          _simpleResponse(player, aiResponse);
           resolve(false);
       }
     });
@@ -25,7 +27,7 @@ function _balance(player, aiResponse) {
   notify.send(player, balance);
 }
 
-function _personalityResponse(player, aiResponse) {
+function _simpleResponse(player, aiResponse) {
   notify.send(player, aiResponse.reply);
 }
 
