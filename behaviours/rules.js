@@ -8,6 +8,8 @@ var Team = require('../data/models/teams.js');
 var Match = require('../data/models/match.js');
 var Bet = require('../data/models/bet.js');
 var tutorial = require('./tutorial.js');
+var smalltalk = require('./smalltalk.js');
+var action = require('./action.js');
 
 var player, message;
 var Rules = machina.Fsm.extend({
@@ -208,7 +210,14 @@ var Rules = machina.Fsm.extend({
     },
     'live' : {
       _onEnter: function() {
+
+        smalltalk.respond(message.text)
+          .then(function(response) {
+            action.resolve(player, response);
+          });
+
         _sendAnalysis(message.text);
+
       }
     }
   },

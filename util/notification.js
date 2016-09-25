@@ -32,8 +32,24 @@ var notifications = {
     ids.forEach(function(id) {
       Player.findOne({ contactId: id }, function(err, player) {
         var client = new ongair.Client(process.env.ONGAIR_TOKEN);
-        client.sendMessage(player.to(), _personalize(message, player.contactName));          
+        client.sendMessage(player.to(), _personalize(message, player.contactName));
       });
+    });
+  },
+
+  chainSend: function(contact, messages) {
+    return new Promise(function(resolve, reject) {
+
+      console.log("Messages", messages);
+      chain = messages.map(function(text) {
+        return notifications.send(contact, text);
+      });
+
+      Promise.all(chain)
+        .then(function(value) {
+          console.log("Value:", value);
+          resolve(value);
+        })
     });
   },
 
