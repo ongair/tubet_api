@@ -30,8 +30,8 @@ betSchema.methods.isWinningBet = function(score) {
   return outcome == this.betType;
 }
 
-betSchema.methods.status = function(game) {
-  status = game.progress();
+betSchema.methods.statusUpdate = function(game) {
+  status = '';
   switch (this.betType) {
     case 'h':
       status += "\r\nYou bet on a " + replies.teams[game.homeTeam] + " win at " + game.homeOdds;
@@ -41,10 +41,26 @@ betSchema.methods.status = function(game) {
       break;
     default:
       status += "\r\nYou bet on a draw at " + game.drawOdds;
-      break;    
+      break;
   }
   possible = this.winnings(this.betType, game.homeOdds, game.awayOdds, game.drawOdds);
-  status += "\r\nPossible win " + possible + "💰 TuBets";
+  if (game.status == 'pending')
+    status += "\r\nPossible win " + possible + "💰 TuBets";
+  else if (game.status == "live") {
+    isWinning = this.isWinningBet(game.score);
+    if (isWinning) {
+      status += "\r\nYou are on track to win " + possible + "💰 TuBets";
+    }
+    else {
+      status += "\r\nThings don't look so good, but there is hope";
+    }
+  }
+  return status;
+}
+
+betSchema.methods.status = function(game) {
+  status = game.progress();
+  status += this.statusUpdate(game);
   return status;
 }
 
