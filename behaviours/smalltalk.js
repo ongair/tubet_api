@@ -38,6 +38,7 @@ function _query(text) {
 
 function _resolveResponse(response) {
   var result = response.result;
+  console.log("AI result", result);
   return {
     action: result.action,
     reply: result.fulfillment.speech

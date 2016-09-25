@@ -100,16 +100,24 @@ var Rules = machina.Fsm.extend({
           });
       }
     },
-    'prompt' : {
+    'prompt': {
       _onEnter: function() {
         _sendAnalysis(message.text);
 
         bettingPrompt(player, message.text)
           .then(function(yes) {
-            if (yes)
-              player.state = 'betting';
+            if (yes) {
+              // player.state = 'betting';
+              if (yes  > 1) {
+                player.state = 'betting';
+              }
+              else if (yes == 1) {
+                console.log("Jumping to punt", player.stateData);
+                player.state = 'punt';
+              }
+            }
             else
-              player.state = 'waiting';
+              player.state = 'live';
             player.save();
           })
       }
@@ -126,6 +134,10 @@ var Rules = machina.Fsm.extend({
 
               player.state = 'punt';
               player.stateData = data;
+              player.save();
+            }
+            else {
+              player.state = 'live';
               player.save();
             }
           });
@@ -177,34 +189,17 @@ var Rules = machina.Fsm.extend({
         data = JSON.parse(player.stateData);
         confirmBet(player, message.text, data)
           .then(function(accepted) {
+
             player.stateData = "";
-            player.state = 'prompt';
+            if (accepted) {
+              player.state = 'prompt';
+            }
+            else {
+              player.state = 'live';
+            }
 
             console.log("Remaining credits", player.credits);
             player.save();
-          });
-      }
-    },
-    'practice': {
-      _onEnter: function() {
-        console.log('In practice');
-        _sendAnalysis(message.text);
-
-        Match.isAMatchAvailable()
-          .then(function(available) {
-            console.log("Match available", available);
-            if(available) {
-              acceptWager(player, message.text)
-                .then(function(wager) {
-                  if (wager.accepted) {
-                    player.state = "live";
-                    balance = player.credits -  wager.amount;
-                    player.credits = balance;
-                    player.save();
-                    creditUpdate(player, balance);
-                  }
-              });
-            }
           });
       }
     },
@@ -235,53 +230,6 @@ var Rules = machina.Fsm.extend({
   }
 });
 
-function acceptWager(player, text) {
-  return new Promise(function(resolve, reject) {
-    wager = Match.validateWager(text);
-    if (wager) {
-      console.log("Wager: ", wager);
-      Match.isValidGameId(wager.betId)
-        .then(function(valid) {
-          if(!valid) {
-            send(player.to(), replies.texts.wrongBetId)
-              .then(function() {
-                resolve({ accepted: false, amount: 0 });
-              });
-          } else {
-            availableCredit = player.credits;
-            if (wager.amount <= availableCredit) {
-              Match.getOutcome(wager)
-                .then(function(outcome) {
-                  // place bet
-                  var bet = new Bet({ playerId: player.to(), gameId: wager.id, amount: wager.amount, state: 'new', betType: wager.outcome, text: text })
-                  bet.save();
-
-                  send(player.to(), outcome)
-                    .then(function(){
-                      notify.slack("A bet of " + wager.amount + "💰 has been placed by " + player.contactName);
-                      resolve({ accepted: true, amount: wager.amount });
-                    });
-                });
-            }
-            else {
-              msg = replies.texts.betTooHigh.replace(/{{amount}}/i, player.credits);
-              send(player.to(), msg)
-                .then(function() {
-                  resolve({ accepted: false, amount: 0 });
-                });
-            }
-          }
-        })
-    }
-    else {
-      send(player.to(), replies.texts.wrongBetId)
-        .then(function() {
-          resolve({ accepted: false, amount: 0 });
-        });
-    }
-  });
-}
-
 function confirmBet(player, text, data) {
   return new Promise(function(resolve, reject) {
     ai.agrees(text)
@@ -292,7 +240,7 @@ function confirmBet(player, text, data) {
           option = data['option'];
 
           // place the bet
-          var bet = new Bet({ playerId: player.to(), gameId: id, amount: amount, state: 'live', betType: option })
+          var bet = new Bet({ playerId: player.to(), gameId: id, amount: amount, state: 'live', betType: option, createdAt: new Date() });
           bet.save();
 
           var remaining = player.credits - amount;
@@ -317,12 +265,18 @@ function confirmBet(player, text, data) {
                           .then(function() {
                             send(player.to(), replies.texts.updateChannel)
                               .then(function() {
-                                  resolve(true);
+                                  resolve(false);
                               })
                           });
                       }
                     })
                 })
+            })
+        }
+        else {
+          send(player.to(), replies.texts.declinedBet)
+            .then(function() {
+              resolve(false);
             })
         }
       })
@@ -335,7 +289,13 @@ function wager(player, amount, data) {
     if (_isNumericBet(amount)) {
       amount = parseInt(amount);
       if (amount <= player.credits) {
-        confirm = replies.texts.betConfirmation;
+        var everything = amount == player.credits;
+        var confirm;
+
+        if (everything)
+          confirm = replies.texts.theLot + "\r\n";
+
+        confirm += replies.texts.betConfirmation;
 
         gameId = data['id'];
         option = data['option'];
@@ -349,15 +309,26 @@ function wager(player, amount, data) {
             confirm = confirm.replace(/{{winnings}}/i, winnings);
             confirm = confirm.replace(/{{outcome}}/i, outcome);
 
+
             send(player.to(), confirm, replies.texts.optionsYesNo)
               .then(function() {
                 resolve(amount);
               })
           })
       }
+      else {
+        text = replies.texts.betTooHigh.replace(/{{amount}}/i, player.credits);
+        send(player.to(), text)
+          .then(function() {
+            resolve(null);
+          });
+      }
     }
     else {
-      reject(null);
+      send(player.to(), replies.texts.badBetAmount)
+        .then(function() {
+          resolve(null);
+        })
     }
   });
 }
@@ -413,7 +384,10 @@ function selectBet(player, text) {
                 });
             });
         } else {
-          resolve(null);
+          send(player.to(), replies.texts.didNotUnderstandGameBet)
+            .then(function() {
+              resolve(null);
+            })
         }
       });
   });
@@ -435,16 +409,38 @@ function bettingPrompt(player, text) {
               // Need to find the games
               Match.availableMatches(player)
                 .then(function (matches) {
-                  // need to check if matches exist
-                  options = matches.map(function(match) {
-                    return match.asOption();
-                  });
-                  games = options.join(",")
 
-                  send(player.to(), replies.texts.pickGame, games)
-                    .then(function() {
-                      resolve(yes);
-                    })
+                  if (matches.length  > 1) {
+                    // need to check if matches exist
+                    options = matches.map(function(match) {
+                      return match.asOption();
+                    });
+                    games = options.join(",")
+
+                    send(player.to(), replies.texts.pickGame, games)
+                      .then(function() {
+                        resolve(matches.length);
+                      })
+                  }
+                  else if (matches.length == 0) {
+                    send(player.to(), replies.texts.noGames)
+                      .then(function() {
+                        resolve(false);
+                      })
+                  }
+                  else if (matches.length == 1) {
+                    // should show only the one match
+                    game = matches[0];
+
+                    send(player.to(), game.asBet(), game.betOptions())
+                      .then(function() {
+                        id = game.gameId;
+                        data = JSON.stringify({ id: id });
+                        player.stateData = data;
+
+                        resolve(matches.length);
+                      });
+                  }
                 })
             })
         }

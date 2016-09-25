@@ -51,12 +51,19 @@ module.exports = {
     pickGame: "Select the game would you like to place a bet on?",
     gameSelected: "Ok, here's your game",
     creditUpdate: "You have {{amount}} 💰 Tubets remaining",
+    creditQuery: "You have {{amount}} 💰 Tubets remaining. \r\nDon't use them all at once.",
     amountPrompt: "Ok, how much will you put on a",
-    betConfirmation: "You have placed {{amount}} 💰 on a {{outcome}}. If you are right you could win {{winnings}} 💰. Should I confirm?",
+    betConfirmation: "You have placed {{amount}} 💰 on a {{outcome}}. If you are right you could win {{winnings}} 💰. \r\n*Should I confirm?*",
     betAccepted: "Done. All the best.",
     updateChannel: "Want to get updates for all the matches today? Click [here](https://telegram.me/TubetUpdates) to check out our update channel",
     betLost: "😔. Sorry, looks like things didn't go according to plan. Better luck next time",
-    betWon: "🙌 . R.E.S.P.E.C.T. \r\nYou've won {{amount}} 💰 TuBets, like a Boss!. You now have {{credits}} 💰 to splash on the next games. I'll be coming to you for tips."
+    betWon: "🙌 . R.E.S.P.E.C.T. \r\nYou've won {{amount}} 💰 TuBets, like a Boss!. You now have {{credits}} 💰 to splash on the next games. You're that guy! 🤑",
+    noBets: "Don't have any active bets to update you on.",
+    noGames: "Unfortunately we don't have games available for betting today, bet we're working on it. I'll let you know as soon as we do",
+    didNotUnderstandGameBet: "Sorry, I didn't understand which game you wanted to bet on",
+    declinedBet: "No worries. You can bet anytime before the match starts. Just tell me you want to bet and I'll hook you up.",
+    badBetAmount: "Sorry, didn't quite understand how much you wanted to bet. Don't want there to be any confusion, just reply with the number of 💰 TuBets",
+    theLot: "Wow, all your credits! 🙏 You must know something about this game."
   },
 
   gifs: {
@@ -86,7 +93,9 @@ module.exports = {
     liverpool: "Liverpool",
     hull: "Hull City",
     arsenal: "Arsenal",
-    chelsea: "Chelsea"
+    chelsea: "Chelsea",
+    westham: 'West Ham',
+    southampton: 'Southampton'
   },
 
   shortTeamNames: {
@@ -95,6 +104,8 @@ module.exports = {
     liverpool: "Liv",
     hull: 'Hull',
     arsenal: 'Ars',
-    chelsea: 'Che'
+    chelsea: 'Che',
+    westham: 'West Ham',
+    southampton: 'Southampton'
   }
 }

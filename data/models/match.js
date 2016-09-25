@@ -16,9 +16,22 @@ Match.getGame = function(id) {
   });
 }
 
+Match.previewGames = function(matches) {
+  strings = matches.map(function(match) {
+    homeTeam = replies.teams[match.homeTeam];
+    awayTeam = replies.teams[match.awayTeam];
+
+    title = "*" + homeTeam + " v " + awayTeam + "*";
+    title += "\r\n";
+    title += moment(match.date).format('llll');
+    return title;
+  });
+  return strings.join("\r\n\r\n");
+}
+
 Match.availableMatches = function(player) {
   return new Promise(function(resolve, reject) {
-    Game.find({ $or: [{ status: 'live' }, { status: 'pending'}], betable: true }, function(err, games) {
+    Game.find({ $or: [{ status: 'pending'}], betable: true }, function(err, games) {
       // exclude the players matches
       player.liveBets()
         .then(function(bets) {
