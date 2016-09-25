@@ -67,6 +67,18 @@ function _status(player, aiResponse) {
           console.log("Bets", bets);
           if (bets.length == 0)
             notify.send(player, replies.texts.noBets);
+          else {
+            text = replies.texts.betCount.replace(/{{count}}/i, bets.length);
+            notify.send(player, text)
+              .then(function() {
+                bets.forEach(function(bet) {
+                  Match.getGame(bet.gameId)
+                    .then(function(game) {
+                      notify.send(player, bet.status(game));
+                    })
+                })
+              })
+          }
         })
     })
 }

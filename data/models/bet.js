@@ -29,6 +29,13 @@ betSchema.methods.isWinningBet = function(score) {
   return outcome == this.betType;
 }
 
+betSchema.methods.status = function(game) {
+  status = game.progress();
+  possible = this.winnings(this.betType, game.homeOdds, game.awayOdds, game.drawOdds);
+  status += "\r\nPossible win " + possible + "💰 TuBets";
+  return status;
+}
+
 betSchema.methods.winnings = function(outcome, homeOdds, awayOdds, drawOdds) {
   amountPlaced = this.amount;
   winnings = 0;

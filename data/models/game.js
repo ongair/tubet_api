@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var replies = require('../../behaviours/replies.js');
 var Bet = require('./bet.js');
+var moment = require('moment');
 var notify = require('../../util/notification.js');
 var Schema = mongoose.Schema;
 
@@ -12,6 +13,7 @@ var gameSchema = new Schema({
   homeOdds: Number,
   awayOdds: Number,
   drawOdds: Number,
+  minute: String,
   status: String,
   result: String,
   date: Date,
@@ -46,6 +48,30 @@ gameSchema.methods.notifyPunters = function(type, score, message) {
       notify.sendToMany(playerIds, message);
     })
   });
+}
+
+gameSchema.methods.score = function() {
+  if (this.result)
+    return this.result;
+  else
+    return '0-0';
+}
+
+gameSchema.methods.progress = function() {
+  var str = "*" + replies.teams[this.homeTeam] + " vs " + replies.teams[this.awayTeam] + "*\r\n";
+
+  status = this.status;
+  if (status == 'live') {
+    str += "_In progress: " + this.minute + "_";
+  }
+  else if (status == 'pending') {
+    str += moment(this.date).format('llll');
+  }
+  else if (status == 'complete') {
+    str += "_Complete_";
+  }
+  str += "\r\n_Score: " + this.score() + "_";
+  return str;
 }
 
 gameSchema.methods.getPossibleWinnings = function(betOption,amount) {
