@@ -146,9 +146,15 @@ var admin = {
         state = req.body.state;
         credits = req.body.credits;
 
-        player.beta = beta;
-        player.state = state;
-        player.credits = credits;
+        if (beta)
+          player.beta = beta;
+
+        if (state)
+          player.state = state;
+
+        if (credits)
+          player.credits = credits;
+        
         player.save();
 
         res.json({ success: true })

@@ -567,7 +567,6 @@ function checkPersonalization(player, answer) {
     ai.getTeam(answer)
       .then(function(team) {
         if (team) {
-          console.log("Team", team);
           tutorial(player, team)
             .then(function() {
               player.state = 'tutorial';
@@ -687,8 +686,6 @@ function checkCreditsAnswer(player, answer) {
           resolve(false);
         });
     }
-
-
   });
 }
 
