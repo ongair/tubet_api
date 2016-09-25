@@ -61,8 +61,12 @@ gameSchema.methods.progress = function() {
   var str = "*" + replies.teams[this.homeTeam] + " vs " + replies.teams[this.awayTeam] + "*\r\n";
 
   status = this.status;
+  var time = this.minute;
+  if (!time)
+    time = '';
+
   if (status == 'live') {
-    str += "_In progress: " + this.minute + "_";
+    str += "_In progress: " + time + "_";
   }
   else if (status == 'pending') {
     str += moment(this.date).format('llll');
