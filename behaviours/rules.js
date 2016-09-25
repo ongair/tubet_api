@@ -290,7 +290,7 @@ function wager(player, amount, data) {
       amount = parseInt(amount);
       if (amount <= player.credits) {
         var everything = amount == player.credits;
-        var confirm;
+        var confirm = "";
 
         if (everything)
           confirm = replies.texts.theLot + "\r\n";
