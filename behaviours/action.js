@@ -36,8 +36,9 @@ function _games(player, aiResponse) {
     .then(function() {
       Match.availableMatches(player)
         .then(function(games) {
-          if (games.length == 0)
+          if (games.length == 0) {
             notify.send(player, replies.texts.noGames);
+          }
           else if (games.length > 0) {
             availableText = replies.texts.availableMatches.replace(/{{amount}}/i, games.length);
             notify.send(player, availableText)

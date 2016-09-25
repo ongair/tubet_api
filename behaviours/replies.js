@@ -60,7 +60,7 @@ module.exports = {
     betWon: "🙌 . R.E.S.P.E.C.T. \r\nYou've won {{amount}} 💰 TuBets, like a Boss!. You now have {{credits}} 💰 to splash on the next games. You're that guy! 🤑",
     noBets: "Don't have any active bets to update you on.",
     betCount: "You have {{count}} bets placed",
-    noGames: "Unfortunately we don't have games available for betting today, bet we're working on it. I'll let you know as soon as we do",
+    noGames: "Unfortunately we don't have games available for betting today, bet we're working on bringing you more games. I'll let you know as soon as we do",
     didNotUnderstandGameBet: "Sorry, I didn't understand which game you wanted to bet on",
     declinedBet: "No worries. You can bet anytime before the match starts. Just tell me you want to bet and I'll hook you up.",
     badBetAmount: "Sorry, didn't quite understand how much you wanted to bet. Don't want there to be any confusion, just reply with the number of 💰 TuBets",
