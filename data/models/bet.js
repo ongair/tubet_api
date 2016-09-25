@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var replies = require('../../behaviours/replies.js');
 
 var betSchema = new Schema({
   playerId: String,
@@ -31,6 +32,17 @@ betSchema.methods.isWinningBet = function(score) {
 
 betSchema.methods.status = function(game) {
   status = game.progress();
+  switch (this.betType) {
+    case 'h':
+      status += "\r\nYou bet on a " + replies.teams[game.homeTeam] + " win at " + game.homeOdds;
+      break;
+    case 'a':
+      status += "\r\nYou bet on a " + replies.teams[game.awayTeam] + " win at " + game.awayOdds;
+      break;
+    default:
+      status += "\r\nYou bet on a draw at " + game.drawOdds;
+      break;    
+  }
   possible = this.winnings(this.betType, game.homeOdds, game.awayOdds, game.drawOdds);
   status += "\r\nPossible win " + possible + "💰 TuBets";
   return status;

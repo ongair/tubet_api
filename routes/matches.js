@@ -86,8 +86,10 @@ var matches = {
         }
 
         console.log("Match update", id, type, status, message, score);
+        if (score)
+          game.result = score;
 
-        game.save();
+        game.save();                  
         console.log("Game saved");
         if (type && score && message) {
           game.notifyPunters(type, score, message);
