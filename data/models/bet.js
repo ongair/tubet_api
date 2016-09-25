@@ -47,7 +47,7 @@ betSchema.methods.statusUpdate = function(game) {
   if (game.status == 'pending')
     status += "\r\nPossible win " + possible + "💰 TuBets";
   else if (game.status == "live") {
-    isWinning = this.isWinningBet(game.score);
+    isWinning = this.isWinningBet(game.score());
     if (isWinning) {
       status += "\r\nYou are on track to win " + possible + "💰 TuBets";
     }
