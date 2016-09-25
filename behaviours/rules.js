@@ -7,6 +7,7 @@ var notify = require('../util/notification.js');
 var Team = require('../data/models/teams.js');
 var Match = require('../data/models/match.js');
 var Bet = require('../data/models/bet.js');
+var tutorial = require('./tutorial.js');
 
 var player, message;
 var Rules = machina.Fsm.extend({
@@ -173,7 +174,7 @@ var Rules = machina.Fsm.extend({
         console.log("Confirm", message.text);
         data = JSON.parse(player.stateData);
         confirmBet(player, message.text, data)
-          .then(function(accepted) {            
+          .then(function(accepted) {
             player.stateData = "";
             player.state = 'prompt';
 
@@ -642,7 +643,7 @@ function checkCreditsAnswer(player, answer) {
   to = player.to();
   return new Promise(function(resolve, reject) {
 
-    outcome = _getTutorialBetOutcome(answer);
+    outcome = tutorial.getTutorialBetOutcome(answer);
     if (_isNumericBet(answer))
     {
       creditsSelection = "You have bet " + answer + "💰 on a " + outcome + ". Let me check the results...";
@@ -651,7 +652,7 @@ function checkCreditsAnswer(player, answer) {
           sendImage(to, replies.gifs.win, "image/gif")
             .then(function() {
 
-              odds = _getTutorialBetOdds(player.bet);
+              odds = tutorial.getTutorialBetOdds(player.bet);
               winning = Math.ceil(odds * parseInt(answer));
               send(to, "Congratulations, you were right. You have won " + winning + " 💰 TuBets!")
                 .then(function() {
@@ -757,30 +758,6 @@ function _isNumericBet(answer) {
   return Number.isInteger(parseInt(answer));
 }
 
-function _getTutorialBetOdds(bet) {
-  switch (bet) {
-    case 'h':
-      return 2.25;
-      break;
-    case 'a':
-      return 3.25;
-      break;
-    default:
-      return 4.1;
-  }
-}
 
-function _getTutorialBetOutcome(bet) {
-  switch (bet) {
-    case 'h':
-      return "Liverpool Win";
-      break;
-    case 'a':
-      return "Everton Win";
-      break;
-    default:
-      return "Draw";
-  }
-}
 
 module.exports = Rules;
