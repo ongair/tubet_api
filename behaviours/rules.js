@@ -521,7 +521,7 @@ function checkPractice(player, text) {
   });
 }
 
-function tutorial(player, team) {
+function tute(player, team) {
   return new Promise(function(resolve, reject) {
     image = replies.gifs[team.code.toLowerCase()];
     console.log(image);
@@ -572,7 +572,7 @@ function checkPersonalization(player, answer) {
     ai.getTeam(answer)
       .then(function(team) {
         if (team) {
-          tutorial(player, team)
+          tute(player, team)
             .then(function() {
               player.state = 'tutorial';
               player.teamId = team.id;
