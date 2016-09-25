@@ -20,9 +20,9 @@ var actions = {
   }
 }
 
-function _balance(player, aiResponse) {  
+function _balance(player, aiResponse) {
   balance = replies.texts.creditUpdate.replace(/{{amount}}/i, player.credits);
-  notify.chainSend(player, [aiResponse.reply,balance]);
+  notify.send(player, balance);
 }
 
 function _personalityResponse(player, aiResponse) {

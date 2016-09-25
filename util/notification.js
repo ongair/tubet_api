@@ -39,15 +39,12 @@ var notifications = {
 
   chainSend: function(contact, messages) {
     return new Promise(function(resolve, reject) {
-
-      console.log("Messages", messages);
       chain = messages.map(function(text) {
         return notifications.send(contact, text);
       });
 
       Promise.all(chain)
-        .then(function(value) {
-          console.log("Value:", value);
+        .then(function(value) {          
           resolve(value);
         })
     });
