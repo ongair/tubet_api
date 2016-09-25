@@ -10,6 +10,7 @@
   "license": "GPL-3.0",
   "repository": "github.com/ongair/tubet_api",
   "dependencies": {
+    "apiai": "^2.0.7",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "fuzzy": "^0.1.1",
