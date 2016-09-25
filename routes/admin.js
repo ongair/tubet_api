@@ -101,18 +101,15 @@ var admin = {
   },
 
   announce: function(req, res) {
-    code = req.body.code;
+    message = req.body.message;
 
     Player.find({ state: 'live' }, function(err, players) {
-      if (players) {
-        players.forEach(function(player) {
-          console.log("Going to annouce to ", player);
-          Match.announce(code,player);
-        });
+      ids = players.map(function(player) { return player.contactId });
 
-        res.json({ success: true });
-      }
-    });
+      notify.sendToMany(ids, message);
+
+      res.json({ success: true });
+    })
   },
 
   matchUpdate: function(req, res) {
@@ -154,7 +151,7 @@ var admin = {
 
         if (credits)
           player.credits = credits;
-        
+
         player.save();
 
         res.json({ success: true })
