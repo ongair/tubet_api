@@ -65,6 +65,7 @@ var matches = {
     var message = req.body.message;
     var score = req.body.score;
     var status = req.body.status;
+    var progress = req.body.progress;
     var type = req.body.type;
 
     Game.findOne({ gameId: id }, function(err, game) {
@@ -78,8 +79,11 @@ var matches = {
         if (status)
           game.status = status;
 
-        if (req.body.tracker)
+        if (tracker)
           game.tracker = tracker;
+
+        if (progress)
+          game.minute = progress;
 
         if (message) {
           notify.broadcast(message);
@@ -89,7 +93,7 @@ var matches = {
         if (score)
           game.result = score;
 
-        game.save();                  
+        game.save();
         console.log("Game saved");
         if (type && score && message) {
           game.notifyPunters(type, score, message);
