@@ -76,7 +76,7 @@ var Rules = machina.Fsm.extend({
         checkCreditsAnswer(player, message.text)
           .then(function(valid) {
             if (!valid) {
-              player.state = 'waiting';
+              player.state = 'live';
               player.credits = 100;
               player.save();
             }
