@@ -72,6 +72,7 @@ var admin = {
           name: player.contactName,
           state: player.state,
           credits: player.credits,
+          source: player.source,
           beta: player.beta
         }
       });
