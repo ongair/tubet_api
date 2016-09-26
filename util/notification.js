@@ -44,7 +44,7 @@ var notifications = {
       });
 
       Promise.all(chain)
-        .then(function(value) {          
+        .then(function(value) {
           resolve(value);
         })
     });
@@ -52,7 +52,7 @@ var notifications = {
 
   send: function(contact,message,options) {
     return new Promise(function(resolve, reject) {
-      var client = new ongair.Client(process.env.ONGAIR_TOKEN);
+      var client = new ongair.Client(_token(contact));
       client.sendMessage(contact.to(), _personalize(message, contact.contactName), options)
         .then(function(id) {
           resolve(id);
@@ -62,6 +62,11 @@ var notifications = {
         });
     });
   }
+}
+
+function _token(contact) {
+  token = (contact.source == 'Telegram') ? process.env.ONGAIR_TOKEN : process.env.ONGAIR_TOKEN_MESSENGER;
+  return token
 }
 
 

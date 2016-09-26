@@ -37,7 +37,7 @@ var Rules = machina.Fsm.extend({
           .then(function(accepted) {
 
             if (accepted)
-              player.state = 'personalize';
+              player.state = 'tutorial';
 
             player.termsAccepted = accepted;
             player.save();
@@ -107,7 +107,6 @@ var Rules = machina.Fsm.extend({
         bettingPrompt(player, message.text)
           .then(function(yes) {
             if (yes) {
-              // player.state = 'betting';
               if (yes  > 1) {
                 player.state = 'betting';
               }
@@ -715,15 +714,14 @@ function sendImage(to, url, type) {
 
 function send(to, message, options) {
   return new Promise(function(resolve, reject) {
-    var client = new ongair.Client(process.env.ONGAIR_TOKEN);
-    client.sendMessage(to, message, options)
+    notify.send(to, message,options)
       .then(function(id) {
         resolve(id);
       })
-      .catch(function (ex) {
+      .catch(function(ex) {
         reject(ex);
-      });
-  });
+      })
+  })
 }
 
 function previewMatches(matches) {
