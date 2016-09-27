@@ -28,7 +28,6 @@ function reset(id, text) {
     if (text.toLowerCase() == "/restart") {
       Player.findOneAndRemove({contactId: id}, function(err) {
       });
-      console.log("Reset", id);
       resolve(true);
     }
     else {
