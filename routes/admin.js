@@ -113,29 +113,6 @@ var admin = {
     })
   },
 
-  matchUpdate: function(req, res) {
-    var code = req.body.code;
-    var type = req.body.type;
-    var score = req.body.score;
-    var agent = req.body.agent;
-    var team = req.body.team;
-    var time = req.body.time;
-
-    Game.findOne({ matchCode: code }, function(err, game) {
-      if (game) {
-        Player.find({ state: 'live' }, function(err, players) {
-          if (players) {
-            players.forEach(function(player) {
-              Match.update(player, game, type, score, agent, team, time);
-            });
-          }
-        });
-
-        res.json({ success: true });
-      }
-    })
-  },
-
   updatePlayer: function(req, res) {
     var id = req.params.id;
     Player.findOne({ contactId: id }, function(err, player) {

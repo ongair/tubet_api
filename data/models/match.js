@@ -23,7 +23,7 @@ Match.previewGames = function(matches) {
 
     title = "*" + homeTeam + " v " + awayTeam + "*";
     title += "\r\n";
-    title += moment(match.date).format('llll');
+    title += moment(match.date).format('H:mm');
     return title;
   });
   return strings.join("\r\n\r\n");
@@ -53,33 +53,6 @@ Match.availableMatches = function(player) {
   });
 }
 
-Match.practiceMatch = function() {
-  // return {
-  //   title: "🇪🇸 La Liga",
-  //   home: 'Barcelona',
-  //   id: '#002',
-  //   away: 'Atletico Madrid',
-  //   date: new Date(2016, 09, 21, 23, 00),
-  //   odds: { h: 1.69, a: 3.92, x: 5.09 }
-  // }
-  return new Promise(function(resolve, reject) {
-    Match.availableMatches(1)
-      .then(function(matches) {
-        if (matches && matches.length > 0) {
-          match = matches[0];
-          resolve({
-            title: "🇪🇸 La Liga",
-            home: 'Barcelona',
-            away: "Atlético de Madrid",
-            id: match.matchCode,
-            date: match.date,
-            odds: { h: match.homeOdds, a: match.awayOdds, x: match.drawOdds }
-          });
-        }
-      })
-  });
-}
-
 Match.isAMatchAvailable = function() {
   return new Promise(function(resolve, reject) {
     Match.availableMatches()
@@ -87,16 +60,6 @@ Match.isAMatchAvailable = function() {
         resolve(games.length);
       });
   })
-}
-
-Match.isValidGameId = function(gameId) {
-  return new Promise(function(resolve, reject) {
-    Match.practiceMatch()
-      .then(function(match) {
-        resolve(gameId == "#" + match.id);
-      });
-  });
-
 }
 
 Match.validateWager = function(text) {
