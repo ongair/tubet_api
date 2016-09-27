@@ -46,6 +46,14 @@ playerSchema.methods.to = function() {
   return this.contactId;
 }
 
+playerSchema.methods.isTelegram = function() {
+  return this.source == 'Telegram';
+}
+
+playerSchema.methods.isMessenger = function() {
+  return !(this.isTelegram);
+}
+
 SOURCE_TELEGRAM = 'Telegram';
 SOURCE_MESSENGER = 'MessengerV2';
 
