@@ -102,7 +102,7 @@ module.exports = {
     monaco: { full: 'Monaco', short: 'Monaco' },
     bayer: { full: 'Bayer Leverkusen', short: 'Bayer' },
     dortmund:  { full: 'Borussia Dortmund', short: 'Dortmund' },
-    real: { full: 'Real Madrid', short: 'RM' },
+    real: { full: 'Real Madrid', short: 'Real' },
     sporting: { full: 'Sporting CP', short: 'Sporting' },
     legia: { full: 'Legia Warszawa', short: 'Legia' },
     koebenhavn: { full: 'FC Koebenhavn', short: 'Copehagen' },
