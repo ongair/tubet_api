@@ -103,11 +103,13 @@ var admin = {
 
   announce: function(req, res) {
     message = req.body.message;
+    image = req.body.image;
+    image_type = req.body.image_type;
 
     Player.find({ state: 'live' }, function(err, players) {
       ids = players.map(function(player) { return player.contactId });
 
-      notify.sendToMany(ids, message);
+      notify.sendToMany(ids, message, image, image_type);    
 
       res.json({ success: true });
     })
