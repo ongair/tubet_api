@@ -13,22 +13,21 @@ var action = require('./action.js');
 
 var player, message;
 var Rules = machina.Fsm.extend({
-  initialState: 'unknown',
+  initialState: 'empty',
   states: {
-    'unknown': {
+    'empty' : {
       _onEnter: function() {
+
       }
     },
     'new' : {
       _onEnter: function() {
-
         sendTermsAndConditions(player)
           .then(function() {
             player.state = 'terms';
             player.termsAccepted = false;
             player.save();
           });
-
       }
     },
     'terms' : {
@@ -247,22 +246,22 @@ function confirmBet(player, text, data) {
 
           console.log("Remaining credits ", player.credits);
 
-          send(player.to(), replies.texts.betAccepted)
+          send(player, replies.texts.betAccepted)
             .then(function() {
-              send(player.to(), creditsRemaining(player))
+              send(player, creditsRemaining(player))
                 .then(function() {
                   Match.availableMatches(player)
                     .then(function(matches) {
                       if (matches.length > 0) {
-                        send(player.to(), availableMatches(matches.length) + "\r\n\r\n" + replies.texts.willYouBet, replies.texts.optionsYesNo)
+                        send(player, availableMatches(matches.length) + "\r\n\r\n" + replies.texts.willYouBet, replies.texts.optionsYesNo)
                           .then(function() {
                             resolve(true);
                           })
                       }
                       else {
-                        send(player.to(), replies.texts.complete)
+                        send(player, replies.texts.complete)
                           .then(function() {
-                            send(player.to(), replies.texts.updateChannel)
+                            send(player, replies.texts.updateChannel)
                               .then(function() {
                                   resolve(false);
                               })
@@ -273,7 +272,7 @@ function confirmBet(player, text, data) {
             })
         }
         else {
-          send(player.to(), replies.texts.declinedBet)
+          send(player, replies.texts.declinedBet)
             .then(function() {
               resolve(false);
             })
@@ -309,7 +308,7 @@ function wager(player, amount, data) {
             confirm = confirm.replace(/{{outcome}}/i, outcome);
 
 
-            send(player.to(), confirm, replies.texts.optionsYesNo)
+            send(player, confirm, replies.texts.optionsYesNo)
               .then(function() {
                 resolve(amount);
               })
@@ -317,14 +316,14 @@ function wager(player, amount, data) {
       }
       else {
         text = replies.texts.betTooHigh.replace(/{{amount}}/i, player.credits);
-        send(player.to(), text)
+        send(player, text)
           .then(function() {
             resolve(null);
           });
       }
     }
     else {
-      send(player.to(), replies.texts.badBetAmount)
+      send(player, replies.texts.badBetAmount)
         .then(function() {
           resolve(null);
         })
@@ -342,9 +341,9 @@ function selectPuntOption(player, text, id) {
           option = game.getBetOption(text);
 
           if (option) {
-            send(player.to(), creditsRemaining(player))
+            send(player, creditsRemaining(player))
               .then(function(){
-                send(player.to(), replies.texts.amountPrompt + " " + game.getBetOutcome(option) +  "?")
+                send(player, replies.texts.amountPrompt + " " + game.getBetOutcome(option) +  "?")
                   .then(function() {
                     resolve(option);
                   })
@@ -375,15 +374,15 @@ function selectBet(player, text) {
         });
 
         if (game) {
-          send(player.to(), replies.texts.gameSelected)
+          send(player, replies.texts.gameSelected)
             .then(function() {
-              send(player.to(), game.asBet(), game.betOptions())
+              send(player, game.asBet(), game.betOptions())
                 .then(function() {
                   resolve(game.gameId);
                 });
             });
         } else {
-          send(player.to(), replies.texts.didNotUnderstandGameBet)
+          send(player, replies.texts.didNotUnderstandGameBet)
             .then(function() {
               resolve(null);
             })
@@ -397,13 +396,13 @@ function bettingPrompt(player, text) {
     ai.agrees(text)
       .then(function(yes) {
         if (!yes) {
-          send(player.to(), replies.texts.betOptionDeclined, "Bet")
+          send(player, replies.texts.betOptionDeclined, "Bet")
             .then(function() {
               resolve(yes);
             })
         }
         else {
-          send(player.to(), replies.texts.termsAccepted)
+          send(player, replies.texts.termsAccepted)
             .then(function() {
               // Need to find the games
               Match.availableMatches(player)
@@ -416,13 +415,13 @@ function bettingPrompt(player, text) {
                     });
                     games = options.join(",")
 
-                    send(player.to(), replies.texts.pickGame, games)
+                    send(player, replies.texts.pickGame, games)
                       .then(function() {
                         resolve(matches.length);
                       })
                   }
                   else if (matches.length == 0) {
-                    send(player.to(), replies.texts.noGames)
+                    send(player, replies.texts.noGames)
                       .then(function() {
                         resolve(false);
                       })
@@ -431,7 +430,7 @@ function bettingPrompt(player, text) {
                     // should show only the one match
                     game = matches[0];
 
-                    send(player.to(), game.asBet(), game.betOptions())
+                    send(player, game.asBet(), game.betOptions())
                       .then(function() {
                         id = game.gameId;
                         data = JSON.stringify({ id: id });
@@ -453,11 +452,11 @@ function waiting(player, text) {
       .then(function(matches) {
         if(matches.length > 0) {
           availableText = replies.texts.availableMatches.replace(/{{amount}}/i, matches.length);
-          send(player.to(), availableText)
+          send(player, availableText)
             .then(function() {
-              send(player.to(), previewMatches(matches))
+              send(player, previewMatches(matches))
                 .then(function() {
-                  send(player.to(), replies.texts.willYouBet, replies.texts.optionsYesNo)
+                  send(player, replies.texts.willYouBet, replies.texts.optionsYesNo)
                     .then(function() {
                       resolve(true);
                     })
@@ -465,9 +464,9 @@ function waiting(player, text) {
             })
         }
         else {
-          send(player.to(), replies.texts.waiting)
+          send(player, replies.texts.waiting)
             .then(function() {
-              sendImage(player.to(), replies.gifs.mou, 'image/gif')
+              notify.sendImage(player, replies.gifs.mou, 'image/gif')
                 .then(function() {
                   resolve(false);
                 })
@@ -478,70 +477,26 @@ function waiting(player, text) {
 }
 
 function creditUpdate(player, credits) {
-  send(player.to(), "You have " + credits + "💰 remaining.");
+  send(player, "You have " + credits + "💰 remaining.");
 }
 
-function checkPractice(player, text) {
+function tute(player) {
   return new Promise(function(resolve, reject) {
-    ai.agrees(text)
-      .then(function(yes) {
-        if(yes) {
-          send(player.to(), replies.texts.practiceBegin)
-            .then(function() {
-              send(player.to(), replies.texts.practiceRule)
-                .then(function() {
-                  send(player.to(), replies.texts.practiceExample)
-                    .then(function() {
-                      send(player.to(), replies.texts.practiceInstruction)
-                        .then(function() {
-                          Match.practiceMatch()
-                            .then(function(match) {
-                              oddString = Match.getOddsString(match);
-                              send(player.to(), oddString)
-                                .then(function() {
-                                  resolve(true);
-                                })
-                            })
-                        })
-                    })
-                })
-            })
-        }
-        else {
-          send(player.to(),replies.texts.practiceNo)
-            .then(function() {
-              send(player.to(), replies.texts.practivePrompt, 'Yes,No')
-                .then(function() {
-                  resolve(false);
-                });
-            })
-        }
-      })
-  });
-}
-
-function tute(player, team) {
-  return new Promise(function(resolve, reject) {
-    image = replies.gifs[team.code.toLowerCase()];
-    console.log(image);
-    sendImage(to, image, 'image/gif')
+    send(player, replies.texts.bettingIntro)
       .then(function() {
-        send(player.to(), replies.texts.bettingIntro)
+        send(player, replies.texts.explainerBet, replies.texts.explainerQuestionOdds + "," + replies.texts.explainerTest)
           .then(function() {
-            send(player.to(), replies.texts.explainerBet, replies.texts.explainerQuestionOdds + "," + replies.texts.explainerTest)
-              .then(function() {
-                resolve(true);
-              });
-          })
-      })
+            resolve(true);
+          });
+      });
   });
 }
 
 function quiz(player) {
   return new Promise(function(resolve, reject) {
-    send(player.to(), replies.texts.explainerOddsExample)
+    send(player, replies.texts.explainerOddsExample)
       .then(function() {
-        send(player.to(), replies.texts.explainerOddsQuiz, replies.texts.explainerOddsQuizOptions)
+        send(player, replies.texts.explainerOddsQuiz, replies.texts.explainerOddsQuizOptions)
           .then(function() {
             resolve(true);
           })
@@ -551,12 +506,11 @@ function quiz(player) {
 
 function sendTermsAndConditions(player) {
   return new Promise(function(resolve, reject) {
-    to = player.to()
-    send(to, personalize(replies.texts.hi, player.contactName))
+    send(player, personalize(replies.texts.hi, player.contactName))
       .then(function() {
-        send(to, replies.texts.disclaimer)
+        send(player, replies.texts.disclaimer)
           .then(function() {
-            send(to, replies.texts.prompt, 'Yes,No')
+            send(player, replies.texts.prompt, 'Yes,No')
               .then(function() {
                 resolve(true);
               })
@@ -566,7 +520,6 @@ function sendTermsAndConditions(player) {
 }
 
 function checkPersonalization(player, answer) {
-  to = player.to();
   return new Promise(function(resolve, reject) {
     ai.getTeam(answer)
       .then(function(team) {
@@ -578,12 +531,12 @@ function checkPersonalization(player, answer) {
               player.save();
             })
         } else {
-          send(to, replies.texts.teamNotFound + answer + "?")
+          send(player, replies.texts.teamNotFound + answer + "?")
             .then(function() {
               // time to pick some of the teams
               Team.teamNames()
                 .then(function(names) {
-                  send(to, replies.texts.teamTryAgain, names.join(','));
+                  send(player, replies.texts.teamTryAgain, names.join(','));
                 });
             })
         }
@@ -592,21 +545,25 @@ function checkPersonalization(player, answer) {
 }
 
 function checkTermsAndConditions(player, answer) {
-  to = player.to()
   return new Promise(function(resolve, reject) {
     ai.agrees(answer)
       .then(function(yes) {
         if (yes) {
-          send(to, replies.texts.termsAccepted)
+          send(player, replies.texts.termsAccepted)
             .then(function() {
-              send(to, replies.texts.personalization)
-                .then(function() {
-                  resolve(true);
-                })
+              tute(player)
+                .then(function(result) {
+                  resolve(result);
+                });
+              // send(player, replies.texts.personalization)
+              //   .then(function() {
+              //     resolve(true);
+              //   })
+
             })
         }
         else {
-          send(to, replies.texts.termsRejected, 'Yes,No')
+          send(player, replies.texts.termsRejected, 'Yes,No')
             .then(function() {
               resolve(false);
             })
@@ -623,7 +580,7 @@ function checkSkipTutorial(player, answer) {
       resolve(true);
     }
     else {
-      send(player.to(), replies.texts.explainerOdds)
+      send(player, replies.texts.explainerOdds)
         .then(function() {
           resolve(true);
         })
@@ -635,7 +592,7 @@ function checkTutorialAnswer(player, answer) {
   return new Promise(function(resolve, reject) {
     bet = _getTutorialBet(answer);
     prompt = replies.texts.creditsExplainer + answer + "?";
-    send(player.to(), prompt)
+    send(player, prompt)
       .then(function() {
         resolve(bet);
       })
@@ -643,26 +600,25 @@ function checkTutorialAnswer(player, answer) {
 }
 
 function checkCreditsAnswer(player, answer) {
-  to = player.to();
   return new Promise(function(resolve, reject) {
 
     outcome = tutorial.getTutorialBetOutcome(answer);
     if (_isNumericBet(answer))
     {
       creditsSelection = "You have bet " + answer + "💰 on a " + outcome + ". Let me check the results...";
-      send(to, creditsSelection)
+      send(player, creditsSelection)
         .then(function() {
-          sendImage(to, replies.gifs.win, "image/gif")
+          notify.sendImage(player, replies.gifs.win, "image/gif")
             .then(function() {
 
               odds = tutorial.getTutorialBetOdds(player.bet);
               winning = Math.ceil(odds * parseInt(answer));
-              send(to, "Congratulations, you were right. You have won " + winning + " 💰 TuBets!")
+              send(player, "Congratulations, you were right. You have won " + winning + " 💰 TuBets!")
                 .then(function() {
                   text = replies.texts.exampleResultsExplainer + odds + " x " + answer;
-                  send(to, text)
+                  send(player, text)
                     .then(function() {
-                      send(to, replies.texts.startingCredits)
+                      send(player, replies.texts.startingCredits)
                         .then(function() {
                           Match.availableMatches(player)
                             .then(function(matches) {
@@ -673,7 +629,7 @@ function checkCreditsAnswer(player, answer) {
                                   })
                               }
                               else {
-                                send(to, replies.texts.waiting)
+                                send(player, replies.texts.waiting)
                                   .then(function() {
                                     resolve(false);
                                   })
@@ -693,25 +649,6 @@ function checkCreditsAnswer(player, answer) {
   });
 }
 
-function sendImage(to, url, type) {
-  return new Promise(function(resolve, reject) {
-    var client = new ongair.Client(process.env.ONGAIR_TOKEN);
-    if (url)
-      client.sendImage(to, url, type)
-        .then(function(id) {
-          setTimeout(function() {
-            resolve(id);
-          },3500);
-        })
-        .catch(function(ex) {
-          reject(ex);
-        })
-    else {
-      resolve(false);
-    }
-  });
-}
-
 function send(to, message, options) {
   return new Promise(function(resolve, reject) {
     notify.send(to, message,options)
@@ -726,8 +663,8 @@ function send(to, message, options) {
 
 function previewMatches(matches) {
   strings = matches.map(function(match) {
-    homeTeam = replies.teams[match.homeTeam];
-    awayTeam = replies.teams[match.awayTeam];
+    homeTeam = replies.teams[match.homeTeam]['full'];
+    awayTeam = replies.teams[match.awayTeam]['full'];
 
     title = "*" + homeTeam + " v " + awayTeam + "*";
     title += "\r\n";

@@ -34,10 +34,10 @@ betSchema.methods.statusUpdate = function(game) {
   status = '';
   switch (this.betType) {
     case 'h':
-      status += "\r\nYou bet on a " + replies.teams[game.homeTeam] + " win at " + game.homeOdds;
+      status += "\r\nYou bet on a " + replies.teams[game.homeTeam]['full'] + " win at " + game.homeOdds;
       break;
     case 'a':
-      status += "\r\nYou bet on a " + replies.teams[game.awayTeam] + " win at " + game.awayOdds;
+      status += "\r\nYou bet on a " + replies.teams[game.awayTeam]['full'] + " win at " + game.awayOdds;
       break;
     default:
       status += "\r\nYou bet on a draw at " + game.drawOdds;

@@ -18,10 +18,14 @@ Match.getGame = function(id) {
 
 Match.previewGames = function(matches) {
   strings = matches.map(function(match) {
-    homeTeam = replies.teams[match.homeTeam];
-    awayTeam = replies.teams[match.awayTeam];
+    homeTeam = replies.teams[match.homeTeam]['full'];
+    awayTeam = replies.teams[match.awayTeam]['full'];
 
-    title = "*" + homeTeam + " v " + awayTeam + "*";
+    title = "";
+    if (match.featured)
+      title = "*" + homeTeam + " v " + awayTeam + "🔥*";
+    else
+      title = "*" + homeTeam + " v " + awayTeam + "*";
     title += "\r\n";
     title += moment(match.date).format('H:mm');
     return title;
@@ -71,53 +75,6 @@ Match.validateWager = function(text) {
     return null;
 }
 
-Match.update = function(player, game, type, score, agent, team, time) {
-  return new Promise(function(resolve, reject) {
-    var text, options;
-    var predict = false;
-    switch (type) {
-      case "goal":
-        text = "⚽ - " + agent + " (" + time + "'). " + score;
-        break;
-      case "halftime":
-        text = "🕘 - Half time. Scores: " + score + ". What will you be having?";
-        options = "🍺,☕️"
-        break;
-      case "secondhalf":
-        text = "🕙 - Second half underway. Its 1-0  so far to FC Barcelona.";
-        break;
-      case "prediction":
-        predict = true;
-        break;
-      case "fulltime":
-        text = "🕛 - Game over. " + score + ".";
-        break;
-      case "result":
-        predict = true;
-        break;
-      default:
-    }
-
-    if (text) {
-      notify.send(player, text, options)
-        .then(function(id) {
-          resolve(id);
-        });
-    }
-    if (predict)
-      Match.predictResult(player, game, score)
-        .then(function(text) {
-          console.log("Prediction:", player.contactName, text);
-          notify.send(player, text)
-            .then(function(id) {
-              resolve(true);
-            })
-        });
-
-
-  });
-}
-
 Match.predictResult = function(player, game, score) {
   return new Promise(function(resolve, reject) {
     Bet.findOne({ playerId: player.contactId }, function(err, bet) {
@@ -131,7 +88,6 @@ Match.predictResult = function(player, game, score) {
       else {
         text = "👎 Sorry, better luck next time.";
       }
-
       resolve(text);
     });
   });

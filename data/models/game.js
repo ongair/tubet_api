@@ -18,17 +18,20 @@ var gameSchema = new Schema({
   result: String,
   date: Date,
   tracker: String,
-  betable: Boolean
+  betable: Boolean,
+  featured: Boolean,
+  promo: String,
+  promoUrl: String
 });
 
 gameSchema.methods.asOption = function() {
-  return replies.teams[this.homeTeam] + "-" + replies.teams[this.awayTeam];
+  return replies.teams[this.homeTeam]['short'] + "-" + replies.teams[this.awayTeam]['short'];
 }
 
 gameSchema.methods.getBetOption = function(text) {
-  if (text.toLowerCase() == replies.teams[this.homeTeam].toLowerCase())
+  if (text.toLowerCase() == replies.teams[this.homeTeam]['full'].toLowerCase())
     return 'h';
-  else if (text.toLowerCase() == replies.teams[this.awayTeam].toLowerCase())
+  else if (text.toLowerCase() == replies.teams[this.awayTeam]['full'].toLowerCase())
     return 'a';
   else if (text.toLowerCase() == "draw")
     return 'x';
@@ -58,7 +61,7 @@ gameSchema.methods.score = function() {
 }
 
 gameSchema.methods.progress = function() {
-  var str = "*" + replies.teams[this.homeTeam] + " vs " + replies.teams[this.awayTeam] + "*\r\n";
+  var str = "*" + replies.teams[this.homeTeam]['full'] + " vs " + replies.teams[this.awayTeam]['full'] + "*\r\n";
 
   status = this.status;
   var time = this.minute;
@@ -94,10 +97,10 @@ gameSchema.methods.getPossibleWinnings = function(betOption,amount) {
 gameSchema.methods.getBetOutcome = function(betOption) {
   switch (betOption) {
     case 'h':
-      return replies.teams[this.homeTeam] + " win";
+      return replies.teams[this.homeTeam]['full'] + " win";
       break;
     case 'a':
-      return replies.teams[this.awayTeam] + " win";
+      return replies.teams[this.awayTeam]['full'] + " win";
       break;
     default:
       return "Draw";
@@ -105,16 +108,16 @@ gameSchema.methods.getBetOutcome = function(betOption) {
 }
 
 gameSchema.methods.asBet = function() {
-  var str = "*" + replies.teams[this.homeTeam] + " vs " + replies.teams[this.awayTeam] + "*";
+  var str = "*" + replies.teams[this.homeTeam]['full'] + " vs " + replies.teams[this.awayTeam]['full'] + "*";
   str += "\r\n";
-  str += replies.teams[this.homeTeam] + " Win - (" + this.homeOdds + ")\r\n";
-  str += replies.teams[this.awayTeam] + " Win - (" + this.awayOdds + ")\r\n";
+  str += replies.teams[this.homeTeam]['full'] + " Win - (" + this.homeOdds + ")\r\n";
+  str += replies.teams[this.awayTeam]['full'] + " Win - (" + this.awayOdds + ")\r\n";
   str += "Draw - (" + this.drawOdds + ")\r\n";
   return str;
 }
 
 gameSchema.methods.betOptions = function() {
-  return replies.teams[this.homeTeam] + ",Draw," + replies.teams[this.awayTeam];
+  return replies.teams[this.homeTeam]['full'] + ",Draw," + replies.teams[this.awayTeam]['full'];
 }
 
 
