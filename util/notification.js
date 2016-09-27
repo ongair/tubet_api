@@ -8,15 +8,17 @@ var notifications = {
   slack: function(message) {
     slack = new Slack();
     slack.setWebhook(process.env.SLACK_URL);
-    slack.webhook({
-      channel: "#tubet",
-      username: "tubet",
-      icon_emoji: ":soccer:",
-      text: message
-    }, function(err, response) {
-      if(err)
-        console.log(err);
-    });
+    if (process.env.ENV == 'production') {
+      slack.webhook({
+        channel: "#tubet",
+        username: "tubet",
+        icon_emoji: ":soccer:",
+        text: message
+      }, function(err, response) {
+        if(err)
+          console.log(err);
+      });
+    }
   },
 
   broadcast: function(message) {
@@ -53,7 +55,9 @@ var notifications = {
   send: function(contact,message,options) {
     return new Promise(function(resolve, reject) {
       var client = new ongair.Client(_token(contact));
-      client.sendMessage(contact.to(), _personalize(message, contact.contactName), options)
+      message = _personalize(message, contact.contactName);
+      message = _preformat(message, contact);
+      client.sendMessage(contact.to(), message, options)
         .then(function(id) {
           resolve(id);
         })
@@ -61,12 +65,44 @@ var notifications = {
           reject(ex);
         });
     });
+  },
+
+  sendImage: function(contact, url, type) {
+    return new Promise(function(resolve, reject) {
+      var client = new ongair.Client(_token(contact));
+      if (url) {
+        console.log("Send image",contact.to(), url, type);
+        client.sendImage(contact.to(), url, type)
+          .then(function(id) {
+            setTimeout(function() {
+              resolve(id);
+              console.log("Id", id);
+            },3500);
+          })
+          .catch(function(ex) {
+            reject(ex);
+          })
+      }
+      else {
+        resolve(false);
+      }
+    });
   }
+
 }
 
 function _token(contact) {
   token = (contact.source == 'Telegram') ? process.env.ONGAIR_TOKEN : process.env.ONGAIR_TOKEN_MESSENGER;
   return token
+}
+
+function _preformat(text,contact) {
+  if (!contact.isTelegram()) {
+    regex = /(\*|_)/g;
+    return text.replace(regex, "");
+  }
+  else
+    return text;
 }
 
 
