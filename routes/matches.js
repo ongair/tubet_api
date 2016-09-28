@@ -27,6 +27,7 @@ var matches = {
               if (bet.isWinningBet(score)) {
                 amount = bet.winnings(outcome, game.homeOdds, game.awayOdds, game.drawOdds)
                 text = game.title() + "\r\n";
+                text += "FT. " + game.score() + "\r\n";
                 text += replies.texts.betWon;
                 text = text.replace(/{{amount}}/i, amount);
                 credits = punter.credits;
@@ -43,6 +44,7 @@ var matches = {
 
               } else {
                 text = game.title() + "\r\n";
+                text += "FT. " + game.score() + "\r\n";
                 text += replies.texts.betLost;
                 notify.send(punter, text);
               }
