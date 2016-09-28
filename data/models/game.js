@@ -107,6 +107,10 @@ gameSchema.methods.getBetOutcome = function(betOption) {
   }
 }
 
+gameSchema.methods.title = function() {
+  return "*" + replies.teams[this.homeTeam]['full'] + " vs " + replies.teams[this.awayTeam]['full'] + "*";
+}
+
 gameSchema.methods.asBet = function() {
   var str = "*" + replies.teams[this.homeTeam]['full'] + " vs " + replies.teams[this.awayTeam]['full'] + "*";
   str += "\r\n";

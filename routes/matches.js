@@ -26,7 +26,8 @@ var matches = {
               outcome = bet.getOutcomeFromScore(score);
               if (bet.isWinningBet(score)) {
                 amount = bet.winnings(outcome, game.homeOdds, game.awayOdds, game.drawOdds)
-                text = replies.texts.betWon;
+                text = game.title();
+                text += replies.texts.betWon;
                 text = text.replace(/{{amount}}/i, amount);
                 credits = punter.credits;
                 credits += amount;
@@ -35,6 +36,8 @@ var matches = {
                 punter.save();
 
                 text = text.replace(/{{credits}}/i, credits);
+
+                console.log(text);
 
                 notify.send(punter, text);
 
