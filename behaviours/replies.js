@@ -57,7 +57,7 @@ module.exports = {
     betAccepted: "Done. All the best.",
     updateChannel: "Want to get updates for all the matches today? Click [here](https://telegram.me/TubetUpdates) to check out our update channel",
     betLost: "😔. Sorry, looks like things didn't go according to plan. Better luck next time",
-    betWon: "🙌 . R.E.S.P.E.C.T. \r\nYou've won {{amount}} 💰 TuBets, like a Boss!. You now have {{credits}} 💰 to splash on the next games. You're that guy! 🤑",
+    betWon: "🙌 .You've won {{amount}} 💰 TuBets, like a Boss!. You now have {{credits}} 💰. You're that guy! 🤑",
     noBets: "Don't have any active bets to update you on.",
     betCount: "You have {{count}} bets placed",
     noGames: "Unfortunately we don't have games available for betting today, bet we're working on bringing you more games. I'll let you know as soon as we do",
@@ -111,6 +111,13 @@ module.exports = {
     dinamo: { full: 'Dinamo Zagreb', short: 'Dinamo' },
     juventus: { full: 'Juventus', short: 'Juve' },
     sevilla: { full: 'Sevilla', short: 'Sev' },
-    lyon: { full: 'Lyon', short: 'Lyon' }
+    lyon: { full: 'Lyon', short: 'Lyon' },
+    basel: { full: 'Basel', short: 'Basel'},
+    gladbach: { full: 'Borussia Mönchengladbach', short: 'Bor. Vfl'},
+    barca: { full: 'Barcelona FC', short: 'Barca' },
+    atletico: { full: 'Atletico Madrid', short: 'Atleti'},
+    bayern: { full: 'Bayern Munich', short: 'Bayern'},
+    celtic: { full: 'Celtic', short: 'Celtic'},
+    mancity: { full: 'Manchester City', short: 'Man City'}
   }
 }
