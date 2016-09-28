@@ -26,7 +26,7 @@ var matches = {
               outcome = bet.getOutcomeFromScore(score);
               if (bet.isWinningBet(score)) {
                 amount = bet.winnings(outcome, game.homeOdds, game.awayOdds, game.drawOdds)
-                text = game.title();
+                text = game.title() + "\r\n";
                 text += replies.texts.betWon;
                 text = text.replace(/{{amount}}/i, amount);
                 credits = punter.credits;
@@ -42,7 +42,9 @@ var matches = {
                 notify.send(punter, text);
 
               } else {
-                notify.send(punter, replies.texts.betLost);
+                text = game.title() + "\r\n";
+                text += replies.texts.betLost;
+                notify.send(punter, text);
               }
               bet.state = "settled";
               bet.save();
