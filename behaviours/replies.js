@@ -118,6 +118,9 @@ module.exports = {
     atletico: { full: 'Atletico Madrid', short: 'Atleti'},
     bayern: { full: 'Bayern Munich', short: 'Bayern'},
     celtic: { full: 'Celtic', short: 'Celtic'},
-    mancity: { full: 'Manchester City', short: 'Man City'}
+    mancity: { full: 'Manchester City', short: 'Man City'},
+    ferna: { full: 'Fenerbahce', short: 'Ferner'},
+    feyenoord: { full: 'Feyenoord', short: 'Feyenoord'},
+    zorya: { full: 'Zorya', short: 'Zorya' }
   }
 }
