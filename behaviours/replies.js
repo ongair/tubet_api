@@ -121,6 +121,8 @@ module.exports = {
     mancity: { full: 'Manchester City', short: 'Man City'},
     ferna: { full: 'Fenerbahce', short: 'Ferner'},
     feyenoord: { full: 'Feyenoord', short: 'Feyenoord'},
-    zorya: { full: 'Zorya', short: 'Zorya' }
+    zorya: { full: 'Zorya', short: 'Zorya' },
+    everton: { full: 'Everton', short: 'Everton'},
+    palace: { full: 'Crystal Palace', short: 'CPalace'}
   }
 }
