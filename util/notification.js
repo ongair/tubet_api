@@ -8,7 +8,7 @@ var notifications = {
   slack: function(message) {
     slack = new Slack();
     slack.setWebhook(process.env.SLACK_URL);
-    if (process.env.ENV == 'production') {
+    if (_isProduction()) {
       slack.webhook({
         channel: "#tubet",
         username: "tubet",
@@ -22,11 +22,13 @@ var notifications = {
   },
 
   broadcast: function(message) {
-    var client = new ongair.Client(process.env.ONGAIR_TOKEN);
-    client.sendMessage(process.env.BROADCAST_CHANNEL, message)
-      .then(function(id) {
-        console.log("Sent", message, id);
-      })
+    if (_isProduction()) {
+      var client = new ongair.Client(process.env.ONGAIR_TOKEN);
+      client.sendMessage(process.env.BROADCAST_CHANNEL, message)
+        .then(function(id) {
+          console.log("Sent", message, id);
+        })
+    }
   },
 
   sendToMany: function(ids, message, image, image_type) {
@@ -120,5 +122,10 @@ function _preformat(text,contact) {
 function _personalize(text, name) {
   return text.replace(/{{name}}/i, name);
 }
+
+function _isProduction() {
+  return (process.env.ENV == 'production');
+}
+
 
 module.exports = notifications;
