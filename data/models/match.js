@@ -2,6 +2,7 @@ var moment = require('moment');
 var replies = require('../../behaviours/replies.js');
 var Game = require('./game.js');
 var Bet = require('./bet.js');
+var Player = require('./player.js');
 var notify = require('../../util/notification.js');
 
 function Match() {
@@ -14,6 +15,49 @@ Match.getGame = function(id) {
       resolve(game);
     })
   });
+}
+
+Match.settle = function(game, status, score) {
+  Bet.find({ gameId: game.gameId }, function(err, bets) {
+    console.log("Settling bets:", bets);
+    bets.forEach(function(bet) {
+
+      Player.findOne({ contactId: bet.playerId }, function(err, punter) {
+        outcome = bet.getOutcomeFromScore(score);
+        if (bet.isWinningBet(score)) {
+          amount = bet.winnings(outcome, game.homeOdds, game.awayOdds, game.drawOdds)
+          text = game.title() + "\r\n";
+          text += "FT. " + game.score() + "\r\n";
+          text += replies.texts.betWon;
+          text = text.replace(/{{amount}}/i, amount);
+          credits = punter.credits;
+          credits += amount;
+
+          punter.credits = credits;
+          punter.save();
+
+          text = text.replace(/{{credits}}/i, credits);
+
+          console.log(text);
+
+          notify.send(punter, text);
+
+        } else {
+          text = game.title() + "\r\n";
+          text += "FT. " + game.score() + "\r\n";
+          text += replies.texts.betLost;
+          notify.send(punter, text);
+        }
+        bet.state = "settled";
+        bet.save();
+      })
+    })
+  });
+
+  if (status) {
+    game.status = status;
+    game.save();
+  }
 }
 
 Match.previewGames = function(matches) {
