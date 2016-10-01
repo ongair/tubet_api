@@ -125,6 +125,7 @@ module.exports = {
     zorya: { full: 'Zorya', short: 'Zorya' },
     everton: { full: 'Everton', short: 'Everton'},
     palace: { full: 'Crystal Palace', short: 'CPalace'},
-    swansea: { full: 'Swansea City', short: 'Swansea'}
+    swansea: { full: 'Swansea City', short: 'Swansea'},
+    sunderland: { full: 'Sunderland', short: 'SUN'}  
   }
 }
