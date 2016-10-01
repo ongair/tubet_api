@@ -41,19 +41,24 @@ function _games(player, aiResponse) {
           }
           else if (games.length > 0) {
             availableText = replies.texts.availableMatches.replace(/{{amount}}/i, games.length);
-            notify.send(player, availableText)
-              .then(function() {
-                preview = Match.previewGames(games);
-                notify.send(player, preview)
-                  .then(function() {
-                    notify.send(player, replies.texts.willYouBet, replies.texts.optionsYesNo)
-                      .then(function() {
-                        player.state = 'prompt';
-                        player.stateData = "";
-                        player.save();
-                      });
-                  });
-              })
+            if (player.credits > 0) {
+              notify.send(player, availableText)
+                .then(function() {
+                  preview = Match.previewGames(games);
+                  notify.send(player, preview)
+                    .then(function() {
+                      notify.send(player, replies.texts.willYouBet, replies.texts.optionsYesNo)
+                        .then(function() {
+                          player.state = 'prompt';
+                          player.stateData = "";
+                          player.save();
+                        });
+                    });
+                })
+            }
+            else {
+              notify.send(player, replies.texts.noCredits);
+            }
           }
         })
     })
