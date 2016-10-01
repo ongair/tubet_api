@@ -127,6 +127,9 @@ module.exports = {
     palace: { full: 'Crystal Palace', short: 'CPalace'},
     swansea: { full: 'Swansea City', short: 'Swansea'},
     sunderland: { full: 'Sunderland', short: 'SUN'},
-    westbrom: { full: 'West Bromwich Albion', short: 'West Brom'}  
+    westbrom: { full: 'West Bromwich Albion', short: 'West Brom'},
+    watford: { full: 'Watford', short: 'Watford'},
+    bournemouth: { full: 'AFC Bournemouth', short: 'Bournemouth'},
+    middlesbrough: { full: 'Middlesbrough', short: 'Middles'}
   }
 }
