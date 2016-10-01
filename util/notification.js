@@ -31,23 +31,24 @@ var notifications = {
     }
   },
 
-  sendToMany: function(ids, message, image, image_type) {
+  sendToMany: function(ids, message, image, image_type, beta) {
     var self = this;
     ids.forEach(function(id) {
       Player.findOne({ contactId: id }, function(err, player) {
         var client = new ongair.Client(_token(player));
+        if (beta && !player.beta)
+          return;
 
         if (image && image_type) {
-          console.log('Sending image first', image, image_type, player.to());
+          console.log('Sending image', image, image_type, player.to());
           client.sendImage(player.to(), image, image_type)
             .then(function(id) {
-              message = _personalize(message, player.contactName);
-              message = _preformat(message, player);
-              client.sendMessage(player.to(), message);
+              client.sendMessage(player.to(), _prepare(message, player));
             })
         }
-        else
-          client.sendMessage(player.to(), _personalize(message, player.contactName));
+        else {
+          client.sendMessage(player.to(), _prepare(message, player));
+        }
       });
     });
   },
@@ -68,8 +69,7 @@ var notifications = {
   send: function(contact,message,options) {
     return new Promise(function(resolve, reject) {
       var client = new ongair.Client(_token(contact));
-      message = _personalize(message, contact.contactName);
-      message = _preformat(message, contact);
+      message = _prepare(message, contact);
       client.sendMessage(contact.to(), message, options)
         .then(function(id) {
           resolve(id);
@@ -118,6 +118,10 @@ function _preformat(text,contact) {
     return text;
 }
 
+function _prepare(message, contact) {
+  message = _personalize(message, contact.contactName);
+  return _preformat(message, contact);
+}
 
 function _personalize(text, name) {
   return text.replace(/{{name}}/i, name);

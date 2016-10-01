@@ -53,7 +53,7 @@ var matches = {
         if (progress)
           game.minute = progress;
 
-        if (message) {
+        if (message && type != "COM") {
           notify.broadcast(message);
         }
 
@@ -62,9 +62,8 @@ var matches = {
           game.result = score;
 
         game.save();
-        console.log("Game saved");
         if (type && score && message) {
-          game.notifyPunters(type, score, message);
+          game.notifyPunters(type, score, message, (game.featured && type == "COM"));
         }
 
         if (type && type == "FT") {

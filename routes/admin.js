@@ -109,7 +109,7 @@ var admin = {
     Player.find({ state: 'live' }, function(err, players) {
       ids = players.map(function(player) { return player.contactId });
 
-      notify.sendToMany(ids, message, image, image_type);    
+      notify.sendToMany(ids, message, image, image_type, false);    
 
       res.json({ success: true });
     })

@@ -40,16 +40,16 @@ gameSchema.methods.getBetOption = function(text) {
     return null;
 }
 
-gameSchema.methods.notifyPunters = function(type, score, message) {
+gameSchema.methods.notifyPunters = function(type, score, message, beta) {
 
-  console.log("About to notify punters", type, message);
+  console.log("About to notify punters", type, score, message, beta);
 
   var self = this;
   return new Promise(function(resolve, reject) {
     Bet.find({ gameId: self.gameId, state: 'live' }, function(err, bets) {
       playerIds = bets.map(function(bet) { return bet.playerId });
       console.log("Notifying", playerIds);
-      notify.sendToMany(playerIds, message);
+      notify.sendToMany(playerIds, message, null, null,beta);
     })
   });
 }
