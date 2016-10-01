@@ -52,7 +52,7 @@ betSchema.methods.statusUpdate = function(game) {
       status += "\r\nYou are on track to win " + possible + "💰 TuBets";
     }
     else {
-      status += "\r\nIf things remain the same you will lose" + this.amount + "💰 TuBets";
+      status += "\r\nIf things remain the same you will lose " + this.amount + "💰 TuBets";
     }
   }
   return status;
