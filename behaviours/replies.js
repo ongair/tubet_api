@@ -126,6 +126,7 @@ module.exports = {
     everton: { full: 'Everton', short: 'Everton'},
     palace: { full: 'Crystal Palace', short: 'CPalace'},
     swansea: { full: 'Swansea City', short: 'Swansea'},
-    sunderland: { full: 'Sunderland', short: 'SUN'}  
+    sunderland: { full: 'Sunderland', short: 'SUN'},
+    westbrom: { full: 'West Bromwich Albion', short: 'West Brom'}  
   }
 }
