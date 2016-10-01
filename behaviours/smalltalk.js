@@ -2,9 +2,9 @@ var apiai = require('apiai');
 
 var smalltalk = {
 
-  respond: function(text) {
+  respond: function(text, sessionId) {
     return new Promise(function(resolve, reject) {
-      _query(text)
+      _query(text, sessionId)
         .then(function(response) {
           resolve(response);
         })
@@ -16,12 +16,12 @@ var smalltalk = {
 
 }
 
-function _query(text) {
+function _query(text, sessionId) {
 
   return new Promise(function(resolve, reject) {
 
     var app = apiai(process.env.APIAI_TOKEN);
-    var request = app.textRequest(text);
+    var request = app.textRequest(text, { sessionId: sessionId });
 
     request.on('response', function(response) {
       var response = _resolveResponse(response);

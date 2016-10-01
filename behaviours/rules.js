@@ -204,7 +204,7 @@ var Rules = machina.Fsm.extend({
     'live' : {
       _onEnter: function() {
 
-        smalltalk.respond(message.text)
+        smalltalk.respond(message.text, player.playerId)
           .then(function(response) {
             action.resolve(player, response);
           });
@@ -402,7 +402,7 @@ function bettingPrompt(player, text) {
             })
         }
         else {
-          send(player, replies.texts.termsAccepted)
+          send(player, replies.texts.bettingAccepted)
             .then(function() {
               // Need to find the games
               Match.availableMatches(player)
@@ -555,11 +555,6 @@ function checkTermsAndConditions(player, answer) {
                 .then(function(result) {
                   resolve(result);
                 });
-              // send(player, replies.texts.personalization)
-              //   .then(function() {
-              //     resolve(true);
-              //   })
-
             })
         }
         else {

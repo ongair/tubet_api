@@ -7,6 +7,7 @@ module.exports = {
     prompt: "Do you agree? 👀",
     termsRejected: "😡. Sorry, but I can't continue until you accept the terms and conditions.",
     termsAccepted: '👊',
+    bettingAccepted: "Cool. Lets do this",
     personalization: 'Lets get to know each other a bit. What team do you support?',
     // teamSelected: "🤘",
     teamNotFound: "🤔",
@@ -123,6 +124,7 @@ module.exports = {
     feyenoord: { full: 'Feyenoord', short: 'Feyenoord'},
     zorya: { full: 'Zorya', short: 'Zorya' },
     everton: { full: 'Everton', short: 'Everton'},
-    palace: { full: 'Crystal Palace', short: 'CPalace'}
+    palace: { full: 'Crystal Palace', short: 'CPalace'},
+    swansea: { full: 'Swansea City', short: 'Swansea'}
   }
 }

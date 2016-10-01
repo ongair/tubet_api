@@ -113,6 +113,11 @@ gameSchema.methods.title = function() {
 
 gameSchema.methods.asBet = function() {
   var str = "*" + replies.teams[this.homeTeam]['full'] + " vs " + replies.teams[this.awayTeam]['full'] + "*";
+  if (this.featured && this.promo) {
+    str += "\r\n\r\n";
+    str += this.promo;
+    str += "\r\n";
+  }
   str += "\r\n";
   str += replies.teams[this.homeTeam]['full'] + " Win - (" + this.homeOdds + ")\r\n";
   str += replies.teams[this.awayTeam]['full'] + " Win - (" + this.awayOdds + ")\r\n";
