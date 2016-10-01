@@ -20,6 +20,7 @@ var gameSchema = new Schema({
   tracker: String,
   betable: Boolean,
   featured: Boolean,
+  liveCommentary: Boolean,
   promo: String,
   promoUrl: String
 });
