@@ -66,7 +66,7 @@ module.exports = {
     declinedBet: "No worries. You can bet anytime before the match starts. Just tell me you want to bet and I'll hook you up.",
     badBetAmount: "Sorry, didn't quite understand how much you wanted to bet. Don't want there to be any confusion, just reply with the number of 💰 TuBets",
     theLot: "Wow, all your TuBets! 🙏 You must know something about this game.",
-    noCredits: "😕 Oops, you don't have any TuBets left. Talk to me nicely, who knows..."
+    noCredits: "😕 Oops, you don't have any TuBets left so you can't bet. Talk to me nicely, who knows..."
   },
 
   gifs: {

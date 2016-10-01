@@ -253,10 +253,19 @@ function confirmBet(player, text, data) {
                   Match.availableMatches(player)
                     .then(function(matches) {
                       if (matches.length > 0) {
-                        send(player, availableMatches(matches.length) + "\r\n\r\n" + replies.texts.willYouBet, replies.texts.optionsYesNo)
-                          .then(function() {
-                            resolve(true);
-                          })
+                        // if player has more credits
+                        if (player.credits > 0) {
+                          send(player, availableMatches(matches.length) + "\r\n\r\n" + replies.texts.willYouBet, replies.texts.optionsYesNo)
+                            .then(function() {
+                              resolve(true);
+                            })
+                        }
+                        else {
+                          send(player, replies.texts.noCredits)
+                            .then(function() {
+                              resolve(false);
+                            });
+                        }
                       }
                       else {
                         send(player, replies.texts.complete)
