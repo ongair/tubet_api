@@ -91,7 +91,7 @@ module.exports = {
   },
 
   teams: {
-    manutd: { full: "Manchester United", short: "MAN U" },
+    manutd: { full: "Manchester United", short: "MUN" },
     leicester: { full:"Leicester City", short: "LEI" },
     liverpool: { full: "Liverpool", short: "LIV" },
     hull: { full: "Hull City", short: "HUL" },
@@ -120,7 +120,7 @@ module.exports = {
     atletico: { full: 'Atletico Madrid', short: 'Atleti'},
     bayern: { full: 'Bayern Munich', short: 'Bayern'},
     celtic: { full: 'Celtic', short: 'Celtic'},
-    mancity: { full: 'Manchester City', short: 'MAN C'},
+    mancity: { full: 'Manchester City', short: 'MCI'},
     ferna: { full: 'Fenerbahce', short: 'Ferner'},
     feyenoord: { full: 'Feyenoord', short: 'Feyenoord'},
     zorya: { full: 'Zorya', short: 'Zorya' },
