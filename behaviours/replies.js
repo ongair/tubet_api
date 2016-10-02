@@ -131,6 +131,8 @@ module.exports = {
     westbrom: { full: 'West Bromwich Albion', short: 'WBA'},
     watford: { full: 'Watford', short: 'WAT'},
     bournemouth: { full: 'AFC Bournemouth', short: 'BOU'},
-    middlesbrough: { full: 'Middlesbrough', short: 'MID'}
+    middlesbrough: { full: 'Middlesbrough', short: 'MID'},
+    stoke: { full: 'Stoke City', short: 'STK'},
+    burnley: { full: 'Burnley', short: 'BUN'}
   }
 }
