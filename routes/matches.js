@@ -67,7 +67,7 @@ var matches = {
         }
 
         if (type && type == "FT") {
-          Match.settle(game, status, score);
+          Match.settle(game, 'over', score);
         }
 
         res.status(200);
