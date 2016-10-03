@@ -18,7 +18,7 @@ var play = {
             if (source == 'Telegram')
               name = name.replace(/ *\([^)]*\) */g, "");
 
-            player = new Player({ contactId: playerId, contactName: name, source: source, state: 'new' });
+            player = new Player({ contactId: playerId, contactName: name, source: source, state: 'new', level: '0' });
             player.save();
             notify.slack("A new player (" + name + ") from " + source + " has signed up");
           }
