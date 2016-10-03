@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var Bet = require('./bet.js');
+var notify = require('../../util/notification.js');
+var replies = require('../../behaviours/replies.js');
 var Schema = mongoose.Schema;
 
 var playerSchema = new Schema({
@@ -17,7 +19,7 @@ var playerSchema = new Schema({
   credits: Number,
   beta: Boolean,
   betUpdates: Boolean,
-  level: String,  
+  level: String,
 });
 
 
@@ -47,6 +49,37 @@ playerSchema.methods.allBets = function() {
     })
   });
 }
+
+playerSchema.methods.progress = function() {
+  var self = this;
+  return new new Promise(function(resolve, reject) {
+    switch (self.level) {
+      case "0":
+        // progress the user to level 1
+        self.level = "1";
+        self.save();
+        notify.send(self, replies.texts.leveledUp.replace(/{{level}}/i, "1"));
+        break;
+      case "1":
+        // progress the user to level 1
+
+        self.settledBets()
+          .then(function(bets) {
+            if (bets.length >= 3) {
+              // only move to level two if there are at least 3 bets
+              self.level = "2";
+              self.save();
+              notify.send(self, replies.texts.leveledUp.replace(/{{level}}/i, "2"));
+            }
+          })
+
+        break;
+      default:
+
+    }
+  });
+}
+
 
 playerSchema.methods.settledBets = function() {
   var self = this;

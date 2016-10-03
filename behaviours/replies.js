@@ -68,7 +68,8 @@ module.exports = {
     badBetAmount: "Sorry, didn't quite understand how much you wanted to bet. Don't want there to be any confusion, just reply with the number of 💰 TuBets",
     theLot: "Wow, all your TuBets! 🙏 You must know something about this game.",
     noCredits: "😕 Oops, you don't have any TuBets left so you can't bet. Talk to me nicely, who knows...",
-    betHistory: "*You have won {{wins}} bets out of {{totalBets}}. The total amount of Tubets won is {{totalWinnings}}💰, from bets of {{totalWagered}}💰. You now have {{credits}}💰 left.*"
+    betHistory: "*You have won {{wins}} bets out of {{totalBets}}. The total amount of Tubets won is {{totalWinnings}}💰, from bets of {{totalWagered}}💰. You now have {{credits}}💰 left.*",
+    leveledUp: "🏅*Congratulations!🏅* \r\nYou have completed level {{level}}."
   },
 
   gifs: {

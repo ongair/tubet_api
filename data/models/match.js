@@ -38,15 +38,19 @@ Match.settle = function(game, status, score) {
 
           text = text.replace(/{{credits}}/i, credits);
 
-          console.log(text);
-
-          notify.send(punter, text);
+          notify.send(punter, text)
+            .then(function() {
+              player.progress();
+            });
 
         } else {
           text = game.title() + "\r\n";
           text += "FT. " + game.score() + "\r\n";
           text += replies.texts.betLost;
-          notify.send(punter, text);
+          notify.send(punter, text)
+            .then(function() {
+              player.progress();
+            });
         }
         bet.state = "settled";
         bet.save();
