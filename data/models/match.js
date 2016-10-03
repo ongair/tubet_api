@@ -75,7 +75,7 @@ Match.previewGames = function(matches) {
     else
       title = "*" + homeTeam + " v " + awayTeam + "*";
     title += "\r\n";
-    title += moment(match.date).format('H:mm');
+    title += moment(match.date).format("ll HH:mm");
     return title;
   });
   return strings.join("\r\n\r\n");
