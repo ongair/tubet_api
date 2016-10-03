@@ -95,7 +95,7 @@ function _history(player, response) {
                       // winnings
                       result = {
                         title: game.title(),
-                        date: moment(game.date).format("ll HH:mm"),
+                        date: game.date,
                         won: won,
                         winnings: winnings,
                         wager: bet.amount,
@@ -141,17 +141,36 @@ function _status(player, aiResponse) {
 }
 
 function _sendResults(player, results) {
+
+  results = results.sort(function(betA, betB) {
+    return betA.date - betB.date
+  });
+
   strings = results.map(function(result) {
     str = result.title;
-    str += "\r\n" + result.date;
+    str += "\r\n" + moment(result.date).format("ll HH:mm");
     str += "\r\n You bet " + result.wager + "💰 on a " + result.game.getBetOutcome(result.betType);
     str += "\r\n" + _outcomeIcon(result.won) + " *Result: " + result.score + ", Winnings: " + result.winnings + "💰 *";
     return str;
   });
 
-  strings.forEach(function(string) {
-    notify.send(player, string);
-  });
+  chain = strings.join("\r\n\r\n");
+
+  winCount = results.reduce(function (total,result) { return result.won ? total+1 : total },0);
+  totalWaged = results.reduce(function(sum, result) { return sum + result.wager },0);
+  totalWin = results.reduce(function(sum, result) { return sum + result.winnings }, 0);
+
+  notify.send(player, chain)
+    .then(function() {
+      // send the win ratio
+      report = replies.texts.betHistory.replace(/{{wins}}/i, winCount);
+      report = report.replace(/{{totalBets}}/i, results.length);
+      report = report.replace(/{{totalWinnings}}/i, totalWin);
+      report = report.replace(/{{totalWagered}}/i, totalWaged);
+      report = report.replace(/{{credits}}/i, player.credits);
+
+      notify.send(player, report);
+    });
 }
 
 function _outcomeIcon(win) {
