@@ -135,6 +135,10 @@ module.exports = {
     bournemouth: { full: 'AFC Bournemouth', short: 'BOU'},
     middlesbrough: { full: 'Middlesbrough', short: 'MID'},
     stoke: { full: 'Stoke City', short: 'STK'},
-    burnley: { full: 'Burnley', short: 'BUN'}
+    burnley: { full: 'Burnley', short: 'BUN'},
+    kenya: { full: 'Kenya', short: 'KEN' },
+    congo: { full: 'Congo', short: 'DRC'},
+    italy: { full: 'Italy', short: 'ITA' },
+    spain: { full: 'Spain', short: 'ESP'}
   }
 }
