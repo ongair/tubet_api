@@ -31,8 +31,7 @@ var notifications = {
     }
   },
 
-  sendToMany: function(ids, message, image, image_type, beta) {
-    var self = this;
+  sendToMany: function(ids, message, image, image_type, beta, options) {
     ids.forEach(function(id) {
       Player.findOne({ contactId: id }, function(err, player) {
         var client = new ongair.Client(_token(player));
@@ -43,11 +42,13 @@ var notifications = {
           console.log('Sending image', image, image_type, player.to());
           client.sendImage(player.to(), image, image_type)
             .then(function(id) {
-              client.sendMessage(player.to(), _prepare(message, player));
+              setTimeout(function() {
+                client.sendMessage(player.to(), _prepare(message, player), options);
+              }, 2000);
             })
         }
         else {
-          client.sendMessage(player.to(), _prepare(message, player));
+          client.sendMessage(player.to(), _prepare(message, player), options);
         }
       });
     });

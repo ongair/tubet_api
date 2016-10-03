@@ -49,7 +49,7 @@ gameSchema.methods.notifyPunters = function(type, score, message, beta) {
     Bet.find({ gameId: self.gameId, state: 'live' }, function(err, bets) {
       playerIds = bets.map(function(bet) { return bet.playerId });
       console.log("Notifying", playerIds);
-      notify.sendToMany(playerIds, message, null, null,beta);
+      notify.sendToMany(playerIds, message, null, null,beta, null);
     })
   });
 }

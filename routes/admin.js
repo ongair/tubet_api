@@ -105,11 +105,12 @@ var admin = {
     message = req.body.message;
     image = req.body.image;
     image_type = req.body.image_type;
+    options = req.body.options;
 
     Player.find({ state: 'live' }, function(err, players) {
       ids = players.map(function(player) { return player.contactId });
 
-      notify.sendToMany(ids, message, image, image_type, false);    
+      notify.sendToMany(ids, message, image, image_type, false, options);
 
       res.json({ success: true });
     })
