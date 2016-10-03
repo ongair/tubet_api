@@ -73,7 +73,8 @@ var admin = {
           state: player.state,
           credits: player.credits,
           source: player.source,
-          beta: player.beta
+          beta: player.beta,
+          level: player.level
         }
       });
       res.json(all);
@@ -168,6 +169,10 @@ var admin = {
     var homeOdds = req.body.homeOdds;
     var awayOdds = req.body.awayOdds;
     var drawOdds = req.body.drawOdds;
+    var overOdds = req.body.overOdds;
+    var bothScoreYesOdds = req.body.bothScoreYesOdds;
+    var bothScoreNoOdds = req.body.bothScoreNoOdds;
+    var underOdds = req.body.underOdds;
     var date = req.body.date;
     var tracker = req.body.tracker;
     var status = req.body.status;
@@ -187,7 +192,7 @@ var admin = {
 
           game = new Game({ matchCode: matchCode, gameId: gameId, homeTeam: homeTeamKey, tracker: tracker, status: status,
             awayTeam: awayTeamKey, date: moment(date), homeOdds: homeOdds, awayOdds: awayOdds, drawOdds: drawOdds, betable: betable,
-            featured: featured, promo: promo, promoUrl: promoUrl });
+            featured: featured, promo: promo, promoUrl: promoUrl, overOdds: overOdds, underOdds: underOdds, bothScoreYesOdds: bothScoreYesOdds, bothScoreNoOdds: bothScoreNoOdds });
 
           game.save();
 

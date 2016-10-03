@@ -33,6 +33,18 @@ gameSchema.methods.asOption = function() {
   return replies.teams[this.homeTeam]['short'] + "-" + replies.teams[this.awayTeam]['short'];
 }
 
+gameSchema.methods.getBetTypes = function() {
+  return {
+    'h': this.homeOdds,
+    'a': this.awayOdds,
+    'x': this.drawOdds,
+    'gg': this.bothScoreYesOdds,
+    'ng': this.bothScoreNoOdds,
+    'og': this.overOdds,
+    'ug': this.underOdds
+  }
+}
+
 gameSchema.methods.getBetOption = function(text) {
   if (text.toLowerCase() == replies.teams[this.homeTeam]['full'].toLowerCase())
     return 'h';

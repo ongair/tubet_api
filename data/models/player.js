@@ -16,7 +16,8 @@ var playerSchema = new Schema({
   source: String,
   credits: Number,
   beta: Boolean,
-  betUpdates: Boolean
+  betUpdates: Boolean,
+  level: String,  
 });
 
 
