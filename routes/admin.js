@@ -124,6 +124,7 @@ var admin = {
         beta = req.body.beta;
         state = req.body.state;
         credits = req.body.credits;
+        level = req.body.level;
 
         if (beta)
           player.beta = beta;
@@ -133,6 +134,9 @@ var admin = {
 
         if (credits)
           player.credits = credits;
+
+        if (level)
+          player.level = level;
 
         player.save();
 
