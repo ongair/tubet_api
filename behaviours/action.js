@@ -1,5 +1,6 @@
 var notify = require('../util/notification.js');
 var replies = require('./replies.js');
+var moment = require('moment');
 var Match = require('../data/models/match.js');
 var actions = {
 
@@ -12,6 +13,10 @@ var actions = {
           break;
         case 'status':
           _status(player, aiResponse);
+          resolve(true);
+          break;
+        case 'history':
+          _history(player, aiResponse)
           resolve(true);
           break;
         case 'balance':
@@ -64,13 +69,59 @@ function _games(player, aiResponse) {
     })
 }
 
+function _history(player, response) {
+  notify.send(player, response.reply)
+    .then(function() {
+      player.settledBets()
+        .then(function(bets) {
+          num = bets.length;
+          if (num == 0)
+            notify.send(player, replies.texts.noBetHistory);
+          else {
+            notify.send(player, replies.texts.betCount.replace(/{{count}}/i, num))
+              .then(function() {
+
+                results = [];
+                // go through each of the bets the user has made
+                bets.forEach(function(bet, idx) {
+                  Match.getGame(bet.gameId)
+                    .then(function(game) {
+                      // console.log("Game", bet.betType, game.result, bet.amount);
+
+                      won = bet.isWinningBet(game.score());
+                      outcome = bet.getOutcomeFromScore(game.score());
+
+                      winnings = won ? game.getPossibleWinnings(outcome, bet.amount) : 0;
+                      // winnings
+                      result = {
+                        title: game.title(),
+                        date: moment(game.date).format("ll HH:mm"),
+                        won: won,
+                        winnings: winnings,
+                        wager: bet.amount,
+                        betType: bet.betType,
+                        game: game,
+                        score: game.score(),
+                      }
+
+                      results.push(result);
+
+                      if (results.length == bets.length)
+                        _sendResults(player, results);
+                    })
+                });
+              });
+          }
+        })
+    });
+}
+
 function _status(player, aiResponse) {
   notify.send(player, aiResponse.reply)
     .then(function(id) {
       // check the status of bets
       player.liveBets()
         .then(function(bets) {
-          console.log("Bets", bets);
           if (bets.length == 0)
             notify.send(player, replies.texts.noBets);
           else {
@@ -87,6 +138,24 @@ function _status(player, aiResponse) {
           }
         })
     })
+}
+
+function _sendResults(player, results) {
+  strings = results.map(function(result) {
+    str = result.title;
+    str += "\r\n" + result.date;
+    str += "\r\n You bet " + result.wager + "💰 on a " + result.game.getBetOutcome(result.betType);
+    str += "\r\n" + _outcomeIcon(result.won) + " *Result: " + result.score + ", Winnings: " + result.winnings + "💰 *";
+    return str;
+  });
+
+  strings.forEach(function(string) {
+    notify.send(player, string);
+  });
+}
+
+function _outcomeIcon(win) {
+  return win ? "✅" : "❌";
 }
 
 function _balance(player, aiResponse) {

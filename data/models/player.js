@@ -36,6 +36,24 @@ playerSchema.methods.liveBets = function() {
       resolve(bets);
     })
   });
+};
+
+playerSchema.methods.allBets = function() {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    Bet.find({ playerId: self.contactId }, function(err, bets) {
+      resolve(bets);
+    })
+  });
+}
+
+playerSchema.methods.settledBets = function() {
+  var self = this;
+  return new Promise(function(resolve, reject) {
+    Bet.find({ playerId: self.contactId, state: 'settled' }, function(err, bets) {
+      resolve(bets);
+    })
+  });
 }
 
 playerSchema.methods.isNew = function() {
