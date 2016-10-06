@@ -175,7 +175,7 @@ gameSchema.methods.asBet = function(player) {
   str += "Draw - (" + this.drawOdds + ")\r\n";
   // need to customize for betting
   switch (player.level) {
-    case "2":
+    case "1":
       str += "Both teams to score GG - (" + this.bothScoreYesOdds + ")";
       str += "\r\nNo goals NG - (" + this.bothScoreNoOdds + ")";
       str += "\r\n3 or more goals scored OV25 - (" + this.overOdds + ")";
