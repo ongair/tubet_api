@@ -176,6 +176,7 @@ gameSchema.methods.asBet = function(player) {
   // need to customize for betting
   switch (player.level) {
     case "1":
+    case "2":
       str += "Both teams to score GG - (" + this.bothScoreYesOdds + ")";
       str += "\r\nNo goals NG - (" + this.bothScoreNoOdds + ")";
       str += "\r\n3 or more goals scored OV25 - (" + this.overOdds + ")";
@@ -188,6 +189,7 @@ gameSchema.methods.asBet = function(player) {
 gameSchema.methods.betOptions = function(player) {
   switch (player.level) {
     case "1":
+    case "2":
       return replies.teams[this.homeTeam]['full'] + ",Draw," + replies.teams[this.awayTeam]['full'] + ",GG,NG,OV25,UN25";
       break;
     default:
