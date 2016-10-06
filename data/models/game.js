@@ -187,7 +187,7 @@ gameSchema.methods.asBet = function(player) {
 
 gameSchema.methods.betOptions = function(player) {
   switch (player.level) {
-    case "2":
+    case "1":
       return replies.teams[this.homeTeam]['full'] + ",Draw," + replies.teams[this.awayTeam]['full'] + ",GG,NG,OV25,UN25";
       break;
     default:
