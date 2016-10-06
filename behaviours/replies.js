@@ -145,6 +145,8 @@ module.exports = {
     kenya: { full: 'Kenya', short: 'KEN' },
     congo: { full: 'Congo', short: 'DRC'},
     italy: { full: 'Italy', short: 'ITA' },
-    spain: { full: 'Spain', short: 'ESP'}
+    spain: { full: 'Spain', short: 'ESP'},
+    ghana: { full: 'Ghana', short: 'GHA' },
+    uganda: { full: 'Uganda', short: 'UG'}
   }
 }
