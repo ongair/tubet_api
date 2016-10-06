@@ -86,8 +86,6 @@ function _history(player, response) {
                 bets.forEach(function(bet, idx) {
                   Match.getGame(bet.gameId)
                     .then(function(game) {
-                      // console.log("Game", bet.betType, game.result, bet.amount);
-
                       won = bet.isWinningBet(game.score());
                       outcome = bet.getOutcomeFromScore(game.score());
 
@@ -149,7 +147,7 @@ function _sendResults(player, results) {
   strings = results.map(function(result) {
     str = result.title;
     str += "\r\n" + moment(result.date).format("ll HH:mm");
-    str += "\r\n You bet " + result.wager + "💰 on a " + result.game.getBetOutcome(result.betType);
+    str += "\r\n You bet " + result.wager + "💰 on " + result.game.getBetOutcome(result.betType);
     str += "\r\n" + _outcomeIcon(result.won) + " *Result: " + result.score + ", Winnings: " + result.winnings + "💰 *";
     return str;
   });

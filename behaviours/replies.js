@@ -53,8 +53,8 @@ module.exports = {
     gameSelected: "Ok, here's your game",
     creditUpdate: "You have {{amount}} 💰 Tubets remaining",
     creditQuery: "You have {{amount}} 💰 Tubets remaining. \r\nDon't use them all at once.",
-    amountPrompt: "Ok, how much will you put on a",
-    betConfirmation: "You have placed {{amount}} 💰 on a {{outcome}}. If you are right you could win {{winnings}} 💰. \r\n*Should I confirm?*",
+    amountPrompt: "Ok, how much will you put on ",
+    betConfirmation: "You have placed {{amount}} 💰 on {{outcome}}. If you are right you could win {{winnings}} 💰. \r\n*Should I confirm?*",
     betAccepted: "Done. All the best.",
     updateChannel: "Want to get updates for all the matches today? Click [here](https://telegram.me/TubetUpdates) to check out our update channel",
     betLost: "😔. Woi, pole, looks like things didn't go according to plan. You win some, you lose some",
@@ -70,7 +70,11 @@ module.exports = {
     theLot: "Wow, all your TuBets! 🙏 You must know something about this game.",
     noCredits: "😕 Oops, you don't have any TuBets left so you can't bet. Talk to me nicely, who knows...",
     betHistory: "*You have won {{wins}} bets out of {{totalBets}}. The total amount of Tubets won is {{totalWinnings}}💰, from bets of {{totalWagered}}💰. You now have {{credits}}💰 left.*",
-    leveledUp: "🏅*Congratulations!🏅* \r\nYou have completed level {{level}}."
+    leveledUp: "🏅*Congratulations!🏅* \r\nYou have completed level {{level}}.",
+    betOptionGG: "both teams scoring at least 1 goal each",
+    betOptionNG: "the game ending in 0-0",
+    betOptionOV: "3 or more goals scored",
+    betOptionUN: "2 goals or less scored"
   },
 
   gifs: {

@@ -110,7 +110,7 @@ var Rules = machina.Fsm.extend({
                 player.state = 'betting';
               }
               else if (yes == 1) {
-                console.log("Jumping to punt", player.stateData);
+                // console.log("Jumping to punt", player.stateData);
                 player.state = 'punt';
               }
             }
@@ -306,7 +306,7 @@ function wager(player, amount, data) {
 
         gameId = data['id'];
         option = data['option'];
-
+        
         Match.getGame(gameId)
           .then(function(game) {
             winnings = game.getPossibleWinnings(option, amount);
@@ -385,7 +385,7 @@ function selectBet(player, text) {
         if (game) {
           send(player, replies.texts.gameSelected)
             .then(function() {
-              send(player, game.asBet(), game.betOptions())
+              send(player, game.asBet(player), game.betOptions(player))
                 .then(function() {
                   resolve(game.gameId);
                 });
@@ -439,7 +439,7 @@ function bettingPrompt(player, text) {
                     // should show only the one match
                     game = matches[0];
 
-                    send(player, game.asBet(), game.betOptions())
+                    send(player, game.asBet(player), game.betOptions(player))
                       .then(function() {
                         id = game.gameId;
                         data = JSON.stringify({ id: id });

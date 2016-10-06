@@ -26,8 +26,32 @@ betSchema.methods.getOutcomeFromScore = function(score) {
 }
 
 betSchema.methods.isWinningBet = function(score) {
-  outcome = this.getOutcomeFromScore(score);
-  return outcome == this.betType;
+  points = score.split("-");
+  home = points[0];
+  away = points[1];
+
+  switch (this.betType) {
+    case 'h':
+      return home > away;
+      break;
+    case 'a':
+      return away < home;
+      break;
+    case 'gg':
+      return (home > 0) && (away > 0);
+      break;
+    case 'ng':
+      return home == 0 && away == 0;
+      break;
+    case 'o':
+      return (home + away) >= 3;
+      break;
+    case 'u':
+      return (home + away) < 3;
+      break;
+    default:
+      return home == away;
+  }
 }
 
 betSchema.methods.statusUpdate = function(game) {
@@ -39,11 +63,24 @@ betSchema.methods.statusUpdate = function(game) {
     case 'a':
       status += "\r\nYou bet on a " + replies.teams[game.awayTeam]['full'] + " win at " + game.awayOdds;
       break;
+    case 'gg':
+      status += "\r\nYou bet that both teams would score at least one goal";
+      break;
+    case 'ng':
+      status += "\r\nYou bet that no goals would be scored";
+      break;
+    case 'o':
+      status += "\r\nYou bet that at least 3 goals would be scored";
+      break;
+    case 'u':
+      status += "\r\nYou bet that less than 3 goals would be scored";
+      break;
     default:
       status += "\r\nYou bet on a draw at " + game.drawOdds;
       break;
   }
-  possible = this.winnings(this.betType, game.homeOdds, game.awayOdds, game.drawOdds);
+
+  possible = game.getPossibleWinnings(this.betType, this.amount);
   if (game.status == 'pending')
     status += "\r\nPossible win " + possible + "💰 TuBets";
   else if (game.status == "live") {
@@ -62,20 +99,6 @@ betSchema.methods.status = function(game) {
   status = game.progress();
   status += this.statusUpdate(game);
   return status;
-}
-
-betSchema.methods.winnings = function(outcome, homeOdds, awayOdds, drawOdds) {
-  amountPlaced = this.amount;
-  winnings = 0;
-  if (outcome == 'h')
-    winnings = amountPlaced * homeOdds;
-  else if (outcome == 'a')
-    winnings = amountPlaced * awayOdds;
-  else
-    winnings = amountPlaced * drawOdds;
-
-  winnings = Math.ceil(winnings);
-  return winnings;
 }
 
 module.exports = mongoose.model('Bet', betSchema);

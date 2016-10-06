@@ -71,6 +71,7 @@ var admin = {
           contactId: player.contactId,
           name: player.contactName,
           state: player.state,
+          stateData: player.stateData,
           credits: player.credits,
           source: player.source,
           beta: player.beta,

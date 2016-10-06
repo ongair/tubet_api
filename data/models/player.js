@@ -20,6 +20,7 @@ var playerSchema = new Schema({
   beta: Boolean,
   betUpdates: Boolean,
   level: String,
+  levelTutorial: Boolean
 });
 
 
