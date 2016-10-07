@@ -149,6 +149,10 @@ module.exports = {
     ghana: { full: 'Ghana', short: 'GHA' },
     uganda: { full: 'Uganda', short: 'UG'},
     turkey: { full: 'Turkey', short: 'TUR'},
-    ukraine: { full: 'Ukraine', short: 'UKR'}
+    ukraine: { full: 'Ukraine', short: 'UKR'},
+    france: { full: 'France', short: 'FRA' },
+    bulgaria: { full: 'Bulgaria', short: 'BUL'},
+    england: { full: 'England', short: 'ENG'},
+    malta: { full: 'Malta', short: 'MAL'}      
   }
 }
