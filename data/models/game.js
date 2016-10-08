@@ -177,10 +177,17 @@ gameSchema.methods.asBet = function(player) {
   switch (player.level) {
     case "1":
     case "2":
-      str += "Both teams to score GG - (" + this.bothScoreYesOdds + ")";
-      str += "\r\nNo goals NG - (" + this.bothScoreNoOdds + ")";
-      str += "\r\n3 or more goals scored OV25 - (" + this.overOdds + ")";
-      str += "\r\nLess than 3 goals scored UN25 - (" + this.underOdds + ")";
+      if (this.bothScoreYesOdds)
+        str += "Both teams to score GG - (" + this.bothScoreYesOdds + ")";
+
+      if (this.bothScoreNoOdds)
+        str += "\r\nNo goals NG - (" + this.bothScoreNoOdds + ")";
+
+      if (this.overOdds)
+        str += "\r\n3 or more goals scored OV25 - (" + this.overOdds + ")";
+
+      if (this.underOdds)
+        str += "\r\nLess than 3 goals scored UN25 - (" + this.underOdds + ")";
       break;
   }
   return str;

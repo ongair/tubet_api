@@ -153,6 +153,10 @@ module.exports = {
     france: { full: 'France', short: 'FRA' },
     bulgaria: { full: 'Bulgaria', short: 'BUL'},
     england: { full: 'England', short: 'ENG'},
-    malta: { full: 'Malta', short: 'MAL'}      
+    malta: { full: 'Malta', short: 'MAL'},
+    germany: { full: 'Germany', short: 'GER'},
+    czech: { full: 'Czech Republic', short: 'CZE'},
+    ivory: { full: 'Ivory Coast', short: 'IVC' },
+    mali: { full: 'Mali', short: 'MLI' }
   }
 }
