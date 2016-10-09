@@ -35,7 +35,7 @@ betSchema.methods.isWinningBet = function(score) {
       return home > away;
       break;
     case 'a':
-      return away < home;
+      return away > home;
       break;
     case 'gg':
       return (home > 0) && (away > 0);
