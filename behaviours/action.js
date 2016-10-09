@@ -87,9 +87,7 @@ function _history(player, response) {
                   Match.getGame(bet.gameId)
                     .then(function(game) {
                       won = bet.isWinningBet(game.score());
-                      outcome = bet.getOutcomeFromScore(game.score());
-
-                      winnings = won ? game.getPossibleWinnings(outcome, bet.amount) : 0;
+                      winnings = won ? game.getPossibleWinnings(bet.betType, bet.amount) : 0;
                       // winnings
                       result = {
                         title: game.title(),
