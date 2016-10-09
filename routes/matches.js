@@ -63,7 +63,8 @@ var matches = {
 
         game.save();
         if (type && score && message) {
-          game.notifyPunters(type, score, message, (game.featured && type == "COM"));
+          if (type != "COM")
+            game.notifyPunters(type, score, message, false);
         }
 
         if (type && type == "FT") {

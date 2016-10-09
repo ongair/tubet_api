@@ -35,8 +35,8 @@ var notifications = {
     ids.forEach(function(id) {
       Player.findOne({ contactId: id }, function(err, player) {
         var client = new ongair.Client(_token(player));
-        if (beta && !player.beta)
-          return;
+        // if (beta && !player.beta)
+        //   return;
 
         if (image && image_type) {
           console.log('Sending image', image, image_type, player.to());
