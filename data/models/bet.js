@@ -27,8 +27,8 @@ betSchema.methods.getOutcomeFromScore = function(score) {
 
 betSchema.methods.isWinningBet = function(score) {
   points = score.split("-");
-  home = points[0];
-  away = points[1];
+  home = parseInt(points[0]);
+  away = parseInt(points[1]);
 
   switch (this.betType) {
     case 'h':
