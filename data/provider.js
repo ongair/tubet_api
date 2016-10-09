@@ -10,6 +10,10 @@ var provider = {
     console.log('Initialized database connection');
   },
 
+  disconnect: function() {
+    mongoose.connection.close();
+  },
+
   setupData: function(req, res) {
     findOrCreateLeague('1', { key: '1', code: 'epl', name: 'English Premier League' })
       .then(function(league) {
