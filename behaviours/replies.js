@@ -157,6 +157,10 @@ module.exports = {
     germany: { full: 'Germany', short: 'GER'},
     czech: { full: 'Czech Republic', short: 'CZE'},
     ivory: { full: 'Ivory Coast', short: 'IVC' },
-    mali: { full: 'Mali', short: 'MLI' }
+    mali: { full: 'Mali', short: 'MLI' },
+    nigeria: { full: 'Nigeria', short: 'NGN' },
+    zambia: { full: 'Zambia', short: 'ZAM' },
+    algeria: { full: 'Algeria', short: 'ALG'},
+    cameroon: { full: 'Cameroon', short: 'CAM'}
   }
 }
