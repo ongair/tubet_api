@@ -126,6 +126,7 @@ var admin = {
         state = req.body.state;
         credits = req.body.credits;
         level = req.body.level;
+        stateData = req.body.stateData;
 
         if (beta)
           player.beta = beta;
@@ -135,6 +136,9 @@ var admin = {
 
         if (credits)
           player.credits = credits;
+
+        if (stateData)
+          player.stateData = stateData;
 
         if (level)
           player.level = level;
