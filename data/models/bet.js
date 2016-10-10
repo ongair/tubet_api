@@ -12,19 +12,6 @@ var betSchema = new Schema({
   amount: Number
 });
 
-betSchema.methods.getOutcomeFromScore = function(score) {
-  points = score.split("-");
-  home = points[0];
-  away = points[1];
-
-  if (home > away)
-    return 'h';
-  else if (away > home)
-    return 'a';
-  else
-    return 'x';
-}
-
 betSchema.methods.isWinningBet = function(score) {
   points = score.split("-");
   home = parseInt(points[0]);
@@ -58,25 +45,25 @@ betSchema.methods.statusUpdate = function(game) {
   status = '';
   switch (this.betType) {
     case 'h':
-      status += "\r\nYou bet on a " + replies.teams[game.homeTeam]['full'] + " win at " + game.homeOdds;
+      status += "\r\nYou bet " + this.amount +  " 💰 on a " + replies.teams[game.homeTeam]['full'] + " win at " + game.homeOdds;
       break;
     case 'a':
-      status += "\r\nYou bet on a " + replies.teams[game.awayTeam]['full'] + " win at " + game.awayOdds;
+      status += "\r\nYou bet " + this.amount + " 💰 on a " + replies.teams[game.awayTeam]['full'] + " win at " + game.awayOdds;
       break;
     case 'gg':
-      status += "\r\nYou bet that both teams would score at least one goal";
+      status += "\r\nYou bet " + this.amount + " 💰 that both teams would score at least one goal";
       break;
     case 'ng':
-      status += "\r\nYou bet that no goals would be scored";
+      status += "\r\nYou bet " + this.amount + " 💰 that no goals would be scored";
       break;
     case 'o':
-      status += "\r\nYou bet that at least 3 goals would be scored";
+      status += "\r\nYou bet " + this.amount + " 💰 that at least 3 goals would be scored";
       break;
     case 'u':
-      status += "\r\nYou bet that less than 3 goals would be scored";
+      status += "\r\nYou bet " + this.amount + " 💰 that less than 3 goals would be scored";
       break;
     default:
-      status += "\r\nYou bet on a draw at " + game.drawOdds;
+      status += "\r\nYou bet " + this.amount + " 💰 on a draw at " + game.drawOdds;
       break;
   }
 
