@@ -161,6 +161,7 @@ module.exports = {
     nigeria: { full: 'Nigeria', short: 'NGN' },
     zambia: { full: 'Zambia', short: 'ZAM' },
     algeria: { full: 'Algeria', short: 'ALG'},
-    cameroon: { full: 'Cameroon', short: 'CAM'}
+    cameroon: { full: 'Cameroon', short: 'CAM'},
+    netherlands: { full: 'Netherlands', short: 'NED'}    
   }
 }
