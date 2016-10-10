@@ -62,6 +62,7 @@ module.exports = {
     noBets: "Don't have any active bets to update you on.",
     noBetHistory: "You haven't made any bets yet",
     betCount: "You have {{count}} bets placed",
+    betCountWithStake: "You have {{count}} bets placed worth {{stake}} 💰 TuBets.",
     // noGames: "Unfortunately we don't have games available for betting today, bet we're working on bringing you more games. I'll let you know as soon as we do",
     noGames: "Bummer. I also hate the international break, but I'm working on some world cup qualifiers coming up shortly",
     didNotUnderstandGameBet: "Sorry, I didn't understand which game you wanted to bet on",

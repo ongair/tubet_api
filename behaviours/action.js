@@ -121,7 +121,10 @@ function _status(player, aiResponse) {
           if (bets.length == 0)
             notify.send(player, replies.texts.noBets);
           else {
-            text = replies.texts.betCount.replace(/{{count}}/i, bets.length);
+            amounts = bets.map(function() { return bet.amount });
+            totalWaged = amounts.reduce(function(p,c) { return p + c });
+            text = replies.texts.betCountWithStake.replace(/{{count}}/i, bets.length);
+            text = text.replace(/{{stake}}/i, totalWaged);
             notify.send(player, text)
               .then(function() {
                 bets.forEach(function(bet) {
