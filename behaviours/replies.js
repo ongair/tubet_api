@@ -44,8 +44,8 @@ module.exports = {
     wrongBetId: "Oops, I can't quite understand your bet. Please try again with the format *#ID OUTCOME AMOUNT*",
     wagerAccepted: "You have bet {{amount}}💰  for a {{outcome}}. If you are right you could win {{winnings}}💰. Good luck.",
     betTooHigh: "🙊\r\nOops, you only have {{amount}}💰 available so you need to make a smaller bet.",
-    availableMatches: "💃 We have {{amount}} games available for betting today.",
-    availableOtherMatches: "💃 We have {{amount}} other games available for betting today.",
+    availableMatches: "⚽ We have {{amount}} games available for betting today.",
+    availableOtherMatches: "⚽ We have {{amount}} other games available for betting today.",
     willYouBet: "Would you like to place a bet?",
     optionsYesNo: "Yes,No",
     betOptionDeclined: "Don't be a 🍗. Anyway, if you change your mind let me know before the matches kick off",
@@ -164,6 +164,6 @@ module.exports = {
     cameroon: { full: 'Cameroon', short: 'CAM'},
     netherlands: { full: 'Netherlands', short: 'NED'},
     sweden: { full: 'Sweden', short: 'SWE' },
-    bulgaria: { full: 'Bulgaria', short: 'BUL' }    
+    bulgaria: { full: 'Bulgaria', short: 'BUL' }
   }
 }
