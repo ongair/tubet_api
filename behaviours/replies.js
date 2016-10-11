@@ -169,6 +169,7 @@ module.exports = {
     slovenia: { full: 'Slovenia', short: 'SLO' },
     colombia: { full: 'Colombia', short: 'COL' },
     uruguay: { full: 'Uruguay', short: 'URU' },
-    nireland: { full: 'N. Ireland', short: 'NIR'}
+    nireland: { full: 'N. Ireland', short: 'NIR'},
+    safrica: { full: 'South Africa', short: 'SAR'}
   }
 }
