@@ -170,6 +170,8 @@ module.exports = {
     colombia: { full: 'Colombia', short: 'COL' },
     uruguay: { full: 'Uruguay', short: 'URU' },
     nireland: { full: 'N. Ireland', short: 'NIR'},
-    safrica: { full: 'South Africa', short: 'SAR'}
+    safrica: { full: 'South Africa', short: 'SAR'},
+    muhoroni: { full: 'Muhoroni Youth FC', short: 'MHR'},
+    mathare: { full: 'Mathare United', short: 'MTH' }
   }
 }
