@@ -175,6 +175,8 @@ module.exports = {
     nireland: { full: 'N. Ireland', short: 'NIR'},
     safrica: { full: 'South Africa', short: 'SAR'},
     muhoroni: { full: 'Muhoroni Youth FC', short: 'MHR'},
-    mathare: { full: 'Mathare United', short: 'MTH' }
+    mathare: { full: 'Mathare United', short: 'MTH' },
+    ulinzi: { full: 'Ulinzi Starts', short: 'ULI' },
+    afc: { full: 'AFC Leopards', short: 'AFC'}
   }
 }
