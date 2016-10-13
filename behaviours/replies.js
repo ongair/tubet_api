@@ -23,7 +23,7 @@ module.exports = {
     exampleCorrect: "👍",
     exampleWrong: "👎",
     // exampleExplainer: "High odds = Less likely to happen. \r\nLower odds = More likely to happen. In ⚽, the Favorite Team will have lower odds to win than the Underdog. \r\nOk, lets talk 💰💰💰",
-    creditsExplainer: "Instead of real money, we use TuBets 💰 in this game. I've given you 100 TuBets 💰, how much do you want to place on a ",
+    creditsExplainer: "Instead of real money, we use TuBets 💰 in this game. I've given you 100 TuBets 💰, how much do you want to place on ",
     // exampleResultsCorrect: "👍, 225💰.",
     // exampleResultsWrong: "👎, you should have said 225.",
     nonNumericBet: "🙄 I don't want to confuse your bet so please tell me your amount as a number, for example 100.",
@@ -96,7 +96,8 @@ module.exports = {
     bou: "http://media3.giphy.com/media/a8siLqtWyqzSg/200.gif",
     wat: "http://media3.giphy.com/media/HQLu5sAaoDIKA/200.gif",
     mou: "http://media3.giphy.com/media/6eKCAGtepHvjO/200.gif",
-    win: "http://media3.giphy.com/media/kQg7fQMvVD5Ha/200.gif"
+    win: "http://media3.giphy.com/media/kQg7fQMvVD5Ha/200.gif",
+    draw: "http://i.giphy.com/6nuiJjOOQBBn2.gif"
   },
 
   teams: {
@@ -127,6 +128,8 @@ module.exports = {
     gladbach: { full: 'Borussia Mönchengladbach', short: 'Bor. Vfl'},
     barca: { full: 'Barcelona FC', short: 'Barca' },
     atletico: { full: 'Atletico Madrid', short: 'Atleti'},
+    atm: { full: 'Atletico Madrid', short: 'Atleti'},
+    depo: { full: 'Deportivo La Coruna', short: 'Depo'},
     bayern: { full: 'Bayern Munich', short: 'Bayern'},
     celtic: { full: 'Celtic', short: 'Celtic'},
     mancity: { full: 'Manchester City', short: 'MCI'},

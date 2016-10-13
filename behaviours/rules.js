@@ -306,7 +306,7 @@ function wager(player, amount, data) {
 
         gameId = data['id'];
         option = data['option'];
-        
+
         Match.getGame(gameId)
           .then(function(game) {
             winnings = game.getPossibleWinnings(option, amount);
@@ -606,16 +606,16 @@ function checkTutorialAnswer(player, answer) {
 function checkCreditsAnswer(player, answer) {
   return new Promise(function(resolve, reject) {
 
-    outcome = tutorial.getTutorialBetOutcome(answer);
+    outcome = tutorial.getTutorialBetOutcome(player.tutorialAnswer);
     if (_isNumericBet(answer))
     {
       creditsSelection = "You have bet " + answer + "💰 on a " + outcome + ". Let me check the results...";
       send(player, creditsSelection)
         .then(function() {
-          notify.sendImage(player, replies.gifs.win, "image/gif")
+          notify.sendImage(player, tutorial.getCelebrationGif(player.tutorialAnswer), "image/gif")
             .then(function() {
 
-              odds = tutorial.getTutorialBetOdds(player.bet);
+              odds = tutorial.getTutorialBetOdds(player.tutorialAnswer);
               winning = Math.ceil(odds * parseInt(answer));
               send(player, "Congratulations, you were right. You have won " + winning + " 💰 TuBets!")
                 .then(function() {
@@ -687,9 +687,9 @@ function _sendAnalysis(message) {
 }
 
 function _getTutorialBet(answer) {
-  if (answer.toLowerCase().startsWith() == "liverpool")
+  if (answer.toLowerCase().startsWith("liverpool"))
     return 'h';
-  else if (answer.toLowerCase().startsWith() == "everton")
+  else if (answer.toLowerCase().startsWith("everton"))
     return 'a';
   else
     return 'x';

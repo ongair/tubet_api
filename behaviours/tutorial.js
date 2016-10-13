@@ -1,4 +1,5 @@
 var exports = module.exports = {};
+var replies = require('./replies.js');
 
 function getTutorialBetOdds(bet) {
   switch (bet) {
@@ -10,6 +11,19 @@ function getTutorialBetOdds(bet) {
       break;
     default:
       return 4.1;
+  }
+}
+
+function getCelebrationGif(bet) {
+  switch (bet) {
+    case 'h':
+      return replies.gifs.liv;
+      break;
+    case 'a':
+      return replies.gifs.eve;
+      break;
+    default:
+      return replies.gifs.draw;
   }
 }
 
@@ -28,3 +42,4 @@ function getTutorialBetOutcome(bet) {
 
 exports.getTutorialBetOutcome = getTutorialBetOutcome;
 exports.getTutorialBetOdds = getTutorialBetOdds;
+exports.getCelebrationGif = getCelebrationGif;

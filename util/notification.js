@@ -90,7 +90,6 @@ var notifications = {
           .then(function(id) {
             setTimeout(function() {
               resolve(id);
-              console.log("Id", id);
             },3500);
           })
           .catch(function(ex) {
