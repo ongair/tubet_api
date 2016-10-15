@@ -57,7 +57,7 @@ module.exports = {
     betConfirmation: "You have placed {{amount}} 💰 on {{outcome}}. If you are right you could win {{winnings}} 💰. \r\n*Should I confirm?*",
     betAccepted: "Done. All the best.",
     updateChannel: "Want to get updates for all the matches today? Click [here](https://telegram.me/TubetUpdates) to check out our update channel",
-    betLost: "😔. Woi, pole, looks like things didn't go according to plan. You win some, you lose some",
+    betLost: "😔. Woi pole, better luck next time.",
     betWon: "🙌 .You've won {{amount}} 💰 TuBets, like a Boss!. You now have {{credits}} 💰. You're that guy! 🤑",
     noBets: "Don't have any active bets to update you on.",
     noBetHistory: "You haven't made any bets yet",
