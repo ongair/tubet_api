@@ -163,6 +163,7 @@ gameSchema.methods.title = function() {
 
 gameSchema.methods.asBet = function(player) {
   var str = "*" + replies.teams[this.homeTeam]['full'] + " vs " + replies.teams[this.awayTeam]['full'] + "*";
+  str += "\r\n" + moment(this.date).format("ll HH:mm") + "\r\n";
   if (this.featured && this.promo) {
     str += "\r\n\r\n";
     str += this.promo;
