@@ -58,7 +58,7 @@ module.exports = {
     betAccepted: "Done. All the best.",
     updateChannel: "Want to get updates for all the matches today? Click [here](https://telegram.me/TubetUpdates) to check out our update channel",
     betLost: "😔. Woi pole, better luck next time.",
-    betWon: "🙌 .You've won {{amount}} 💰 TuBets, like a Boss!. You now have {{credits}} 💰. You're that guy! 🤑",
+    betWon: "🙌 .You've won {{amount}} 💰 TuBets, like a Boss!. You now have {{credits}} 💰. Naona hupendi ujinga 🤑",
     noBets: "Don't have any active bets to update you on.",
     noBetHistory: "You haven't made any bets yet",
     betCount: "You have {{count}} bets placed",
