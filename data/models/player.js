@@ -107,6 +107,10 @@ playerSchema.methods.isMessenger = function() {
   return !(this.isTelegram);
 }
 
+playerSchema.methods.tubets = function() {
+  return (this.credits === undefined || this.credits === null) ? 0 : this.credits;
+}
+
 SOURCE_TELEGRAM = 'Telegram';
 SOURCE_MESSENGER = 'MessengerV2';
 
