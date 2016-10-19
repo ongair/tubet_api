@@ -139,6 +139,7 @@ module.exports = {
     stoke: { full: 'Stoke City', short: 'STK'},
     burnley: { full: 'Burnley', short: 'BUN'},
     ludogorets: { full: 'Ludogorets Razgrad', 'LUD'},
+    psg: { full: 'Paris St Germain', 'PSG'},
     kenya: { full: 'Kenya', short: 'KEN' },
     congo: { full: 'Congo', short: 'DRC'},
     italy: { full: 'Italy', short: 'ITA' },
