@@ -69,6 +69,19 @@ function _games(player, aiResponse) {
     })
 }
 
+function _standing(player, response) {
+  notify.send(player, response.reply)
+    .then(function() {
+      Player.find({}, function(err, players) {
+
+        sorted = players.sort(function(playerA, playerB) {
+          return playerA.tubets() - playerB.tubets();
+        });
+
+      });
+    });
+}
+
 function _history(player, response) {
   notify.send(player, response.reply)
     .then(function() {
