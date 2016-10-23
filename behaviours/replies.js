@@ -177,6 +177,7 @@ module.exports = {
     muhoroni: { full: 'Muhoroni Youth FC', short: 'MHR'},
     mathare: { full: 'Mathare United', short: 'MTH' },
     ulinzi: { full: 'Ulinzi Stars', short: 'ULI' },
-    afc: { full: 'AFC Leopards', short: 'AFC'}
+    afc: { full: 'AFC Leopards', short: 'AFC'},
+    gor: { full: 'Gor Mahia', short: 'GOR'}
   }
 }
