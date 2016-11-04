@@ -71,9 +71,9 @@ Match.previewGames = function(matches) {
 
     title = "";
     if (match.featured)
-      title = "*" + homeTeam + " v " + awayTeam + "🔥*";
+      title = "*" + homeTeam + " (" + match.homeOdds + ") v " + awayTeam + " (" + match.awayOdds + ") 🔥*";
     else
-      title = "*" + homeTeam + " v " + awayTeam + "*";
+      title = "*" + homeTeam + " (" + match.homeOdds + ") v " + awayTeam + " (" + match.awayOdds + ")*";
     title += "\r\n";
     title += moment(match.date).format("ll HH:mm");
     return title;
