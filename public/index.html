@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tubet</title>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css">
+  </head>
+  <body>
+    <div id="root">
+      <div class="ui form">
+        <div class="field">
+          <label for='message'>Message</label>
+          <textarea name='message' id='message' placeholder="Enter the message to be announced"></textarea>
+        </div>
+        <div class="field">
+          <label for='options'>Options</label>
+          <input type='text' placeholder="Yes,No" name='options' id='options' />
+        </div>
+        <div class="field">
+          <div class="ui submit button">Send</div>
+        </div>
+      </div>
+    </div>
+
+    <style type="text/css">
+      #root { padding: 1em; }
+    </style>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.js"></script>
+
+    <script type="text/javascript">
+      $(function() {
+        $('.submit').click(function() {
+          if (confirm('Are you sure you want to send this message?')) {
+            var url = "/ap1/v1/admin/announce";
+            var message = $('#message').val();
+            var options = $('#options').val();
+
+            var data  = { message: message, options: options };
+
+            $.post(url, data, function(data,status) {
+              alert("Message sent");
+            })
+          }
+        })
+      })
+    </script>
+  </body>
+</html>

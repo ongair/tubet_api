@@ -8,7 +8,7 @@ var morgan = require('morgan');
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-
+app.use(express.static('public'));
 
 app.all('/*', function(req, res, next) {
   // CORS headers
