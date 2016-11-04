@@ -2,6 +2,7 @@ var Slack = require('slack-node');
 var ongair = require('ongair');
 var Player = require('../data/models/player.js');
 var request = require('request');
+var Twitter = require('twitter');
 
 var notifications = {
 
@@ -19,6 +20,24 @@ var notifications = {
           console.log(err);
       });
     }
+  },
+
+  tweet: function(message) {
+
+    return new Promise(function(resolve, reject) {
+      var client = new Twitter({
+        consumer_key: process.env.TWITTER_CONSUMER_KEY,
+        consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+        access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+        access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+      });
+
+      client.post('statuses/update', {status: message}, function(error, tweet, response) {
+        if (!error) {
+          resolve(true)
+        }
+      });
+    });
   },
 
   broadcast: function(message) {

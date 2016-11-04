@@ -25,6 +25,7 @@
     "ongair": "^1.0.7",
     "request": "^2.75.0",
     "slack-node": "^0.1.8",
+    "twitter": "^1.4.0",
     "underscore": "^1.8.3"
   },
   "engines": {
