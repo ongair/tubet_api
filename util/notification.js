@@ -32,6 +32,8 @@ var notifications = {
         access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
       });
 
+      message = message.replace(/\*/g,'');
+
       client.post('statuses/update', {status: message}, function(error, tweet, response) {
         if (!error) {
           resolve(true)
