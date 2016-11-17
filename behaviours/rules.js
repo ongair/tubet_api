@@ -204,7 +204,8 @@ var Rules = machina.Fsm.extend({
     'live' : {
       _onEnter: function() {
 
-        smalltalk.respond(message.text, player.playerId)
+        console.log("Small talk", message.id)
+        smalltalk.respond(message.text, message.id)
           .then(function(response) {
             action.resolve(player, response);
           });
