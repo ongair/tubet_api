@@ -55,7 +55,11 @@ var matches = {
 
         if (message && type != "COM") {
           notify.broadcast(message);
-          notify.tweet(message);
+
+          // add the hashtag
+          if (game.hashTag) {
+            notify.tweet(message + " " + game.hashTag);
+          }
         }
 
         console.log("Match update", id, type, status, message, score);

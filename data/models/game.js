@@ -13,6 +13,7 @@ var gameSchema = new Schema({
   homeOdds: Number,
   awayOdds: Number,
   drawOdds: Number,
+  hashTag: String,
   bothScoreYesOdds: Number,
   bothScoreNoOdds: Number,
   overOdds: Number,
