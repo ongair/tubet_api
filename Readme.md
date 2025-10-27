@@ -10,10 +10,6 @@ This currently only supports a few sites including. More will be added shortly:
 
 We also only have data for the English premier league but will expand to more leagues on demand.
 
-### How to Use
-- First obtain an API key by sending me [an email](mailto:kimenye@gmail.com) requesting for access. It is still experimental so soon I'll automate this and open it up to more people.
-- The authentication mode for the API is token based, instructions will be in the email.
-
 ### Endpoints
 
 #### 1. Sources
